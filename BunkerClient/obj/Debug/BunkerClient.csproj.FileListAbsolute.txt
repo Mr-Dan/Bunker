@@ -1,0 +1,15 @@
+D:\программ\Bunker\BunkerClient\bin\Debug\BunkerClient.exe.config
+D:\программ\Bunker\BunkerClient\bin\Debug\BunkerClient.exe
+D:\программ\Bunker\BunkerClient\bin\Debug\BunkerClient.pdb
+D:\программ\Bunker\BunkerClient\obj\Debug\BunkerClient.csprojAssemblyReference.cache
+D:\программ\Bunker\BunkerClient\obj\Debug\BunkerClient.Form1.resources
+D:\программ\Bunker\BunkerClient\obj\Debug\BunkerClient.Properties.Resources.resources
+D:\программ\Bunker\BunkerClient\obj\Debug\BunkerClient.csproj.GenerateResource.cache
+D:\программ\Bunker\BunkerClient\obj\Debug\BunkerClient.csproj.CoreCompileInputs.cache
+D:\программ\Bunker\BunkerClient\obj\Debug\BunkerClient.exe
+D:\программ\Bunker\BunkerClient\obj\Debug\BunkerClient.pdb
+D:\программ\Bunker\BunkerClient\bin\Debug\BunkerClient.exe.manifest
+D:\программ\Bunker\BunkerClient\bin\Debug\BunkerClient.application
+D:\программ\Bunker\BunkerClient\obj\Debug\BunkerClient.exe.manifest
+D:\программ\Bunker\BunkerClient\obj\Debug\BunkerClient.application
+D:\программ\Bunker\BunkerClient\obj\Debug\BunkerClient.Form3.resources
