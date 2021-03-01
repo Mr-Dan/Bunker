@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BunkerClient.exe" size="460704">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BunkerClient.exe" size="466336">
       <assemblyIdentity name="BunkerClient" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>NzS3bdNFj8XZ4d1wD9iwG2EgcfriCE4cvGfHkBXCfNo=</dsig:DigestValue>
+        <dsig:DigestValue>84aPW2XA1anwfK4YI9BLcp0UxloPXD0U7X0+U4+exAw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
