@@ -285,6 +285,7 @@
             this.vote_button11 = new System.Windows.Forms.Button();
             this.vote_button12 = new System.Windows.Forms.Button();
             this.vote_button2 = new System.Windows.Forms.Button();
+            this.skip_button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button2
@@ -337,7 +338,7 @@
             // 
             this.name5.AutoSize = true;
             this.name5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.name5.Location = new System.Drawing.Point(141, 321);
+            this.name5.Location = new System.Drawing.Point(141, 341);
             this.name5.Name = "name5";
             this.name5.Size = new System.Drawing.Size(0, 20);
             this.name5.TabIndex = 10;
@@ -346,7 +347,7 @@
             // 
             this.name6.AutoSize = true;
             this.name6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.name6.Location = new System.Drawing.Point(401, 321);
+            this.name6.Location = new System.Drawing.Point(401, 341);
             this.name6.Name = "name6";
             this.name6.Size = new System.Drawing.Size(0, 20);
             this.name6.TabIndex = 11;
@@ -359,7 +360,7 @@
             // 
             this.name7.AutoSize = true;
             this.name7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.name7.Location = new System.Drawing.Point(656, 321);
+            this.name7.Location = new System.Drawing.Point(656, 341);
             this.name7.Name = "name7";
             this.name7.Size = new System.Drawing.Size(0, 20);
             this.name7.TabIndex = 12;
@@ -368,7 +369,7 @@
             // 
             this.name8.AutoSize = true;
             this.name8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.name8.Location = new System.Drawing.Point(910, 321);
+            this.name8.Location = new System.Drawing.Point(910, 341);
             this.name8.Name = "name8";
             this.name8.Size = new System.Drawing.Size(0, 20);
             this.name8.TabIndex = 13;
@@ -377,7 +378,7 @@
             // 
             this.name9.AutoSize = true;
             this.name9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.name9.Location = new System.Drawing.Point(141, 570);
+            this.name9.Location = new System.Drawing.Point(141, 614);
             this.name9.Name = "name9";
             this.name9.Size = new System.Drawing.Size(0, 20);
             this.name9.TabIndex = 14;
@@ -386,7 +387,7 @@
             // 
             this.name10.AutoSize = true;
             this.name10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.name10.Location = new System.Drawing.Point(401, 568);
+            this.name10.Location = new System.Drawing.Point(401, 612);
             this.name10.Name = "name10";
             this.name10.Size = new System.Drawing.Size(0, 20);
             this.name10.TabIndex = 15;
@@ -395,7 +396,7 @@
             // 
             this.name11.AutoSize = true;
             this.name11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.name11.Location = new System.Drawing.Point(656, 568);
+            this.name11.Location = new System.Drawing.Point(656, 612);
             this.name11.Name = "name11";
             this.name11.Size = new System.Drawing.Size(0, 20);
             this.name11.TabIndex = 16;
@@ -404,7 +405,7 @@
             // 
             this.name12.AutoSize = true;
             this.name12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.name12.Location = new System.Drawing.Point(910, 566);
+            this.name12.Location = new System.Drawing.Point(910, 610);
             this.name12.Name = "name12";
             this.name12.Size = new System.Drawing.Size(0, 20);
             this.name12.TabIndex = 17;
@@ -480,7 +481,7 @@
             "Багаж",
             "Фобия",
             "Характер"});
-            this.listBox9.Location = new System.Drawing.Point(30, 570);
+            this.listBox9.Location = new System.Drawing.Point(30, 614);
             this.listBox9.Name = "listBox9";
             this.listBox9.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.listBox9.SelectionMode = System.Windows.Forms.SelectionMode.None;
@@ -506,7 +507,7 @@
             "Багаж",
             "Фобия",
             "Характер"});
-            this.listBox8.Location = new System.Drawing.Point(810, 321);
+            this.listBox8.Location = new System.Drawing.Point(810, 341);
             this.listBox8.Name = "listBox8";
             this.listBox8.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.listBox8.SelectionMode = System.Windows.Forms.SelectionMode.None;
@@ -532,7 +533,7 @@
             "Багаж",
             "Фобия",
             "Характер"});
-            this.listBox7.Location = new System.Drawing.Point(550, 321);
+            this.listBox7.Location = new System.Drawing.Point(550, 341);
             this.listBox7.Name = "listBox7";
             this.listBox7.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.listBox7.SelectionMode = System.Windows.Forms.SelectionMode.None;
@@ -558,7 +559,7 @@
             "Багаж",
             "Фобия",
             "Характер"});
-            this.listBox6.Location = new System.Drawing.Point(290, 321);
+            this.listBox6.Location = new System.Drawing.Point(290, 341);
             this.listBox6.Name = "listBox6";
             this.listBox6.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.listBox6.SelectionMode = System.Windows.Forms.SelectionMode.None;
@@ -584,7 +585,7 @@
             "Багаж",
             "Фобия",
             "Характер"});
-            this.listBox5.Location = new System.Drawing.Point(30, 321);
+            this.listBox5.Location = new System.Drawing.Point(30, 341);
             this.listBox5.Name = "listBox5";
             this.listBox5.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.listBox5.SelectionMode = System.Windows.Forms.SelectionMode.None;
@@ -671,7 +672,7 @@
             "Багаж",
             "Фобия",
             "Характер"});
-            this.listBox10.Location = new System.Drawing.Point(290, 568);
+            this.listBox10.Location = new System.Drawing.Point(290, 612);
             this.listBox10.Name = "listBox10";
             this.listBox10.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.listBox10.SelectionMode = System.Windows.Forms.SelectionMode.None;
@@ -697,7 +698,7 @@
             "Багаж",
             "Фобия",
             "Характер"});
-            this.listBox11.Location = new System.Drawing.Point(550, 568);
+            this.listBox11.Location = new System.Drawing.Point(550, 612);
             this.listBox11.Name = "listBox11";
             this.listBox11.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.listBox11.SelectionMode = System.Windows.Forms.SelectionMode.None;
@@ -723,7 +724,7 @@
             "Багаж",
             "Фобия",
             "Характер"});
-            this.listBox12.Location = new System.Drawing.Point(810, 566);
+            this.listBox12.Location = new System.Drawing.Point(810, 610);
             this.listBox12.Name = "listBox12";
             this.listBox12.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.listBox12.SelectionMode = System.Windows.Forms.SelectionMode.None;
@@ -1095,7 +1096,7 @@
             // 
             this.Age5.AutoSize = true;
             this.Age5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Age5.Location = new System.Drawing.Point(12, 345);
+            this.Age5.Location = new System.Drawing.Point(12, 365);
             this.Age5.Name = "Age5";
             this.Age5.Size = new System.Drawing.Size(15, 14);
             this.Age5.TabIndex = 70;
@@ -1106,7 +1107,7 @@
             // 
             this.Sex5.AutoSize = true;
             this.Sex5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Sex5.Location = new System.Drawing.Point(12, 365);
+            this.Sex5.Location = new System.Drawing.Point(12, 385);
             this.Sex5.Name = "Sex5";
             this.Sex5.Size = new System.Drawing.Size(15, 14);
             this.Sex5.TabIndex = 71;
@@ -1117,7 +1118,7 @@
             // 
             this.Job5.AutoSize = true;
             this.Job5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Job5.Location = new System.Drawing.Point(12, 385);
+            this.Job5.Location = new System.Drawing.Point(12, 405);
             this.Job5.Name = "Job5";
             this.Job5.Size = new System.Drawing.Size(15, 14);
             this.Job5.TabIndex = 72;
@@ -1128,7 +1129,7 @@
             // 
             this.Hobby5.AutoSize = true;
             this.Hobby5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Hobby5.Location = new System.Drawing.Point(12, 405);
+            this.Hobby5.Location = new System.Drawing.Point(12, 425);
             this.Hobby5.Name = "Hobby5";
             this.Hobby5.Size = new System.Drawing.Size(15, 14);
             this.Hobby5.TabIndex = 73;
@@ -1139,7 +1140,7 @@
             // 
             this.Health5.AutoSize = true;
             this.Health5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Health5.Location = new System.Drawing.Point(12, 425);
+            this.Health5.Location = new System.Drawing.Point(12, 445);
             this.Health5.Name = "Health5";
             this.Health5.Size = new System.Drawing.Size(15, 14);
             this.Health5.TabIndex = 74;
@@ -1150,7 +1151,7 @@
             // 
             this.Baggage5.AutoSize = true;
             this.Baggage5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Baggage5.Location = new System.Drawing.Point(12, 445);
+            this.Baggage5.Location = new System.Drawing.Point(12, 465);
             this.Baggage5.Name = "Baggage5";
             this.Baggage5.Size = new System.Drawing.Size(15, 14);
             this.Baggage5.TabIndex = 75;
@@ -1161,7 +1162,7 @@
             // 
             this.Phobia5.AutoSize = true;
             this.Phobia5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Phobia5.Location = new System.Drawing.Point(12, 465);
+            this.Phobia5.Location = new System.Drawing.Point(12, 485);
             this.Phobia5.Name = "Phobia5";
             this.Phobia5.Size = new System.Drawing.Size(15, 14);
             this.Phobia5.TabIndex = 76;
@@ -1172,7 +1173,7 @@
             // 
             this.Character5.AutoSize = true;
             this.Character5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Character5.Location = new System.Drawing.Point(12, 487);
+            this.Character5.Location = new System.Drawing.Point(12, 507);
             this.Character5.Name = "Character5";
             this.Character5.Size = new System.Drawing.Size(15, 14);
             this.Character5.TabIndex = 77;
@@ -1183,7 +1184,7 @@
             // 
             this.Age6.AutoSize = true;
             this.Age6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Age6.Location = new System.Drawing.Point(269, 347);
+            this.Age6.Location = new System.Drawing.Point(269, 367);
             this.Age6.Name = "Age6";
             this.Age6.Size = new System.Drawing.Size(15, 14);
             this.Age6.TabIndex = 79;
@@ -1194,7 +1195,7 @@
             // 
             this.Sex6.AutoSize = true;
             this.Sex6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Sex6.Location = new System.Drawing.Point(269, 367);
+            this.Sex6.Location = new System.Drawing.Point(269, 387);
             this.Sex6.Name = "Sex6";
             this.Sex6.Size = new System.Drawing.Size(15, 14);
             this.Sex6.TabIndex = 80;
@@ -1205,7 +1206,7 @@
             // 
             this.Job6.AutoSize = true;
             this.Job6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Job6.Location = new System.Drawing.Point(269, 387);
+            this.Job6.Location = new System.Drawing.Point(269, 407);
             this.Job6.Name = "Job6";
             this.Job6.Size = new System.Drawing.Size(15, 14);
             this.Job6.TabIndex = 81;
@@ -1216,7 +1217,7 @@
             // 
             this.Hobby6.AutoSize = true;
             this.Hobby6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Hobby6.Location = new System.Drawing.Point(269, 407);
+            this.Hobby6.Location = new System.Drawing.Point(269, 427);
             this.Hobby6.Name = "Hobby6";
             this.Hobby6.Size = new System.Drawing.Size(15, 14);
             this.Hobby6.TabIndex = 82;
@@ -1227,7 +1228,7 @@
             // 
             this.Health6.AutoSize = true;
             this.Health6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Health6.Location = new System.Drawing.Point(269, 427);
+            this.Health6.Location = new System.Drawing.Point(269, 447);
             this.Health6.Name = "Health6";
             this.Health6.Size = new System.Drawing.Size(15, 14);
             this.Health6.TabIndex = 83;
@@ -1238,7 +1239,7 @@
             // 
             this.Baggage6.AutoSize = true;
             this.Baggage6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Baggage6.Location = new System.Drawing.Point(269, 447);
+            this.Baggage6.Location = new System.Drawing.Point(269, 467);
             this.Baggage6.Name = "Baggage6";
             this.Baggage6.Size = new System.Drawing.Size(15, 14);
             this.Baggage6.TabIndex = 84;
@@ -1249,7 +1250,7 @@
             // 
             this.Phobia6.AutoSize = true;
             this.Phobia6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Phobia6.Location = new System.Drawing.Point(269, 467);
+            this.Phobia6.Location = new System.Drawing.Point(269, 487);
             this.Phobia6.Name = "Phobia6";
             this.Phobia6.Size = new System.Drawing.Size(15, 14);
             this.Phobia6.TabIndex = 85;
@@ -1260,7 +1261,7 @@
             // 
             this.Character6.AutoSize = true;
             this.Character6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Character6.Location = new System.Drawing.Point(269, 487);
+            this.Character6.Location = new System.Drawing.Point(269, 507);
             this.Character6.Name = "Character6";
             this.Character6.Size = new System.Drawing.Size(15, 14);
             this.Character6.TabIndex = 87;
@@ -1271,7 +1272,7 @@
             // 
             this.Age7.AutoSize = true;
             this.Age7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Age7.Location = new System.Drawing.Point(529, 347);
+            this.Age7.Location = new System.Drawing.Point(529, 367);
             this.Age7.Name = "Age7";
             this.Age7.Size = new System.Drawing.Size(15, 14);
             this.Age7.TabIndex = 88;
@@ -1282,7 +1283,7 @@
             // 
             this.Job7.AutoSize = true;
             this.Job7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Job7.Location = new System.Drawing.Point(529, 387);
+            this.Job7.Location = new System.Drawing.Point(529, 407);
             this.Job7.Name = "Job7";
             this.Job7.Size = new System.Drawing.Size(15, 14);
             this.Job7.TabIndex = 89;
@@ -1293,7 +1294,7 @@
             // 
             this.Sex7.AutoSize = true;
             this.Sex7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Sex7.Location = new System.Drawing.Point(529, 365);
+            this.Sex7.Location = new System.Drawing.Point(529, 385);
             this.Sex7.Name = "Sex7";
             this.Sex7.Size = new System.Drawing.Size(15, 14);
             this.Sex7.TabIndex = 90;
@@ -1304,7 +1305,7 @@
             // 
             this.Hobby7.AutoSize = true;
             this.Hobby7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Hobby7.Location = new System.Drawing.Point(529, 407);
+            this.Hobby7.Location = new System.Drawing.Point(529, 427);
             this.Hobby7.Name = "Hobby7";
             this.Hobby7.Size = new System.Drawing.Size(15, 14);
             this.Hobby7.TabIndex = 91;
@@ -1315,7 +1316,7 @@
             // 
             this.Baggage7.AutoSize = true;
             this.Baggage7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Baggage7.Location = new System.Drawing.Point(529, 447);
+            this.Baggage7.Location = new System.Drawing.Point(529, 467);
             this.Baggage7.Name = "Baggage7";
             this.Baggage7.Size = new System.Drawing.Size(15, 14);
             this.Baggage7.TabIndex = 92;
@@ -1326,7 +1327,7 @@
             // 
             this.Health7.AutoSize = true;
             this.Health7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Health7.Location = new System.Drawing.Point(529, 427);
+            this.Health7.Location = new System.Drawing.Point(529, 447);
             this.Health7.Name = "Health7";
             this.Health7.Size = new System.Drawing.Size(15, 14);
             this.Health7.TabIndex = 93;
@@ -1337,7 +1338,7 @@
             // 
             this.Phobia7.AutoSize = true;
             this.Phobia7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Phobia7.Location = new System.Drawing.Point(529, 467);
+            this.Phobia7.Location = new System.Drawing.Point(529, 487);
             this.Phobia7.Name = "Phobia7";
             this.Phobia7.Size = new System.Drawing.Size(15, 14);
             this.Phobia7.TabIndex = 94;
@@ -1348,7 +1349,7 @@
             // 
             this.Character7.AutoSize = true;
             this.Character7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Character7.Location = new System.Drawing.Point(529, 487);
+            this.Character7.Location = new System.Drawing.Point(529, 507);
             this.Character7.Name = "Character7";
             this.Character7.Size = new System.Drawing.Size(15, 14);
             this.Character7.TabIndex = 96;
@@ -1359,7 +1360,7 @@
             // 
             this.Age8.AutoSize = true;
             this.Age8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Age8.Location = new System.Drawing.Point(789, 345);
+            this.Age8.Location = new System.Drawing.Point(789, 365);
             this.Age8.Name = "Age8";
             this.Age8.Size = new System.Drawing.Size(15, 14);
             this.Age8.TabIndex = 97;
@@ -1370,7 +1371,7 @@
             // 
             this.Sex8.AutoSize = true;
             this.Sex8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Sex8.Location = new System.Drawing.Point(789, 365);
+            this.Sex8.Location = new System.Drawing.Point(789, 385);
             this.Sex8.Name = "Sex8";
             this.Sex8.Size = new System.Drawing.Size(15, 14);
             this.Sex8.TabIndex = 98;
@@ -1381,7 +1382,7 @@
             // 
             this.Job8.AutoSize = true;
             this.Job8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Job8.Location = new System.Drawing.Point(789, 385);
+            this.Job8.Location = new System.Drawing.Point(789, 405);
             this.Job8.Name = "Job8";
             this.Job8.Size = new System.Drawing.Size(15, 14);
             this.Job8.TabIndex = 99;
@@ -1392,7 +1393,7 @@
             // 
             this.Hobby8.AutoSize = true;
             this.Hobby8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Hobby8.Location = new System.Drawing.Point(789, 405);
+            this.Hobby8.Location = new System.Drawing.Point(789, 425);
             this.Hobby8.Name = "Hobby8";
             this.Hobby8.Size = new System.Drawing.Size(15, 14);
             this.Hobby8.TabIndex = 100;
@@ -1403,7 +1404,7 @@
             // 
             this.Health8.AutoSize = true;
             this.Health8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Health8.Location = new System.Drawing.Point(789, 425);
+            this.Health8.Location = new System.Drawing.Point(789, 445);
             this.Health8.Name = "Health8";
             this.Health8.Size = new System.Drawing.Size(15, 14);
             this.Health8.TabIndex = 101;
@@ -1414,7 +1415,7 @@
             // 
             this.Phobia8.AutoSize = true;
             this.Phobia8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Phobia8.Location = new System.Drawing.Point(789, 465);
+            this.Phobia8.Location = new System.Drawing.Point(789, 485);
             this.Phobia8.Name = "Phobia8";
             this.Phobia8.Size = new System.Drawing.Size(15, 14);
             this.Phobia8.TabIndex = 102;
@@ -1425,7 +1426,7 @@
             // 
             this.Baggage8.AutoSize = true;
             this.Baggage8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Baggage8.Location = new System.Drawing.Point(789, 445);
+            this.Baggage8.Location = new System.Drawing.Point(789, 465);
             this.Baggage8.Name = "Baggage8";
             this.Baggage8.Size = new System.Drawing.Size(15, 14);
             this.Baggage8.TabIndex = 103;
@@ -1436,7 +1437,7 @@
             // 
             this.Character8.AutoSize = true;
             this.Character8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Character8.Location = new System.Drawing.Point(789, 485);
+            this.Character8.Location = new System.Drawing.Point(789, 505);
             this.Character8.Name = "Character8";
             this.Character8.Size = new System.Drawing.Size(15, 14);
             this.Character8.TabIndex = 104;
@@ -1447,7 +1448,7 @@
             // 
             this.Age9.AutoSize = true;
             this.Age9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Age9.Location = new System.Drawing.Point(12, 594);
+            this.Age9.Location = new System.Drawing.Point(12, 638);
             this.Age9.Name = "Age9";
             this.Age9.Size = new System.Drawing.Size(15, 14);
             this.Age9.TabIndex = 105;
@@ -1458,7 +1459,7 @@
             // 
             this.Sex9.AutoSize = true;
             this.Sex9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Sex9.Location = new System.Drawing.Point(12, 614);
+            this.Sex9.Location = new System.Drawing.Point(12, 658);
             this.Sex9.Name = "Sex9";
             this.Sex9.Size = new System.Drawing.Size(15, 14);
             this.Sex9.TabIndex = 107;
@@ -1469,7 +1470,7 @@
             // 
             this.Job9.AutoSize = true;
             this.Job9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Job9.Location = new System.Drawing.Point(12, 634);
+            this.Job9.Location = new System.Drawing.Point(12, 678);
             this.Job9.Name = "Job9";
             this.Job9.Size = new System.Drawing.Size(15, 14);
             this.Job9.TabIndex = 108;
@@ -1480,7 +1481,7 @@
             // 
             this.Hobby9.AutoSize = true;
             this.Hobby9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Hobby9.Location = new System.Drawing.Point(12, 654);
+            this.Hobby9.Location = new System.Drawing.Point(12, 698);
             this.Hobby9.Name = "Hobby9";
             this.Hobby9.Size = new System.Drawing.Size(15, 14);
             this.Hobby9.TabIndex = 109;
@@ -1491,7 +1492,7 @@
             // 
             this.Health9.AutoSize = true;
             this.Health9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Health9.Location = new System.Drawing.Point(12, 674);
+            this.Health9.Location = new System.Drawing.Point(12, 718);
             this.Health9.Name = "Health9";
             this.Health9.Size = new System.Drawing.Size(15, 14);
             this.Health9.TabIndex = 110;
@@ -1502,7 +1503,7 @@
             // 
             this.Phobia9.AutoSize = true;
             this.Phobia9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Phobia9.Location = new System.Drawing.Point(12, 714);
+            this.Phobia9.Location = new System.Drawing.Point(12, 758);
             this.Phobia9.Name = "Phobia9";
             this.Phobia9.Size = new System.Drawing.Size(15, 14);
             this.Phobia9.TabIndex = 111;
@@ -1513,7 +1514,7 @@
             // 
             this.Baggage9.AutoSize = true;
             this.Baggage9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Baggage9.Location = new System.Drawing.Point(12, 694);
+            this.Baggage9.Location = new System.Drawing.Point(12, 738);
             this.Baggage9.Name = "Baggage9";
             this.Baggage9.Size = new System.Drawing.Size(15, 14);
             this.Baggage9.TabIndex = 112;
@@ -1524,7 +1525,7 @@
             // 
             this.Character9.AutoSize = true;
             this.Character9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Character9.Location = new System.Drawing.Point(12, 734);
+            this.Character9.Location = new System.Drawing.Point(12, 778);
             this.Character9.Name = "Character9";
             this.Character9.Size = new System.Drawing.Size(15, 14);
             this.Character9.TabIndex = 113;
@@ -1535,7 +1536,7 @@
             // 
             this.Age10.AutoSize = true;
             this.Age10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Age10.Location = new System.Drawing.Point(271, 592);
+            this.Age10.Location = new System.Drawing.Point(271, 636);
             this.Age10.Name = "Age10";
             this.Age10.Size = new System.Drawing.Size(15, 14);
             this.Age10.TabIndex = 114;
@@ -1546,7 +1547,7 @@
             // 
             this.Sex10.AutoSize = true;
             this.Sex10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Sex10.Location = new System.Drawing.Point(271, 612);
+            this.Sex10.Location = new System.Drawing.Point(271, 656);
             this.Sex10.Name = "Sex10";
             this.Sex10.Size = new System.Drawing.Size(15, 14);
             this.Sex10.TabIndex = 116;
@@ -1557,7 +1558,7 @@
             // 
             this.Job10.AutoSize = true;
             this.Job10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Job10.Location = new System.Drawing.Point(271, 632);
+            this.Job10.Location = new System.Drawing.Point(271, 676);
             this.Job10.Name = "Job10";
             this.Job10.Size = new System.Drawing.Size(15, 14);
             this.Job10.TabIndex = 117;
@@ -1568,7 +1569,7 @@
             // 
             this.Health10.AutoSize = true;
             this.Health10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Health10.Location = new System.Drawing.Point(271, 672);
+            this.Health10.Location = new System.Drawing.Point(271, 716);
             this.Health10.Name = "Health10";
             this.Health10.Size = new System.Drawing.Size(15, 14);
             this.Health10.TabIndex = 118;
@@ -1579,7 +1580,7 @@
             // 
             this.Hobby10.AutoSize = true;
             this.Hobby10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Hobby10.Location = new System.Drawing.Point(271, 652);
+            this.Hobby10.Location = new System.Drawing.Point(271, 696);
             this.Hobby10.Name = "Hobby10";
             this.Hobby10.Size = new System.Drawing.Size(15, 14);
             this.Hobby10.TabIndex = 119;
@@ -1590,7 +1591,7 @@
             // 
             this.Phobia10.AutoSize = true;
             this.Phobia10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Phobia10.Location = new System.Drawing.Point(271, 712);
+            this.Phobia10.Location = new System.Drawing.Point(271, 756);
             this.Phobia10.Name = "Phobia10";
             this.Phobia10.Size = new System.Drawing.Size(15, 14);
             this.Phobia10.TabIndex = 120;
@@ -1601,7 +1602,7 @@
             // 
             this.Baggage10.AutoSize = true;
             this.Baggage10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Baggage10.Location = new System.Drawing.Point(271, 692);
+            this.Baggage10.Location = new System.Drawing.Point(271, 736);
             this.Baggage10.Name = "Baggage10";
             this.Baggage10.Size = new System.Drawing.Size(15, 14);
             this.Baggage10.TabIndex = 121;
@@ -1612,7 +1613,7 @@
             // 
             this.Character10.AutoSize = true;
             this.Character10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Character10.Location = new System.Drawing.Point(271, 732);
+            this.Character10.Location = new System.Drawing.Point(271, 776);
             this.Character10.Name = "Character10";
             this.Character10.Size = new System.Drawing.Size(15, 14);
             this.Character10.TabIndex = 122;
@@ -1623,7 +1624,7 @@
             // 
             this.Sex11.AutoSize = true;
             this.Sex11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Sex11.Location = new System.Drawing.Point(529, 615);
+            this.Sex11.Location = new System.Drawing.Point(529, 659);
             this.Sex11.Name = "Sex11";
             this.Sex11.Size = new System.Drawing.Size(15, 14);
             this.Sex11.TabIndex = 123;
@@ -1634,7 +1635,7 @@
             // 
             this.Phobia11.AutoSize = true;
             this.Phobia11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Phobia11.Location = new System.Drawing.Point(529, 715);
+            this.Phobia11.Location = new System.Drawing.Point(529, 759);
             this.Phobia11.Name = "Phobia11";
             this.Phobia11.Size = new System.Drawing.Size(15, 14);
             this.Phobia11.TabIndex = 125;
@@ -1645,7 +1646,7 @@
             // 
             this.Age11.AutoSize = true;
             this.Age11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Age11.Location = new System.Drawing.Point(529, 595);
+            this.Age11.Location = new System.Drawing.Point(529, 639);
             this.Age11.Name = "Age11";
             this.Age11.Size = new System.Drawing.Size(15, 14);
             this.Age11.TabIndex = 126;
@@ -1656,7 +1657,7 @@
             // 
             this.Character11.AutoSize = true;
             this.Character11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Character11.Location = new System.Drawing.Point(529, 735);
+            this.Character11.Location = new System.Drawing.Point(529, 779);
             this.Character11.Name = "Character11";
             this.Character11.Size = new System.Drawing.Size(15, 14);
             this.Character11.TabIndex = 127;
@@ -1667,7 +1668,7 @@
             // 
             this.Age12.AutoSize = true;
             this.Age12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Age12.Location = new System.Drawing.Point(789, 590);
+            this.Age12.Location = new System.Drawing.Point(789, 634);
             this.Age12.Name = "Age12";
             this.Age12.Size = new System.Drawing.Size(15, 14);
             this.Age12.TabIndex = 128;
@@ -1678,7 +1679,7 @@
             // 
             this.Sex12.AutoSize = true;
             this.Sex12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Sex12.Location = new System.Drawing.Point(789, 610);
+            this.Sex12.Location = new System.Drawing.Point(789, 654);
             this.Sex12.Name = "Sex12";
             this.Sex12.Size = new System.Drawing.Size(15, 14);
             this.Sex12.TabIndex = 130;
@@ -1689,7 +1690,7 @@
             // 
             this.Baggage12.AutoSize = true;
             this.Baggage12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Baggage12.Location = new System.Drawing.Point(789, 690);
+            this.Baggage12.Location = new System.Drawing.Point(789, 734);
             this.Baggage12.Name = "Baggage12";
             this.Baggage12.Size = new System.Drawing.Size(15, 14);
             this.Baggage12.TabIndex = 131;
@@ -1700,7 +1701,7 @@
             // 
             this.Health12.AutoSize = true;
             this.Health12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Health12.Location = new System.Drawing.Point(789, 670);
+            this.Health12.Location = new System.Drawing.Point(789, 714);
             this.Health12.Name = "Health12";
             this.Health12.Size = new System.Drawing.Size(15, 14);
             this.Health12.TabIndex = 132;
@@ -1711,7 +1712,7 @@
             // 
             this.Hobby12.AutoSize = true;
             this.Hobby12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Hobby12.Location = new System.Drawing.Point(789, 650);
+            this.Hobby12.Location = new System.Drawing.Point(789, 694);
             this.Hobby12.Name = "Hobby12";
             this.Hobby12.Size = new System.Drawing.Size(15, 14);
             this.Hobby12.TabIndex = 133;
@@ -1722,7 +1723,7 @@
             // 
             this.Job12.AutoSize = true;
             this.Job12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Job12.Location = new System.Drawing.Point(789, 630);
+            this.Job12.Location = new System.Drawing.Point(789, 674);
             this.Job12.Name = "Job12";
             this.Job12.Size = new System.Drawing.Size(15, 14);
             this.Job12.TabIndex = 134;
@@ -1733,7 +1734,7 @@
             // 
             this.Baggage11.AutoSize = true;
             this.Baggage11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Baggage11.Location = new System.Drawing.Point(529, 695);
+            this.Baggage11.Location = new System.Drawing.Point(529, 739);
             this.Baggage11.Name = "Baggage11";
             this.Baggage11.Size = new System.Drawing.Size(15, 14);
             this.Baggage11.TabIndex = 135;
@@ -1744,7 +1745,7 @@
             // 
             this.Health11.AutoSize = true;
             this.Health11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Health11.Location = new System.Drawing.Point(529, 675);
+            this.Health11.Location = new System.Drawing.Point(529, 719);
             this.Health11.Name = "Health11";
             this.Health11.Size = new System.Drawing.Size(15, 14);
             this.Health11.TabIndex = 136;
@@ -1755,7 +1756,7 @@
             // 
             this.Hobby11.AutoSize = true;
             this.Hobby11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Hobby11.Location = new System.Drawing.Point(529, 655);
+            this.Hobby11.Location = new System.Drawing.Point(529, 699);
             this.Hobby11.Name = "Hobby11";
             this.Hobby11.Size = new System.Drawing.Size(15, 14);
             this.Hobby11.TabIndex = 137;
@@ -1766,7 +1767,7 @@
             // 
             this.Job11.AutoSize = true;
             this.Job11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Job11.Location = new System.Drawing.Point(529, 635);
+            this.Job11.Location = new System.Drawing.Point(529, 679);
             this.Job11.Name = "Job11";
             this.Job11.Size = new System.Drawing.Size(15, 14);
             this.Job11.TabIndex = 138;
@@ -1777,7 +1778,7 @@
             // 
             this.Phobia12.AutoSize = true;
             this.Phobia12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Phobia12.Location = new System.Drawing.Point(789, 710);
+            this.Phobia12.Location = new System.Drawing.Point(789, 754);
             this.Phobia12.Name = "Phobia12";
             this.Phobia12.Size = new System.Drawing.Size(15, 14);
             this.Phobia12.TabIndex = 139;
@@ -1788,7 +1789,7 @@
             // 
             this.Character12.AutoSize = true;
             this.Character12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Character12.Location = new System.Drawing.Point(789, 730);
+            this.Character12.Location = new System.Drawing.Point(789, 774);
             this.Character12.Name = "Character12";
             this.Character12.Size = new System.Drawing.Size(15, 14);
             this.Character12.TabIndex = 140;
@@ -1862,7 +1863,7 @@
             // 
             this.HobbyText5.AutoSize = true;
             this.HobbyText5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HobbyText5.Location = new System.Drawing.Point(141, 401);
+            this.HobbyText5.Location = new System.Drawing.Point(141, 421);
             this.HobbyText5.Name = "HobbyText5";
             this.HobbyText5.Size = new System.Drawing.Size(0, 20);
             this.HobbyText5.TabIndex = 148;
@@ -1871,7 +1872,7 @@
             // 
             this.JobText5.AutoSize = true;
             this.JobText5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.JobText5.Location = new System.Drawing.Point(141, 381);
+            this.JobText5.Location = new System.Drawing.Point(141, 401);
             this.JobText5.Name = "JobText5";
             this.JobText5.Size = new System.Drawing.Size(0, 20);
             this.JobText5.TabIndex = 149;
@@ -1880,7 +1881,7 @@
             // 
             this.SexText5.AutoSize = true;
             this.SexText5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SexText5.Location = new System.Drawing.Point(141, 361);
+            this.SexText5.Location = new System.Drawing.Point(141, 381);
             this.SexText5.Name = "SexText5";
             this.SexText5.Size = new System.Drawing.Size(0, 20);
             this.SexText5.TabIndex = 150;
@@ -1898,7 +1899,7 @@
             // 
             this.AgeText5.AutoSize = true;
             this.AgeText5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AgeText5.Location = new System.Drawing.Point(141, 341);
+            this.AgeText5.Location = new System.Drawing.Point(141, 361);
             this.AgeText5.Name = "AgeText5";
             this.AgeText5.Size = new System.Drawing.Size(0, 20);
             this.AgeText5.TabIndex = 152;
@@ -2096,7 +2097,7 @@
             // 
             this.HealthText8.AutoSize = true;
             this.HealthText8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HealthText8.Location = new System.Drawing.Point(910, 421);
+            this.HealthText8.Location = new System.Drawing.Point(910, 441);
             this.HealthText8.Name = "HealthText8";
             this.HealthText8.Size = new System.Drawing.Size(0, 20);
             this.HealthText8.TabIndex = 174;
@@ -2105,7 +2106,7 @@
             // 
             this.HobbyText8.AutoSize = true;
             this.HobbyText8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HobbyText8.Location = new System.Drawing.Point(910, 401);
+            this.HobbyText8.Location = new System.Drawing.Point(910, 421);
             this.HobbyText8.Name = "HobbyText8";
             this.HobbyText8.Size = new System.Drawing.Size(0, 20);
             this.HobbyText8.TabIndex = 175;
@@ -2114,7 +2115,7 @@
             // 
             this.JobText8.AutoSize = true;
             this.JobText8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.JobText8.Location = new System.Drawing.Point(910, 383);
+            this.JobText8.Location = new System.Drawing.Point(910, 403);
             this.JobText8.Name = "JobText8";
             this.JobText8.Size = new System.Drawing.Size(0, 20);
             this.JobText8.TabIndex = 176;
@@ -2123,7 +2124,7 @@
             // 
             this.SexText8.AutoSize = true;
             this.SexText8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SexText8.Location = new System.Drawing.Point(910, 363);
+            this.SexText8.Location = new System.Drawing.Point(910, 383);
             this.SexText8.Name = "SexText8";
             this.SexText8.Size = new System.Drawing.Size(0, 20);
             this.SexText8.TabIndex = 177;
@@ -2132,7 +2133,7 @@
             // 
             this.AgeText8.AutoSize = true;
             this.AgeText8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AgeText8.Location = new System.Drawing.Point(910, 343);
+            this.AgeText8.Location = new System.Drawing.Point(910, 363);
             this.AgeText8.Name = "AgeText8";
             this.AgeText8.Size = new System.Drawing.Size(0, 20);
             this.AgeText8.TabIndex = 178;
@@ -2141,7 +2142,7 @@
             // 
             this.CharacterText7.AutoSize = true;
             this.CharacterText7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CharacterText7.Location = new System.Drawing.Point(656, 483);
+            this.CharacterText7.Location = new System.Drawing.Point(656, 503);
             this.CharacterText7.Name = "CharacterText7";
             this.CharacterText7.Size = new System.Drawing.Size(0, 20);
             this.CharacterText7.TabIndex = 179;
@@ -2150,7 +2151,7 @@
             // 
             this.PhobiaText7.AutoSize = true;
             this.PhobiaText7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.PhobiaText7.Location = new System.Drawing.Point(656, 463);
+            this.PhobiaText7.Location = new System.Drawing.Point(656, 483);
             this.PhobiaText7.Name = "PhobiaText7";
             this.PhobiaText7.Size = new System.Drawing.Size(0, 20);
             this.PhobiaText7.TabIndex = 180;
@@ -2159,7 +2160,7 @@
             // 
             this.BaggageText7.AutoSize = true;
             this.BaggageText7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BaggageText7.Location = new System.Drawing.Point(656, 443);
+            this.BaggageText7.Location = new System.Drawing.Point(656, 463);
             this.BaggageText7.Name = "BaggageText7";
             this.BaggageText7.Size = new System.Drawing.Size(0, 20);
             this.BaggageText7.TabIndex = 181;
@@ -2168,7 +2169,7 @@
             // 
             this.HealthText7.AutoSize = true;
             this.HealthText7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HealthText7.Location = new System.Drawing.Point(656, 423);
+            this.HealthText7.Location = new System.Drawing.Point(656, 443);
             this.HealthText7.Name = "HealthText7";
             this.HealthText7.Size = new System.Drawing.Size(0, 20);
             this.HealthText7.TabIndex = 182;
@@ -2177,7 +2178,7 @@
             // 
             this.HobbyText7.AutoSize = true;
             this.HobbyText7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HobbyText7.Location = new System.Drawing.Point(656, 401);
+            this.HobbyText7.Location = new System.Drawing.Point(656, 421);
             this.HobbyText7.Name = "HobbyText7";
             this.HobbyText7.Size = new System.Drawing.Size(0, 20);
             this.HobbyText7.TabIndex = 183;
@@ -2186,7 +2187,7 @@
             // 
             this.JobText7.AutoSize = true;
             this.JobText7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.JobText7.Location = new System.Drawing.Point(656, 381);
+            this.JobText7.Location = new System.Drawing.Point(656, 401);
             this.JobText7.Name = "JobText7";
             this.JobText7.Size = new System.Drawing.Size(0, 20);
             this.JobText7.TabIndex = 184;
@@ -2195,7 +2196,7 @@
             // 
             this.SexText7.AutoSize = true;
             this.SexText7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SexText7.Location = new System.Drawing.Point(656, 361);
+            this.SexText7.Location = new System.Drawing.Point(656, 381);
             this.SexText7.Name = "SexText7";
             this.SexText7.Size = new System.Drawing.Size(0, 20);
             this.SexText7.TabIndex = 185;
@@ -2204,7 +2205,7 @@
             // 
             this.AgeText7.AutoSize = true;
             this.AgeText7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AgeText7.Location = new System.Drawing.Point(656, 343);
+            this.AgeText7.Location = new System.Drawing.Point(656, 363);
             this.AgeText7.Name = "AgeText7";
             this.AgeText7.Size = new System.Drawing.Size(0, 20);
             this.AgeText7.TabIndex = 186;
@@ -2213,7 +2214,7 @@
             // 
             this.CharacterText6.AutoSize = true;
             this.CharacterText6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CharacterText6.Location = new System.Drawing.Point(401, 483);
+            this.CharacterText6.Location = new System.Drawing.Point(401, 503);
             this.CharacterText6.Name = "CharacterText6";
             this.CharacterText6.Size = new System.Drawing.Size(0, 20);
             this.CharacterText6.TabIndex = 187;
@@ -2222,7 +2223,7 @@
             // 
             this.PhobiaText6.AutoSize = true;
             this.PhobiaText6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.PhobiaText6.Location = new System.Drawing.Point(401, 461);
+            this.PhobiaText6.Location = new System.Drawing.Point(401, 481);
             this.PhobiaText6.Name = "PhobiaText6";
             this.PhobiaText6.Size = new System.Drawing.Size(0, 20);
             this.PhobiaText6.TabIndex = 188;
@@ -2231,7 +2232,7 @@
             // 
             this.BaggageText6.AutoSize = true;
             this.BaggageText6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BaggageText6.Location = new System.Drawing.Point(401, 441);
+            this.BaggageText6.Location = new System.Drawing.Point(401, 461);
             this.BaggageText6.Name = "BaggageText6";
             this.BaggageText6.Size = new System.Drawing.Size(0, 20);
             this.BaggageText6.TabIndex = 189;
@@ -2240,7 +2241,7 @@
             // 
             this.HealthText6.AutoSize = true;
             this.HealthText6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HealthText6.Location = new System.Drawing.Point(401, 421);
+            this.HealthText6.Location = new System.Drawing.Point(401, 441);
             this.HealthText6.Name = "HealthText6";
             this.HealthText6.Size = new System.Drawing.Size(0, 20);
             this.HealthText6.TabIndex = 190;
@@ -2249,7 +2250,7 @@
             // 
             this.HobbyText6.AutoSize = true;
             this.HobbyText6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HobbyText6.Location = new System.Drawing.Point(401, 401);
+            this.HobbyText6.Location = new System.Drawing.Point(401, 421);
             this.HobbyText6.Name = "HobbyText6";
             this.HobbyText6.Size = new System.Drawing.Size(0, 20);
             this.HobbyText6.TabIndex = 191;
@@ -2258,7 +2259,7 @@
             // 
             this.JobText6.AutoSize = true;
             this.JobText6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.JobText6.Location = new System.Drawing.Point(401, 381);
+            this.JobText6.Location = new System.Drawing.Point(401, 401);
             this.JobText6.Name = "JobText6";
             this.JobText6.Size = new System.Drawing.Size(0, 20);
             this.JobText6.TabIndex = 192;
@@ -2267,7 +2268,7 @@
             // 
             this.SexText6.AutoSize = true;
             this.SexText6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SexText6.Location = new System.Drawing.Point(401, 363);
+            this.SexText6.Location = new System.Drawing.Point(401, 383);
             this.SexText6.Name = "SexText6";
             this.SexText6.Size = new System.Drawing.Size(0, 20);
             this.SexText6.TabIndex = 193;
@@ -2285,7 +2286,7 @@
             // 
             this.AgeText6.AutoSize = true;
             this.AgeText6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AgeText6.Location = new System.Drawing.Point(401, 343);
+            this.AgeText6.Location = new System.Drawing.Point(401, 363);
             this.AgeText6.Name = "AgeText6";
             this.AgeText6.Size = new System.Drawing.Size(0, 20);
             this.AgeText6.TabIndex = 195;
@@ -2294,7 +2295,7 @@
             // 
             this.CharacterText5.AutoSize = true;
             this.CharacterText5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CharacterText5.Location = new System.Drawing.Point(141, 483);
+            this.CharacterText5.Location = new System.Drawing.Point(141, 503);
             this.CharacterText5.Name = "CharacterText5";
             this.CharacterText5.Size = new System.Drawing.Size(0, 20);
             this.CharacterText5.TabIndex = 196;
@@ -2303,7 +2304,7 @@
             // 
             this.PhobiaText5.AutoSize = true;
             this.PhobiaText5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.PhobiaText5.Location = new System.Drawing.Point(141, 461);
+            this.PhobiaText5.Location = new System.Drawing.Point(141, 481);
             this.PhobiaText5.Name = "PhobiaText5";
             this.PhobiaText5.Size = new System.Drawing.Size(0, 20);
             this.PhobiaText5.TabIndex = 197;
@@ -2312,7 +2313,7 @@
             // 
             this.BaggageText5.AutoSize = true;
             this.BaggageText5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BaggageText5.Location = new System.Drawing.Point(141, 441);
+            this.BaggageText5.Location = new System.Drawing.Point(141, 461);
             this.BaggageText5.Name = "BaggageText5";
             this.BaggageText5.Size = new System.Drawing.Size(0, 20);
             this.BaggageText5.TabIndex = 198;
@@ -2321,7 +2322,7 @@
             // 
             this.HealthText5.AutoSize = true;
             this.HealthText5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HealthText5.Location = new System.Drawing.Point(141, 421);
+            this.HealthText5.Location = new System.Drawing.Point(141, 441);
             this.HealthText5.Name = "HealthText5";
             this.HealthText5.Size = new System.Drawing.Size(0, 20);
             this.HealthText5.TabIndex = 199;
@@ -2330,7 +2331,7 @@
             // 
             this.SexText11.AutoSize = true;
             this.SexText11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SexText11.Location = new System.Drawing.Point(656, 611);
+            this.SexText11.Location = new System.Drawing.Point(656, 655);
             this.SexText11.Name = "SexText11";
             this.SexText11.Size = new System.Drawing.Size(0, 20);
             this.SexText11.TabIndex = 200;
@@ -2339,7 +2340,7 @@
             // 
             this.AgeText11.AutoSize = true;
             this.AgeText11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AgeText11.Location = new System.Drawing.Point(656, 591);
+            this.AgeText11.Location = new System.Drawing.Point(656, 635);
             this.AgeText11.Name = "AgeText11";
             this.AgeText11.Size = new System.Drawing.Size(0, 20);
             this.AgeText11.TabIndex = 201;
@@ -2348,7 +2349,7 @@
             // 
             this.CharacterText10.AutoSize = true;
             this.CharacterText10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CharacterText10.Location = new System.Drawing.Point(401, 728);
+            this.CharacterText10.Location = new System.Drawing.Point(401, 772);
             this.CharacterText10.Name = "CharacterText10";
             this.CharacterText10.Size = new System.Drawing.Size(0, 20);
             this.CharacterText10.TabIndex = 202;
@@ -2357,7 +2358,7 @@
             // 
             this.PhobiaText10.AutoSize = true;
             this.PhobiaText10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.PhobiaText10.Location = new System.Drawing.Point(401, 708);
+            this.PhobiaText10.Location = new System.Drawing.Point(401, 752);
             this.PhobiaText10.Name = "PhobiaText10";
             this.PhobiaText10.Size = new System.Drawing.Size(0, 20);
             this.PhobiaText10.TabIndex = 203;
@@ -2366,7 +2367,7 @@
             // 
             this.BaggageText10.AutoSize = true;
             this.BaggageText10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BaggageText10.Location = new System.Drawing.Point(401, 688);
+            this.BaggageText10.Location = new System.Drawing.Point(401, 732);
             this.BaggageText10.Name = "BaggageText10";
             this.BaggageText10.Size = new System.Drawing.Size(0, 20);
             this.BaggageText10.TabIndex = 204;
@@ -2375,7 +2376,7 @@
             // 
             this.HealthText10.AutoSize = true;
             this.HealthText10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HealthText10.Location = new System.Drawing.Point(401, 668);
+            this.HealthText10.Location = new System.Drawing.Point(401, 712);
             this.HealthText10.Name = "HealthText10";
             this.HealthText10.Size = new System.Drawing.Size(0, 20);
             this.HealthText10.TabIndex = 205;
@@ -2384,7 +2385,7 @@
             // 
             this.HobbyText10.AutoSize = true;
             this.HobbyText10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HobbyText10.Location = new System.Drawing.Point(401, 648);
+            this.HobbyText10.Location = new System.Drawing.Point(401, 692);
             this.HobbyText10.Name = "HobbyText10";
             this.HobbyText10.Size = new System.Drawing.Size(0, 20);
             this.HobbyText10.TabIndex = 206;
@@ -2393,7 +2394,7 @@
             // 
             this.JobText10.AutoSize = true;
             this.JobText10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.JobText10.Location = new System.Drawing.Point(401, 628);
+            this.JobText10.Location = new System.Drawing.Point(401, 672);
             this.JobText10.Name = "JobText10";
             this.JobText10.Size = new System.Drawing.Size(0, 20);
             this.JobText10.TabIndex = 207;
@@ -2402,7 +2403,7 @@
             // 
             this.SexText10.AutoSize = true;
             this.SexText10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SexText10.Location = new System.Drawing.Point(401, 608);
+            this.SexText10.Location = new System.Drawing.Point(401, 652);
             this.SexText10.Name = "SexText10";
             this.SexText10.Size = new System.Drawing.Size(0, 20);
             this.SexText10.TabIndex = 208;
@@ -2411,7 +2412,7 @@
             // 
             this.AgeText10.AutoSize = true;
             this.AgeText10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AgeText10.Location = new System.Drawing.Point(401, 588);
+            this.AgeText10.Location = new System.Drawing.Point(401, 632);
             this.AgeText10.Name = "AgeText10";
             this.AgeText10.Size = new System.Drawing.Size(0, 20);
             this.AgeText10.TabIndex = 209;
@@ -2420,7 +2421,7 @@
             // 
             this.CharacterText9.AutoSize = true;
             this.CharacterText9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CharacterText9.Location = new System.Drawing.Point(141, 733);
+            this.CharacterText9.Location = new System.Drawing.Point(141, 777);
             this.CharacterText9.Name = "CharacterText9";
             this.CharacterText9.Size = new System.Drawing.Size(0, 20);
             this.CharacterText9.TabIndex = 210;
@@ -2429,7 +2430,7 @@
             // 
             this.PhobiaText9.AutoSize = true;
             this.PhobiaText9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.PhobiaText9.Location = new System.Drawing.Point(141, 713);
+            this.PhobiaText9.Location = new System.Drawing.Point(141, 757);
             this.PhobiaText9.Name = "PhobiaText9";
             this.PhobiaText9.Size = new System.Drawing.Size(0, 20);
             this.PhobiaText9.TabIndex = 211;
@@ -2438,7 +2439,7 @@
             // 
             this.BaggageText9.AutoSize = true;
             this.BaggageText9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BaggageText9.Location = new System.Drawing.Point(141, 690);
+            this.BaggageText9.Location = new System.Drawing.Point(141, 734);
             this.BaggageText9.Name = "BaggageText9";
             this.BaggageText9.Size = new System.Drawing.Size(0, 20);
             this.BaggageText9.TabIndex = 212;
@@ -2447,7 +2448,7 @@
             // 
             this.HealthText9.AutoSize = true;
             this.HealthText9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HealthText9.Location = new System.Drawing.Point(141, 670);
+            this.HealthText9.Location = new System.Drawing.Point(141, 714);
             this.HealthText9.Name = "HealthText9";
             this.HealthText9.Size = new System.Drawing.Size(0, 20);
             this.HealthText9.TabIndex = 213;
@@ -2456,7 +2457,7 @@
             // 
             this.HobbyText9.AutoSize = true;
             this.HobbyText9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HobbyText9.Location = new System.Drawing.Point(141, 648);
+            this.HobbyText9.Location = new System.Drawing.Point(141, 692);
             this.HobbyText9.Name = "HobbyText9";
             this.HobbyText9.Size = new System.Drawing.Size(0, 20);
             this.HobbyText9.TabIndex = 214;
@@ -2465,7 +2466,7 @@
             // 
             this.JobText9.AutoSize = true;
             this.JobText9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.JobText9.Location = new System.Drawing.Point(141, 630);
+            this.JobText9.Location = new System.Drawing.Point(141, 674);
             this.JobText9.Name = "JobText9";
             this.JobText9.Size = new System.Drawing.Size(0, 20);
             this.JobText9.TabIndex = 215;
@@ -2474,7 +2475,7 @@
             // 
             this.SexText9.AutoSize = true;
             this.SexText9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SexText9.Location = new System.Drawing.Point(141, 610);
+            this.SexText9.Location = new System.Drawing.Point(141, 654);
             this.SexText9.Name = "SexText9";
             this.SexText9.Size = new System.Drawing.Size(0, 20);
             this.SexText9.TabIndex = 216;
@@ -2483,7 +2484,7 @@
             // 
             this.AgeText9.AutoSize = true;
             this.AgeText9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AgeText9.Location = new System.Drawing.Point(141, 590);
+            this.AgeText9.Location = new System.Drawing.Point(141, 634);
             this.AgeText9.Name = "AgeText9";
             this.AgeText9.Size = new System.Drawing.Size(0, 20);
             this.AgeText9.TabIndex = 217;
@@ -2492,7 +2493,7 @@
             // 
             this.CharacterText8.AutoSize = true;
             this.CharacterText8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CharacterText8.Location = new System.Drawing.Point(910, 481);
+            this.CharacterText8.Location = new System.Drawing.Point(910, 501);
             this.CharacterText8.Name = "CharacterText8";
             this.CharacterText8.Size = new System.Drawing.Size(0, 20);
             this.CharacterText8.TabIndex = 218;
@@ -2501,7 +2502,7 @@
             // 
             this.PhobiaText8.AutoSize = true;
             this.PhobiaText8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.PhobiaText8.Location = new System.Drawing.Point(910, 461);
+            this.PhobiaText8.Location = new System.Drawing.Point(910, 481);
             this.PhobiaText8.Name = "PhobiaText8";
             this.PhobiaText8.Size = new System.Drawing.Size(0, 20);
             this.PhobiaText8.TabIndex = 219;
@@ -2510,7 +2511,7 @@
             // 
             this.BaggageText8.AutoSize = true;
             this.BaggageText8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BaggageText8.Location = new System.Drawing.Point(910, 441);
+            this.BaggageText8.Location = new System.Drawing.Point(910, 461);
             this.BaggageText8.Name = "BaggageText8";
             this.BaggageText8.Size = new System.Drawing.Size(0, 20);
             this.BaggageText8.TabIndex = 220;
@@ -2519,7 +2520,7 @@
             // 
             this.HealthText12.AutoSize = true;
             this.HealthText12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HealthText12.Location = new System.Drawing.Point(910, 669);
+            this.HealthText12.Location = new System.Drawing.Point(910, 713);
             this.HealthText12.Name = "HealthText12";
             this.HealthText12.Size = new System.Drawing.Size(0, 20);
             this.HealthText12.TabIndex = 221;
@@ -2528,7 +2529,7 @@
             // 
             this.HobbyText12.AutoSize = true;
             this.HobbyText12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HobbyText12.Location = new System.Drawing.Point(910, 649);
+            this.HobbyText12.Location = new System.Drawing.Point(910, 693);
             this.HobbyText12.Name = "HobbyText12";
             this.HobbyText12.Size = new System.Drawing.Size(0, 20);
             this.HobbyText12.TabIndex = 222;
@@ -2537,7 +2538,7 @@
             // 
             this.JobText12.AutoSize = true;
             this.JobText12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.JobText12.Location = new System.Drawing.Point(910, 629);
+            this.JobText12.Location = new System.Drawing.Point(910, 673);
             this.JobText12.Name = "JobText12";
             this.JobText12.Size = new System.Drawing.Size(0, 20);
             this.JobText12.TabIndex = 223;
@@ -2546,7 +2547,7 @@
             // 
             this.SexText12.AutoSize = true;
             this.SexText12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SexText12.Location = new System.Drawing.Point(910, 609);
+            this.SexText12.Location = new System.Drawing.Point(910, 653);
             this.SexText12.Name = "SexText12";
             this.SexText12.Size = new System.Drawing.Size(0, 20);
             this.SexText12.TabIndex = 224;
@@ -2555,7 +2556,7 @@
             // 
             this.AgeText12.AutoSize = true;
             this.AgeText12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AgeText12.Location = new System.Drawing.Point(910, 586);
+            this.AgeText12.Location = new System.Drawing.Point(910, 630);
             this.AgeText12.Name = "AgeText12";
             this.AgeText12.Size = new System.Drawing.Size(0, 20);
             this.AgeText12.TabIndex = 225;
@@ -2564,7 +2565,7 @@
             // 
             this.CharacterText11.AutoSize = true;
             this.CharacterText11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CharacterText11.Location = new System.Drawing.Point(656, 731);
+            this.CharacterText11.Location = new System.Drawing.Point(656, 775);
             this.CharacterText11.Name = "CharacterText11";
             this.CharacterText11.Size = new System.Drawing.Size(0, 20);
             this.CharacterText11.TabIndex = 226;
@@ -2573,7 +2574,7 @@
             // 
             this.PhobiaText11.AutoSize = true;
             this.PhobiaText11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.PhobiaText11.Location = new System.Drawing.Point(656, 711);
+            this.PhobiaText11.Location = new System.Drawing.Point(656, 755);
             this.PhobiaText11.Name = "PhobiaText11";
             this.PhobiaText11.Size = new System.Drawing.Size(0, 20);
             this.PhobiaText11.TabIndex = 227;
@@ -2582,7 +2583,7 @@
             // 
             this.BaggageText11.AutoSize = true;
             this.BaggageText11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BaggageText11.Location = new System.Drawing.Point(656, 691);
+            this.BaggageText11.Location = new System.Drawing.Point(656, 735);
             this.BaggageText11.Name = "BaggageText11";
             this.BaggageText11.Size = new System.Drawing.Size(0, 20);
             this.BaggageText11.TabIndex = 228;
@@ -2591,7 +2592,7 @@
             // 
             this.HealthText11.AutoSize = true;
             this.HealthText11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HealthText11.Location = new System.Drawing.Point(656, 671);
+            this.HealthText11.Location = new System.Drawing.Point(656, 715);
             this.HealthText11.Name = "HealthText11";
             this.HealthText11.Size = new System.Drawing.Size(0, 20);
             this.HealthText11.TabIndex = 229;
@@ -2600,7 +2601,7 @@
             // 
             this.HobbyText11.AutoSize = true;
             this.HobbyText11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.HobbyText11.Location = new System.Drawing.Point(656, 651);
+            this.HobbyText11.Location = new System.Drawing.Point(656, 695);
             this.HobbyText11.Name = "HobbyText11";
             this.HobbyText11.Size = new System.Drawing.Size(0, 20);
             this.HobbyText11.TabIndex = 230;
@@ -2609,7 +2610,7 @@
             // 
             this.JobText11.AutoSize = true;
             this.JobText11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.JobText11.Location = new System.Drawing.Point(656, 631);
+            this.JobText11.Location = new System.Drawing.Point(656, 675);
             this.JobText11.Name = "JobText11";
             this.JobText11.Size = new System.Drawing.Size(0, 20);
             this.JobText11.TabIndex = 231;
@@ -2618,7 +2619,7 @@
             // 
             this.CharacterText12.AutoSize = true;
             this.CharacterText12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CharacterText12.Location = new System.Drawing.Point(910, 729);
+            this.CharacterText12.Location = new System.Drawing.Point(910, 773);
             this.CharacterText12.Name = "CharacterText12";
             this.CharacterText12.Size = new System.Drawing.Size(0, 20);
             this.CharacterText12.TabIndex = 232;
@@ -2627,7 +2628,7 @@
             // 
             this.PhobiaText12.AutoSize = true;
             this.PhobiaText12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.PhobiaText12.Location = new System.Drawing.Point(910, 709);
+            this.PhobiaText12.Location = new System.Drawing.Point(910, 753);
             this.PhobiaText12.Name = "PhobiaText12";
             this.PhobiaText12.Size = new System.Drawing.Size(0, 20);
             this.PhobiaText12.TabIndex = 233;
@@ -2636,7 +2637,7 @@
             // 
             this.BaggageText12.AutoSize = true;
             this.BaggageText12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BaggageText12.Location = new System.Drawing.Point(910, 689);
+            this.BaggageText12.Location = new System.Drawing.Point(910, 733);
             this.BaggageText12.Name = "BaggageText12";
             this.BaggageText12.Size = new System.Drawing.Size(0, 20);
             this.BaggageText12.TabIndex = 234;
@@ -2749,7 +2750,7 @@
             // player_identifier5
             // 
             this.player_identifier5.AutoSize = true;
-            this.player_identifier5.Location = new System.Drawing.Point(27, 305);
+            this.player_identifier5.Location = new System.Drawing.Point(27, 325);
             this.player_identifier5.Name = "player_identifier5";
             this.player_identifier5.Size = new System.Drawing.Size(86, 13);
             this.player_identifier5.TabIndex = 251;
@@ -2759,7 +2760,7 @@
             // player_identifier6
             // 
             this.player_identifier6.AutoSize = true;
-            this.player_identifier6.Location = new System.Drawing.Point(287, 305);
+            this.player_identifier6.Location = new System.Drawing.Point(287, 325);
             this.player_identifier6.Name = "player_identifier6";
             this.player_identifier6.Size = new System.Drawing.Size(86, 13);
             this.player_identifier6.TabIndex = 252;
@@ -2769,7 +2770,7 @@
             // player_identifier7
             // 
             this.player_identifier7.AutoSize = true;
-            this.player_identifier7.Location = new System.Drawing.Point(547, 305);
+            this.player_identifier7.Location = new System.Drawing.Point(547, 325);
             this.player_identifier7.Name = "player_identifier7";
             this.player_identifier7.Size = new System.Drawing.Size(86, 13);
             this.player_identifier7.TabIndex = 253;
@@ -2779,7 +2780,7 @@
             // player_identifier8
             // 
             this.player_identifier8.AutoSize = true;
-            this.player_identifier8.Location = new System.Drawing.Point(807, 305);
+            this.player_identifier8.Location = new System.Drawing.Point(807, 325);
             this.player_identifier8.Name = "player_identifier8";
             this.player_identifier8.Size = new System.Drawing.Size(86, 13);
             this.player_identifier8.TabIndex = 254;
@@ -2789,7 +2790,7 @@
             // player_identifier9
             // 
             this.player_identifier9.AutoSize = true;
-            this.player_identifier9.Location = new System.Drawing.Point(27, 554);
+            this.player_identifier9.Location = new System.Drawing.Point(27, 598);
             this.player_identifier9.Name = "player_identifier9";
             this.player_identifier9.Size = new System.Drawing.Size(86, 13);
             this.player_identifier9.TabIndex = 255;
@@ -2799,7 +2800,7 @@
             // player_identifier10
             // 
             this.player_identifier10.AutoSize = true;
-            this.player_identifier10.Location = new System.Drawing.Point(287, 552);
+            this.player_identifier10.Location = new System.Drawing.Point(287, 596);
             this.player_identifier10.Name = "player_identifier10";
             this.player_identifier10.Size = new System.Drawing.Size(92, 13);
             this.player_identifier10.TabIndex = 256;
@@ -2809,7 +2810,7 @@
             // player_identifier11
             // 
             this.player_identifier11.AutoSize = true;
-            this.player_identifier11.Location = new System.Drawing.Point(547, 552);
+            this.player_identifier11.Location = new System.Drawing.Point(547, 596);
             this.player_identifier11.Name = "player_identifier11";
             this.player_identifier11.Size = new System.Drawing.Size(92, 13);
             this.player_identifier11.TabIndex = 257;
@@ -2819,7 +2820,7 @@
             // player_identifier12
             // 
             this.player_identifier12.AutoSize = true;
-            this.player_identifier12.Location = new System.Drawing.Point(807, 550);
+            this.player_identifier12.Location = new System.Drawing.Point(807, 594);
             this.player_identifier12.Name = "player_identifier12";
             this.player_identifier12.Size = new System.Drawing.Size(92, 13);
             this.player_identifier12.TabIndex = 258;
@@ -2891,7 +2892,7 @@
             // 
             // vote_button1
             // 
-            this.vote_button1.Location = new System.Drawing.Point(30, 256);
+            this.vote_button1.Location = new System.Drawing.Point(30, 273);
             this.vote_button1.Name = "vote_button1";
             this.vote_button1.Size = new System.Drawing.Size(95, 23);
             this.vote_button1.TabIndex = 266;
@@ -2901,7 +2902,7 @@
             // 
             // vote_button3
             // 
-            this.vote_button3.Location = new System.Drawing.Point(533, 256);
+            this.vote_button3.Location = new System.Drawing.Point(533, 273);
             this.vote_button3.Name = "vote_button3";
             this.vote_button3.Size = new System.Drawing.Size(100, 23);
             this.vote_button3.TabIndex = 267;
@@ -2911,7 +2912,7 @@
             // 
             // vote_button4
             // 
-            this.vote_button4.Location = new System.Drawing.Point(789, 256);
+            this.vote_button4.Location = new System.Drawing.Point(789, 273);
             this.vote_button4.Name = "vote_button4";
             this.vote_button4.Size = new System.Drawing.Size(96, 23);
             this.vote_button4.TabIndex = 268;
@@ -2921,7 +2922,7 @@
             // 
             // vote_button5
             // 
-            this.vote_button5.Location = new System.Drawing.Point(28, 507);
+            this.vote_button5.Location = new System.Drawing.Point(28, 544);
             this.vote_button5.Name = "vote_button5";
             this.vote_button5.Size = new System.Drawing.Size(75, 23);
             this.vote_button5.TabIndex = 269;
@@ -2931,7 +2932,7 @@
             // 
             // vote_button6
             // 
-            this.vote_button6.Location = new System.Drawing.Point(281, 507);
+            this.vote_button6.Location = new System.Drawing.Point(281, 544);
             this.vote_button6.Name = "vote_button6";
             this.vote_button6.Size = new System.Drawing.Size(98, 23);
             this.vote_button6.TabIndex = 270;
@@ -2941,7 +2942,7 @@
             // 
             // vote_button7
             // 
-            this.vote_button7.Location = new System.Drawing.Point(533, 507);
+            this.vote_button7.Location = new System.Drawing.Point(533, 544);
             this.vote_button7.Name = "vote_button7";
             this.vote_button7.Size = new System.Drawing.Size(99, 23);
             this.vote_button7.TabIndex = 271;
@@ -2951,7 +2952,7 @@
             // 
             // vote_button8
             // 
-            this.vote_button8.Location = new System.Drawing.Point(789, 509);
+            this.vote_button8.Location = new System.Drawing.Point(789, 546);
             this.vote_button8.Name = "vote_button8";
             this.vote_button8.Size = new System.Drawing.Size(96, 23);
             this.vote_button8.TabIndex = 272;
@@ -2961,7 +2962,7 @@
             // 
             // vote_button9
             // 
-            this.vote_button9.Location = new System.Drawing.Point(12, 754);
+            this.vote_button9.Location = new System.Drawing.Point(12, 816);
             this.vote_button9.Name = "vote_button9";
             this.vote_button9.Size = new System.Drawing.Size(100, 23);
             this.vote_button9.TabIndex = 273;
@@ -2971,7 +2972,7 @@
             // 
             // vote_button10
             // 
-            this.vote_button10.Location = new System.Drawing.Point(271, 754);
+            this.vote_button10.Location = new System.Drawing.Point(271, 816);
             this.vote_button10.Name = "vote_button10";
             this.vote_button10.Size = new System.Drawing.Size(94, 23);
             this.vote_button10.TabIndex = 274;
@@ -2981,7 +2982,7 @@
             // 
             // vote_button11
             // 
-            this.vote_button11.Location = new System.Drawing.Point(529, 754);
+            this.vote_button11.Location = new System.Drawing.Point(529, 816);
             this.vote_button11.Name = "vote_button11";
             this.vote_button11.Size = new System.Drawing.Size(96, 23);
             this.vote_button11.TabIndex = 275;
@@ -2991,7 +2992,7 @@
             // 
             // vote_button12
             // 
-            this.vote_button12.Location = new System.Drawing.Point(789, 754);
+            this.vote_button12.Location = new System.Drawing.Point(789, 816);
             this.vote_button12.Name = "vote_button12";
             this.vote_button12.Size = new System.Drawing.Size(96, 23);
             this.vote_button12.TabIndex = 276;
@@ -3001,13 +3002,23 @@
             // 
             // vote_button2
             // 
-            this.vote_button2.Location = new System.Drawing.Point(290, 256);
+            this.vote_button2.Location = new System.Drawing.Point(290, 273);
             this.vote_button2.Name = "vote_button2";
             this.vote_button2.Size = new System.Drawing.Size(97, 23);
             this.vote_button2.TabIndex = 277;
             this.vote_button2.Text = "Проголосовать";
             this.vote_button2.UseVisualStyleBackColor = true;
             this.vote_button2.Click += new System.EventHandler(this.vote_button2_Click);
+            // 
+            // skip_button
+            // 
+            this.skip_button.Location = new System.Drawing.Point(248, 931);
+            this.skip_button.Name = "skip_button";
+            this.skip_button.Size = new System.Drawing.Size(175, 23);
+            this.skip_button.TabIndex = 278;
+            this.skip_button.Text = "Закончить голосование ";
+            this.skip_button.UseVisualStyleBackColor = true;
+            this.skip_button.Click += new System.EventHandler(this.skip_button_Click);
             // 
             // Form1
             // 
@@ -3016,6 +3027,7 @@
             this.BackColor = System.Drawing.Color.LightGray;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1282, 1024);
+            this.Controls.Add(this.skip_button);
             this.Controls.Add(this.vote_button2);
             this.Controls.Add(this.vote_button12);
             this.Controls.Add(this.vote_button11);
@@ -3538,6 +3550,7 @@
         private System.Windows.Forms.Button vote_button11;
         private System.Windows.Forms.Button vote_button12;
         private System.Windows.Forms.Button vote_button2;
+        private System.Windows.Forms.Button skip_button;
     }
 }
 

@@ -21,40 +21,66 @@ namespace BunkerClient
         TcpClient clientSocket = new TcpClient();
         NetworkStream serverStream = null;
 
-        string readData;
+        string readData= "start the client";
 
         public string id_client ;
         public string id_name ;
 
+        public string save_login;
+        public string save_passport;
+        public bool save_flag = false;
+        public Thread conn_Thread;
+        public Thread Registration_Thread;
+        public Thread conn_after_the_game_Thread;
         public Form3()
         {
             InitializeComponent();
         }
-
-        public void menu_auth(string login, string password,bool flag)
+        private void conn()
         {
-            login_text.Text = login;
-            Password_text.Text = password;
-            if (flag == true) {
+
+            try
+            {
+                msg();
+                clientSocket.Connect(IPAddress.Parse(ip_text.Text), Int32.Parse(port_text.Text));
+                serverStream = clientSocket.GetStream();            
+                string Message = "LOGIN__CLIENT" + " {" + login_text.Text + "}" + "{" + Password_text.Text + "}";
+                int Messagesize = Encoding.UTF8.GetByteCount(Message);
+
+                byte[] outStream = new byte[Messagesize];
+                outStream = Encoding.UTF8.GetBytes(Message);
+                serverStream.Write(outStream, 0, outStream.Length);
+                Thread ctThread = new Thread(getMessage);
+                ctThread.Start();
+
+
+            }
+            catch (Exception ex)
+            {
+                if (clientSocket == null) clientSocket.Close();
+
+                if (clientSocket.Connected == false)
+                    MessageBox.Show("Сервер не работает ", "Ошибка", MessageBoxButtons.OK);
+                connect_room.Enabled = true;
+
+            }
+        }
+        private void conn_after_the_game()
+        {
+            login_text.Text = save_login;
+            Password_text.Text = save_passport;
+            if (save_flag == true)
+            {
                 try
                 {
 
-                    readData = "Conected to Chat Server ...";
                     msg();
-                    clientSocket.Connect(IPAddress.Parse("188.233.49.10"), Int32.Parse("368"));
-
+                    clientSocket.Connect(IPAddress.Parse(ip_text.Text), Int32.Parse(port_text.Text));
                     serverStream = clientSocket.GetStream();
-
                     // LOGIN__CLIENT->LOGIN = PASSWORD =
 
-                    string Message = "LOGIN__CLIENT" + " LOGIN=" + login + " PASSWORD=" + password;
-
-
+                    string Message = "LOGIN__CLIENT" + " {" + save_login + "}" + "{" + save_passport + "}";
                     int Messagesize = Encoding.UTF8.GetByteCount(Message);
-
-                  /*  byte[] outStreamsize = new byte[Messagesize];
-                    outStreamsize = Encoding.UTF8.GetBytes(Messagesize.ToString());
-                    serverStream.Write(outStreamsize, 0, outStreamsize.Length);*/
 
                     byte[] outStream = new byte[Messagesize];
                     outStream = Encoding.UTF8.GetBytes(Message);
@@ -76,6 +102,51 @@ namespace BunkerClient
                 }
             }
         }
+        private void Registration()
+        {
+            
+                
+                try
+                {
+                    readData = "Conected to Chat Server ...";
+                    msg();
+                    clientSocket.Connect(IPAddress.Parse(ip_text.Text), Int32.Parse(port_text.Text));
+                    serverStream = clientSocket.GetStream();
+                    // LOGIN__CLIENT->LOGIN = PASSWORD =
+                    string Message = "REGIST_CLIENT" + " {" + login_text.Text + "}" + "{" + Password_text.Text + "}" + "{" + name_text.Text + "}";
+
+                    int Messagesize = Encoding.UTF8.GetByteCount(Message);
+                    byte[] outStream = new byte[Messagesize];
+                    outStream = Encoding.UTF8.GetBytes(Message);
+                    serverStream.Write(outStream, 0, outStream.Length);
+
+                    Thread ctThread = new Thread(getMessage);
+                    ctThread.Start();
+
+                }
+                catch (Exception ex)
+                {
+                    if (clientSocket == null) clientSocket.Close();
+
+                    if (clientSocket.Connected == false)
+                        MessageBox.Show("Сервер не работает ", "Ошибка", MessageBoxButtons.OK);
+                    connect_room.Enabled = true;
+
+                }
+           
+        }
+        public void menu_auth(string login, string password,bool flag)
+        {
+            save_login = login;
+            save_passport = password;
+            save_flag = flag;
+
+
+             conn_after_the_game_Thread = new Thread(new ThreadStart(conn_after_the_game));
+            conn_after_the_game_Thread.Start();
+
+            
+        }
 
         private void connect_room_Click(object sender, EventArgs e)
         {
@@ -85,11 +156,7 @@ namespace BunkerClient
             if (serverStream != null && clientSocket.Connected == true)
             {
                 int Messagesize = Encoding.UTF8.GetByteCount("LOGIN_DISCONN вышел из меню");
-
-                /*byte[] outStreamsize = new byte[Messagesize];
-                outStreamsize = Encoding.UTF8.GetBytes(Messagesize.ToString());
-                serverStream.Write(outStreamsize, 0, outStreamsize.Length);*/
-
+              
                 byte[] outStream = new byte[Messagesize];
                 outStream = Encoding.UTF8.GetBytes("LOGIN_DISCONN вышел из меню");
                 serverStream.Write(outStream, 0, outStream.Length);
@@ -97,17 +164,12 @@ namespace BunkerClient
             }
 
             if (clientSocket.Connected != false) clientSocket.Close();
-
             if (serverStream != null) serverStream.Close();
-
-
-
             codeRoomRand = code_text.Text;
 
             F1.Show();
             F1.PassValue(codeRoomRand, id_client, id_name, login_text.Text, Password_text.Text, ip_text.Text,port_text.Text,status, permission); 
             this.Hide();
-
 
         }
 
@@ -116,17 +178,35 @@ namespace BunkerClient
            
             if (serverStream != null && clientSocket.Connected == true)
             {
-                int Messagesize = Encoding.UTF8.GetByteCount("LOGIN_DISCONN вышел из меню");
-   
-                /*byte[] outStreamsize = new byte[Messagesize];
-                outStreamsize = Encoding.UTF8.GetBytes(Messagesize.ToString());
-                serverStream.Write(outStreamsize, 0, outStreamsize.Length);*/
-
+                int Messagesize = Encoding.UTF8.GetByteCount("LOGIN_DISCONN вышел из меню");                
                 byte[] outStream = new byte[Messagesize];
                 outStream = Encoding.UTF8.GetBytes("LOGIN_DISCONN вышел из меню");
                 serverStream.Write(outStream, 0, outStream.Length);
 
             }
+
+          /* Под вопросом
+           * 
+           * if(conn_Thread != null) 
+                if (conn_Thread.IsAlive == true) 
+                {
+                conn_Thread.Abort();
+                conn_Thread.Join();
+                }
+
+            if (Registration_Thread != null)
+                if (Registration_Thread.IsAlive == true)
+                {
+                Registration_Thread.Abort();
+                Registration_Thread.Join();
+                }
+
+            if (conn_after_the_game_Thread != null)
+                if (conn_after_the_game_Thread.IsAlive == true)
+                {
+                conn_after_the_game_Thread.Abort();
+                conn_after_the_game_Thread.Join();
+                } */
 
             if (clientSocket.Connected != false)clientSocket.Close();                   
             if (serverStream != null) serverStream.Close();
@@ -156,10 +236,6 @@ namespace BunkerClient
             {
                 int Messagesize = Encoding.UTF8.GetByteCount("LOGIN_DISCONN вышел из меню");
 
-                /*byte[] outStreamsize = new byte[Messagesize];
-                outStreamsize = Encoding.UTF8.GetBytes(Messagesize.ToString());
-                serverStream.Write(outStreamsize, 0, outStreamsize.Length);
-                */
                 byte[] outStream = new byte[Messagesize];
                 outStream = Encoding.UTF8.GetBytes("LOGIN_DISCONN вышел из меню");
                 serverStream.Write(outStream, 0, outStream.Length);
@@ -190,7 +266,7 @@ namespace BunkerClient
             back.Visible = false;
             code_text.Visible = false;
             code_label.Visible = false;
-          //  textBox1.Visible = false;
+          
         }
         private void msg()
         {
@@ -208,11 +284,23 @@ namespace BunkerClient
                     {
 
                         textBox1.Text = textBox1.Text + Environment.NewLine + readData;
-                        int size = readData.Length;
-                        int id_client_pos = readData.IndexOf("ID_CLIENT", 13);
-                        int id_name_pos = readData.IndexOf("ID_NAME", 13);
-                        id_client = readData.Substring(id_client_pos + 10, id_name_pos - id_client_pos - 10);
-                        id_name = readData.Substring(id_name_pos + 8, size - id_name_pos - 8);
+                        //LOGIN_CONNECT  Id name;
+                        int first = 0;
+                        int next = 0;
+                        string[] Get_Info = new string[2];
+
+                        for (int i = 0; i < 2; i++)
+                        {
+                            first = readData.IndexOf("{", next);
+                            next = readData.IndexOf("}", first);
+                            Get_Info[i] = readData.Substring(first + 1, next - first - 1);
+                            first = first + 1;
+                            next = next + 1;
+                        }
+
+                        
+                        id_client = Get_Info[0];
+                        id_name = Get_Info[1];
 
                         id_auth.Text = id_client;
                         name_auth.Text = id_name;
@@ -233,6 +321,10 @@ namespace BunkerClient
                         name_text.Visible = false;
                         name_label.Visible = false;
                     }
+                    else
+                    {
+
+                    }
                 }
             }
         }
@@ -244,16 +336,7 @@ namespace BunkerClient
             {
                 while (true)
                 {
-                    /*serverStreamConn = clientSocket.GetStream();
-                    byte[] inStreamsize = new byte[8192];
-                    serverStreamConn.Read(inStreamsize, 0, 8192);
-                    string returnsize = Encoding.UTF8.GetString(inStreamsize);
-
-                    int size;
-                    bool isNum = int.TryParse(returnsize, out size);
-
-                    if (isNum)
-                    {*/
+                   
 
                         byte[] inStream = new byte[ReceiveBufferSize];
                         serverStream = clientSocket.GetStream();
@@ -264,15 +347,14 @@ namespace BunkerClient
                         readData = readData.Trim('\0');
 
                          msg();
-                    //}
-
+                  
 
                 }
             }
             catch(Exception ex)
             {
 
-                //MessageBox.Show(ex.ToString(), "Ошибка", MessageBoxButtons.OK);
+               
                 clientSocket.Close();
                 serverStream.Close();
 
@@ -281,92 +363,17 @@ namespace BunkerClient
         private void button3_Click(object sender, EventArgs e)
         {
            
-            try
-            {
-                readData = "Conected to Chat Server ...";
-                msg();
-                clientSocket.Connect(IPAddress.Parse("188.233.49.10"), Int32.Parse("368"));
-
-                serverStream = clientSocket.GetStream();
-
-                // LOGIN__CLIENT->LOGIN = PASSWORD =
-
-                string Message = "LOGIN__CLIENT" + " LOGIN=" + login_text.Text + " PASSWORD=" + Password_text.Text;
-
-
-                int Messagesize = Encoding.UTF8.GetByteCount(Message);
-
-                /*byte[] outStreamsize = new byte[Messagesize];
-                outStreamsize = Encoding.UTF8.GetBytes(Messagesize.ToString());
-                serverStream.Write(outStreamsize, 0, outStreamsize.Length);*/
-
-                byte[] outStream = new byte[Messagesize];
-                outStream = Encoding.UTF8.GetBytes(Message);
-                serverStream.Write(outStream, 0, outStream.Length);
-
-                Thread ctThread = new Thread(getMessage);
-                ctThread.Start();
-
-                
-                    
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                if (clientSocket == null)
-                    clientSocket.Close();
-
-                if (clientSocket.Connected == false)  // Port is in use and connection is successful
-                    MessageBox.Show("Сервер не работает ", "Ошибка", MessageBoxButtons.OK);
-                connect_room.Enabled = true;
-                //if (serverStream == null) serverStream.Close();
-            }
+            conn_Thread = new Thread(new ThreadStart(conn));
+            conn_Thread.Start(); // запускаем поток
+            
         }
 
         private void Registration_button_Click(object sender, EventArgs e)
         {
             if (back.Visible == true)
             {
-                try
-                {
-                    readData = "Conected to Chat Server ...";
-                    msg();
-                    clientSocket.Connect(IPAddress.Parse("188.233.49.10"), Int32.Parse("368"));
-
-                    serverStream = clientSocket.GetStream();
-
-                    // LOGIN__CLIENT->LOGIN = PASSWORD =
-
-                    string Message = "REGIST_CLIENT" + " LOGIN=" + login_text.Text + " PASSWORD=" + Password_text.Text + " NAME=" +name_text.Text;
-
-
-                    int Messagesize = Encoding.UTF8.GetByteCount(Message);
-
-                   /* byte[] outStreamsize = new byte[Messagesize];
-                    outStreamsize = Encoding.UTF8.GetBytes(Messagesize.ToString());
-                    serverStream.Write(outStreamsize, 0, outStreamsize.Length);*/
-
-                    byte[] outStream = new byte[Messagesize];
-                    outStream = Encoding.UTF8.GetBytes(Message);
-                    serverStream.Write(outStream, 0, outStream.Length);
-
-                    Thread ctThread = new Thread(getMessage);
-                    ctThread.Start();
-
-
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    if (clientSocket == null)
-                        clientSocket.Close();
-
-                    if (clientSocket.Connected == false)  // Port is in use and connection is successful
-                        MessageBox.Show("Сервер не работает ", "Ошибка", MessageBoxButtons.OK);
-                    connect_room.Enabled = true;
-                    //if (serverStream == null) serverStream.Close();
-                }
+                 Registration_Thread = new Thread(new ThreadStart(Registration));
+            Registration_Thread.Start(); // запускаем поток
             }
             else
             {
@@ -375,7 +382,6 @@ namespace BunkerClient
                 name_text.Visible = true;
                 back.Visible = true;
             }
-           
         }
 
         private void back_Click(object sender, EventArgs e)

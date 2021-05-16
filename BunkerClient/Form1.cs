@@ -18,12 +18,13 @@ using System.Timers;
     
 namespace BunkerClient
 {
-    public partial class Form1 : Form 
+    public partial class Form1 : Form
     {
-               
+
         TcpClient clientSocket = new TcpClient();
         NetworkStream serverStream = null;
 
+        public int client_walker;
         public string id_client;
         public string id_name;
         public string login_client;
@@ -33,6 +34,11 @@ namespace BunkerClient
         public string status_game;
         public string permission;
         static string readData = null;
+        int first_walker = 1;
+        bool kick = false;
+        bool kick_prev = false;
+
+        public int vote_click = 0;
         public Form1()
         {
             InitializeComponent();
@@ -48,6 +54,7 @@ namespace BunkerClient
             port = port_copy;
             status_game = status;
             permission = permission_copy;
+
         }
      
         private void button2_Click(object sender, EventArgs e)
@@ -59,15 +66,13 @@ namespace BunkerClient
                 clientSocket.Connect(IPAddress.Parse(ip), Int32.Parse(port));
 
                 serverStream = clientSocket.GetStream();
-                //CONNECT__ROOM->ID_ROOM = ID_CLIENT = ID_NAME =
+                //CONNECT__ROOM->ID_ROOM = ID_CLIENT = ID_NAME = STATUS=
 
-                string Message = "CONNECT__ROOM " + "ID_ROOM=" +CodeRoom.Text + " ID_CLIENT="+ id_client + "ID_NAME=" + id_name + " STATUS="+status_game;
+                string Message = "CONNECT__ROOM " + "{" +CodeRoom.Text +"}" + "{"+ id_client + "}" + "{" + id_name + "}" + "{"+status_game+"}";
                
                 int Messagesize = Encoding.UTF8.GetByteCount(Message);
 
-                /*byte[] outStreamsize = new byte[Messagesize];
-                outStreamsize = Encoding.UTF8.GetBytes(Messagesize.ToString());
-                serverStream.Write(outStreamsize, 0, outStreamsize.Length);*/
+               
 
                 byte[] outStream = new byte[Messagesize];
                 outStream = Encoding.UTF8.GetBytes(Message);
@@ -101,9 +106,9 @@ namespace BunkerClient
                 if (clientSocket == null)
                     clientSocket.Close();
 
-                if (clientSocket.Connected == false)  // Port is in use and connection is successful
+                if (clientSocket.Connected == false) 
                     MessageBox.Show("Сервер не работает ", "Ошибка", MessageBoxButtons.OK);
-                //if (serverStream == null) serverStream.Close();
+               
             }
         }
         private void msg()
@@ -117,158 +122,213 @@ namespace BunkerClient
             else
             {
 
-              
-                if (readData.IndexOf("CONNECT__ROOM",0,13) > -1)
+                if (readData.Length<13)
+                {
+                    textBox1.Text = textBox1.Text + "empty";
+                }
+                else if(readData.IndexOf("CONNECT__ROOM",0,13) > -1)
                 {
                     StartGames.Enabled = true;
                     StartGames.BackColor = Color.Lime;
                     textBox1.Text = textBox1.Text + permission;
                     My_Name.Text = id_client + " " + id_name;
 
-                    //player();
+                  
                 }
                 else if(readData.IndexOf("NEXT_____MOVE", 0, 13) > -1)
                 {
-                    if (listBox1.BackColor == Color.Green)
+                    string move = readData.Substring(13, readData.Length - 13);
+                    textBox1.Text = textBox1.Text + readData;
+
+                    next_move(move);
+                    int actual_walker = 1;
+                    move = move.Trim(' ');
+                    if (player_identifier1.Text.IndexOf(move) > -1)
                     {
+                        actual_walker = 1;
+                    }
+                    if (player_identifier2.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 2;
+                    }
+                    if (player_identifier3.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 3;
+                    }
+                    if (player_identifier4.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 4;
+                    }
+                    if (player_identifier5.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 5;
+                    }
+                    if (player_identifier6.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 6;
+                    }
+                    if (player_identifier7.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 7;
+                    }
+                    if (player_identifier8.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 8;
+                    }
+                    if (player_identifier9.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 9;
+                    }
+                    if (player_identifier10.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 10;
+                    }
+                    if (player_identifier11.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 11;
+                    }
+                    if (player_identifier12.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 12;
+                    }
+                  
+
+
+                    if (actual_walker == first_walker && kick == false )
+                   {
+                        Next_Move_button.Visible = false;
                         #region SET_vote_button
                         if (Int32.Parse(online_p.Text) == 1)
                         {
-                            vote_button1.Visible = true;
+                           if(listBox1.BackColor != Color.Red) vote_button1.Visible = true;
 
                         }
                         else if (Int32.Parse(online_p.Text) == 2)
                         {
-                            vote_button1.Visible = true;
-                            vote_button2.Visible = true;
+                            if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                            if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
 
                         }
                         else if (Int32.Parse(online_p.Text) == 3)
                         {
-                            vote_button1.Visible = true;
-                            vote_button2.Visible = true;
-                            vote_button3.Visible = true;
+                            if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                            if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                            if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
 
                         }
                         else if (Int32.Parse(online_p.Text) == 4)
                         {
-                            vote_button1.Visible = true;
-                            vote_button2.Visible = true;
-                            vote_button3.Visible = true;
-                            vote_button4.Visible = true;
+                            if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                            if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                            if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                            if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
                         }
                         else if (Int32.Parse(online_p.Text) == 5)
                         {
-                            vote_button1.Visible = true;
-                            vote_button2.Visible = true;
-                            vote_button3.Visible = true;
-                            vote_button4.Visible = true;
-                            vote_button5.Visible = true;
+                            if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                            if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                            if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                            if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                            if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
 
                         }
                         else if (Int32.Parse(online_p.Text) == 6)
                         {
-                            vote_button1.Visible = true;
-                            vote_button2.Visible = true;
-                            vote_button3.Visible = true;
-                            vote_button4.Visible = true;
-                            vote_button5.Visible = true;
-                            vote_button6.Visible = true;
+                            if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                            if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                            if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                            if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                            if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                            if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
 
                         }
                         else if (Int32.Parse(online_p.Text) == 7)
                         {
-                            vote_button1.Visible = true;
-                            vote_button2.Visible = true;
-                            vote_button3.Visible = true;
-                            vote_button4.Visible = true;
-                            vote_button5.Visible = true;
-                            vote_button6.Visible = true;
-                            vote_button7.Visible = true;
+                            if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                            if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                            if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                            if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                            if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                            if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+                            if (listBox7.BackColor != Color.Red) vote_button7.Visible = true;
 
                         }
                         else if (Int32.Parse(online_p.Text) == 8)
                         {
-                            vote_button1.Visible = true;
-                            vote_button2.Visible = true;
-                            vote_button3.Visible = true;
-                            vote_button4.Visible = true;
-                            vote_button5.Visible = true;
-                            vote_button6.Visible = true;
-                            vote_button7.Visible = true;
-                            vote_button8.Visible = true;
+                            if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                            if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                            if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                            if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                            if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                            if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+                            if (listBox7.BackColor != Color.Red) vote_button7.Visible = true;
+                            if (listBox8.BackColor != Color.Red) vote_button8.Visible = true;
 
                         }
                         else if (Int32.Parse(online_p.Text) == 9)
                         {
-                            vote_button1.Visible = true;
-                            vote_button2.Visible = true;
-                            vote_button3.Visible = true;
-                            vote_button4.Visible = true;
-                            vote_button5.Visible = true;
-                            vote_button6.Visible = true;
-                            vote_button7.Visible = true;
-                            vote_button8.Visible = true;
-                            vote_button9.Visible = true;
+                            if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                            if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                            if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                            if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                            if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                            if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+                            if (listBox7.BackColor != Color.Red) vote_button7.Visible = true;
+                            if (listBox8.BackColor != Color.Red) vote_button8.Visible = true;
+                            if (listBox9.BackColor != Color.Red) vote_button9.Visible = true;
 
                         }
                         else if (Int32.Parse(online_p.Text) == 10)
                         {
-                            vote_button1.Visible = true;
-                            vote_button2.Visible = true;
-                            vote_button3.Visible = true;
-                            vote_button4.Visible = true;
-                            vote_button5.Visible = true;
-                            vote_button6.Visible = true;
-                            vote_button7.Visible = true;
-                            vote_button8.Visible = true;
-                            vote_button9.Visible = true;
-                            vote_button10.Visible = true;
+                            if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                            if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                            if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                            if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                            if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                            if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+                            if (listBox7.BackColor != Color.Red) vote_button7.Visible = true;
+                            if (listBox8.BackColor != Color.Red) vote_button8.Visible = true;
+                            if (listBox9.BackColor != Color.Red) vote_button9.Visible = true;
+                            if (listBox10.BackColor != Color.Red) vote_button10.Visible = true;
 
 
                         }
                         else if (Int32.Parse(online_p.Text) == 11)
                         {
-                            vote_button1.Visible = true;
-                            vote_button2.Visible = true;
-                            vote_button3.Visible = true;
-                            vote_button4.Visible = true;
-                            vote_button5.Visible = true;
-                            vote_button6.Visible = true;
-                            vote_button7.Visible = true;
-                            vote_button8.Visible = true;
-                            vote_button9.Visible = true;
-                            vote_button10.Visible = true;
-                            vote_button11.Visible = true;
+                            if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                            if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                            if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                            if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                            if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                            if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+                            if (listBox7.BackColor != Color.Red) vote_button7.Visible = true;
+                            if (listBox8.BackColor != Color.Red) vote_button8.Visible = true;
+                            if (listBox9.BackColor != Color.Red) vote_button9.Visible = true;
+                            if (listBox10.BackColor != Color.Red) vote_button10.Visible = true;
+                            if (listBox11.BackColor != Color.Red) vote_button11.Visible = true;
 
                         }
-                        else if (Int32.Parse(online_p.Text) == 1)
+                        else if (Int32.Parse(online_p.Text) == 12)
                         {
-                            vote_button1.Visible = true;
-                            vote_button2.Visible = true;
-                            vote_button3.Visible = true;
-                            vote_button4.Visible = true;
-                            vote_button5.Visible = true;
-                            vote_button6.Visible = true;
-                            vote_button7.Visible = true;
-                            vote_button8.Visible = true;
-                            vote_button9.Visible = true;
-                            vote_button10.Visible = true;
-                            vote_button11.Visible = true;
-                            vote_button12.Visible = true;
+                            if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                            if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                            if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                            if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                            if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                            if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+                            if (listBox7.BackColor != Color.Red) vote_button7.Visible = true;
+                            if (listBox8.BackColor != Color.Red) vote_button8.Visible = true;
+                            if (listBox9.BackColor != Color.Red) vote_button9.Visible = true;
+                            if (listBox10.BackColor != Color.Red) vote_button10.Visible = true;
+                            if (listBox11.BackColor != Color.Red) vote_button11.Visible = true;
+                            if (listBox12.BackColor != Color.Red) vote_button12.Visible = true;
                         }
                         #endregion
-                    }
-                    else
-                    {
-                        textBox1.Text = textBox1.Text;
-                        string move = readData.Substring(13, readData.Length - 13);
-                        next_move(move);
-                    }
-                    
-                }
+                   }
 
-                else if (readData.IndexOf("ONLINE___ROOM",0,13) > -1)
+                   
+                }
+                else if (readData.IndexOf("ONLINE___ROOM", 0, 13) > -1)
                 {
 
                     if (permission.IndexOf("admin") > -1)
@@ -290,8 +350,551 @@ namespace BunkerClient
                     string characteristic = readData.Substring(13,readData.Length - 13);
                     open_characteristic(characteristic);
                 }
+                else if (readData.IndexOf("VOTING___KICK", 0, 13) > -1)
+                {
+                    
+                    vote_click = 0;
+                    textBox1.Text =  readData;
+                    string move = readData.Substring(13, readData.Length - 13);
+                    int actual_walker = 1;
+                    move = move.Trim(' ');
+
+                    string full_name = "{" + CodeRoom.Text + "}" + "{" + id_client + "}" + "{" + id_name + "}";
+                    if (move.IndexOf(full_name) > -1) kick = true;
+
+                    if (player_identifier1.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 1;
+                    }
+                    if (player_identifier2.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 2;
+                    }
+                    if (player_identifier3.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 3;
+                    }
+                    if (player_identifier4.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 4;
+                    }
+                    if (player_identifier5.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 5;
+                    }
+                    if (player_identifier6.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 6;
+                    }
+                    if (player_identifier7.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 7;
+                    }
+                    if (player_identifier8.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 8;
+                    }
+                    if (player_identifier9.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 9;
+                    }
+                    if (player_identifier10.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 10;
+                    }
+                    if (player_identifier11.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 11;
+                    }
+                    if (player_identifier12.Text.IndexOf(move) > -1)
+                    {
+                        actual_walker = 12;
+                    }
+
+                    if (player_identifier1.Text.IndexOf(move) >-1)
+                    {
+                        listBox1.BackColor = Color.Red;
+                        if ( actual_walker - first_walker == 0)
+                        first_walker = 2;
+                    }
+                    if (player_identifier2.Text.IndexOf(move) > -1)
+                    {
+                        listBox2.BackColor = Color.Red;
+
+                        if (actual_walker - first_walker == 0)
+                            first_walker = 3;
+                    }
+                    if (player_identifier3.Text.IndexOf(move) > -1)
+                    {
+                        listBox3.BackColor = Color.Red;
+
+                        if (actual_walker - first_walker == 0)
+                            first_walker = 4;
+                    }
+                    if (player_identifier4.Text.IndexOf(move) > -1)
+                    {
+                        listBox4.BackColor = Color.Red;
+
+                        if (actual_walker - first_walker == 0)
+                            first_walker = 5;
+                    }
+                    if (player_identifier5.Text.IndexOf(move) > -1)
+                    {
+                        listBox5.BackColor = Color.Red;
+
+                        if (actual_walker - first_walker == 0)
+                            first_walker = 6;
+                    }
+                    if (player_identifier6.Text.IndexOf(move) > -1)
+                    {
+                        listBox6.BackColor = Color.Red;
+
+                        if (actual_walker - first_walker == 0)
+                            first_walker = 7;
+                    }
+                    if (player_identifier7.Text.IndexOf(move) > -1)
+                    {
+                        listBox7.BackColor = Color.Red;
+
+                        if (actual_walker - first_walker == 0)
+                            first_walker = 8;
+                    }
+                    if (player_identifier8.Text.IndexOf(move) > -1)
+                    {
+                        listBox8.BackColor = Color.Red;
+
+                        if (actual_walker - first_walker == 0)
+                            first_walker = 9;
+                    }
+                    if (player_identifier9.Text.IndexOf(move) > -1)
+                    {
+                        listBox9.BackColor = Color.Red;
+
+                        if (actual_walker - first_walker == 0)
+                            first_walker = 10;
+                    }
+                    if (player_identifier10.Text.IndexOf(move) > -1)
+                    {
+                        listBox10.BackColor = Color.Red;
+
+                        if (actual_walker - first_walker == 0)
+                            first_walker = 11;
+                    }
+                    if (player_identifier11.Text.IndexOf(move) > -1)
+                    {
+                        listBox11.BackColor = Color.Red;
+
+                        if (actual_walker - first_walker == 0)
+                            first_walker = 12;
+                    }
+                    if (player_identifier12.Text.IndexOf(move) > -1)
+                    {
+                        listBox12.BackColor = Color.Red;
+
+                        
+                    }
 
 
+                    #region SET_vote_button
+                    if (Int32.Parse(online_p.Text) == 1)
+                    {
+                        vote_button1.Visible = false;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 2)
+                    {
+                        vote_button1.Visible = false;
+                         vote_button2.Visible = false;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 3)
+                    {
+                         vote_button1.Visible = false;
+                        vote_button2.Visible = false;
+                        vote_button3.Visible = false;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 4)
+                    {
+                        vote_button1.Visible = false;
+                        vote_button2.Visible = false;
+                         vote_button3.Visible = false;
+                         vote_button4.Visible = false;
+                    }
+                    else if (Int32.Parse(online_p.Text) == 5)
+                    {
+                         vote_button1.Visible = false;
+                         vote_button2.Visible = false;
+                         vote_button3.Visible = false;
+                        vote_button4.Visible = false;
+                         vote_button5.Visible = false;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 6)
+                    {
+                        vote_button1.Visible = false;
+                        vote_button2.Visible = false;
+                         vote_button3.Visible = false;
+                        vote_button4.Visible = false;
+                        vote_button5.Visible = false;
+                         vote_button6.Visible = false;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 7)
+                    {
+                       vote_button1.Visible = false;
+                       vote_button2.Visible = false;
+                         vote_button3.Visible = false;
+                         vote_button4.Visible = false;
+                         vote_button5.Visible = false;
+                         vote_button6.Visible = false;
+                         vote_button7.Visible = false;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 8)
+                    {
+                         vote_button1.Visible = false;
+                       vote_button2.Visible = false;
+                        vote_button3.Visible = false;
+                        vote_button4.Visible = false;
+                        vote_button5.Visible = false;
+                         vote_button6.Visible = false;
+                         vote_button7.Visible = false;
+                       vote_button8.Visible = false;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 9)
+                    {
+                        vote_button1.Visible = false;
+                        vote_button2.Visible = false;
+                         vote_button3.Visible = false;
+                        vote_button4.Visible = false;
+                        vote_button5.Visible = false;
+                         vote_button6.Visible = false;
+                         vote_button7.Visible = false;
+                         vote_button8.Visible = false;
+                         vote_button9.Visible = false;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 10)
+                    {
+                        vote_button1.Visible = false;
+                         vote_button2.Visible = false;
+                        vote_button3.Visible = false;
+                         vote_button4.Visible = false;
+                         vote_button5.Visible = false;
+                         vote_button6.Visible = false;
+                         vote_button7.Visible = false;
+                         vote_button8.Visible = false;
+                        vote_button9.Visible = false;
+                        vote_button10.Visible = false;
+
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 11)
+                    {
+                        vote_button1.Visible = false;
+                        vote_button2.Visible = false;
+                         vote_button3.Visible = false;
+                        vote_button4.Visible = false;
+                         vote_button5.Visible = false;
+                       vote_button6.Visible = false;
+                         vote_button7.Visible = false;
+                        vote_button8.Visible = false;
+                        vote_button9.Visible = false;
+                        vote_button10.Visible = false;
+                         vote_button11.Visible = false;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 12)
+                    {
+                         vote_button1.Visible = false;
+                         vote_button2.Visible = false;
+                        vote_button3.Visible = false;
+                         vote_button4.Visible = false;
+                        vote_button5.Visible = false;
+                         vote_button6.Visible = false;
+                         vote_button7.Visible = false;
+                         vote_button8.Visible = false;
+                         vote_button9.Visible = false;
+                         vote_button10.Visible = false;
+                         vote_button11.Visible = false;
+                         vote_button12.Visible = false;
+                    }
+                    #endregion
+
+                    if (first_walker == client_walker) Next_Move_button.Visible = true;
+                }
+                else if (readData.IndexOf("END__THE_GAME", 0, 13) > -1)
+                {
+                    textBox1.Text = textBox1.Text + readData;
+                    string move = readData.Substring(13, readData.Length - 13);
+                   
+                    move = move.Trim(' ');
+                    textBox2.Text ="new "+ move;
+                  
+                    if (player_identifier1.Text.IndexOf(move) > -1)
+                    {
+                        listBox1.BackColor = Color.Red;
+                      
+                    }
+                    if (player_identifier2.Text.IndexOf(move) > -1)
+                    {
+                        listBox2.BackColor = Color.Red;
+
+                       
+                    }
+                    if (player_identifier3.Text.IndexOf(move) > -1)
+                    {
+                        listBox3.BackColor = Color.Red;
+
+                      
+                    }
+                    if (player_identifier4.Text.IndexOf(move) > -1)
+                    {
+                        listBox4.BackColor = Color.Red;
+
+                        
+                    }
+                    if (player_identifier5.Text.IndexOf(move) > -1)
+                    {
+                        listBox5.BackColor = Color.Red;
+
+                       
+                    }
+                    if (player_identifier6.Text.IndexOf(move) > -1)
+                    {
+                        listBox6.BackColor = Color.Red;
+
+                        
+                    }
+                    if (player_identifier7.Text.IndexOf(move) > -1)
+                    {
+                        listBox7.BackColor = Color.Red;
+
+                       
+                    }
+                    if (player_identifier8.Text.IndexOf(move) > -1)
+                    {
+                        listBox8.BackColor = Color.Red;
+
+                        
+                    }
+                    if (player_identifier9.Text.IndexOf(move) > -1)
+                    {
+                        listBox9.BackColor = Color.Red;
+
+                        
+                    }
+                    if (player_identifier10.Text.IndexOf(move) > -1)
+                    {
+                        listBox10.BackColor = Color.Red;
+
+                        
+                    }
+                    if (player_identifier11.Text.IndexOf(move) > -1)
+                    {
+                        listBox11.BackColor = Color.Red;
+
+                        
+                    }
+                    if (player_identifier12.Text.IndexOf(move) > -1)
+                    {
+                        listBox12.BackColor = Color.Red;
+
+
+                    }
+
+                    vote_button1.Visible = false;
+                    vote_button2.Visible = false;
+                    vote_button3.Visible = false;
+                    vote_button4.Visible = false;
+                    vote_button5.Visible = false;
+                    vote_button6.Visible = false;
+                    vote_button7.Visible = false;
+                    vote_button8.Visible = false;
+                    vote_button9.Visible = false;
+                    vote_button10.Visible = false;
+                    vote_button11.Visible = false;
+                    vote_button12.Visible = false;
+                    Next_Move_button.Visible = false;
+
+                    PersonComponents1OFF();
+                    PersonComponents2OFF();
+                    PersonComponents3OFF();
+                    PersonComponents4OFF();
+                    PersonComponents5OFF();
+                    PersonComponents6OFF();
+                    PersonComponents7OFF();
+                    PersonComponents8OFF();
+                    PersonComponents9OFF();
+                    PersonComponents10OFF();
+                    PersonComponents11OFF();
+                    PersonComponents12OFF();
+
+                    MessageBox.Show("Конец игры ", "Ок", MessageBoxButtons.OK);
+
+                }
+                else if (readData.IndexOf("ONE_MORE_KICK", 0, 13) > -1)
+                {
+                    Next_Move_button.Visible = false;
+                    vote_click = 0;
+                    #region SET_vote_button
+                    if (Int32.Parse(online_p.Text) == 1)
+                    {
+                        if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 2)
+                    {
+                        if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                        if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 3)
+                    {
+                        if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                        if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                        if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 4)
+                    {
+                        if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                        if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                        if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                        if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                    }
+                    else if (Int32.Parse(online_p.Text) == 5)
+                    {
+                        if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                        if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                        if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                        if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                        if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 6)
+                    {
+                        if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                        if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                        if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                        if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                        if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                        if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 7)
+                    {
+                        if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                        if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                        if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                        if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                        if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                        if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+                        if (listBox7.BackColor != Color.Red) vote_button7.Visible = true;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 8)
+                    {
+                        if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                        if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                        if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                        if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                        if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                        if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+                        if (listBox7.BackColor != Color.Red) vote_button7.Visible = true;
+                        if (listBox8.BackColor != Color.Red) vote_button8.Visible = true;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 9)
+                    {
+                        if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                        if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                        if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                        if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                        if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                        if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+                        if (listBox7.BackColor != Color.Red) vote_button7.Visible = true;
+                        if (listBox8.BackColor != Color.Red) vote_button8.Visible = true;
+                        if (listBox9.BackColor != Color.Red) vote_button9.Visible = true;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 10)
+                    {
+                        if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                        if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                        if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                        if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                        if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                        if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+                        if (listBox7.BackColor != Color.Red) vote_button7.Visible = true;
+                        if (listBox8.BackColor != Color.Red) vote_button8.Visible = true;
+                        if (listBox9.BackColor != Color.Red) vote_button9.Visible = true;
+                        if (listBox10.BackColor != Color.Red) vote_button10.Visible = true;
+
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 11)
+                    {
+                        if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                        if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                        if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                        if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                        if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                        if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+                        if (listBox7.BackColor != Color.Red) vote_button7.Visible = true;
+                        if (listBox8.BackColor != Color.Red) vote_button8.Visible = true;
+                        if (listBox9.BackColor != Color.Red) vote_button9.Visible = true;
+                        if (listBox10.BackColor != Color.Red) vote_button10.Visible = true;
+                        if (listBox11.BackColor != Color.Red) vote_button11.Visible = true;
+
+                    }
+                    else if (Int32.Parse(online_p.Text) == 12)
+                    {
+                        if (listBox1.BackColor != Color.Red) vote_button1.Visible = true;
+                        if (listBox2.BackColor != Color.Red) vote_button2.Visible = true;
+                        if (listBox3.BackColor != Color.Red) vote_button3.Visible = true;
+                        if (listBox4.BackColor != Color.Red) vote_button4.Visible = true;
+                        if (listBox5.BackColor != Color.Red) vote_button5.Visible = true;
+                        if (listBox6.BackColor != Color.Red) vote_button6.Visible = true;
+                        if (listBox7.BackColor != Color.Red) vote_button7.Visible = true;
+                        if (listBox8.BackColor != Color.Red) vote_button8.Visible = true;
+                        if (listBox9.BackColor != Color.Red) vote_button9.Visible = true;
+                        if (listBox10.BackColor != Color.Red) vote_button10.Visible = true;
+                        if (listBox11.BackColor != Color.Red) vote_button11.Visible = true;
+                        if (listBox12.BackColor != Color.Red) vote_button12.Visible = true;
+                    }
+                    #endregion
+                }
+                else if (readData.IndexOf("VOTING_N_KICK", 0, 13) > -1)
+                {
+                    vote_click = 0;
+                    vote_button1.Visible = false;
+                    vote_button2.Visible = false;
+                    vote_button3.Visible = false;
+                    vote_button4.Visible = false;
+                    vote_button5.Visible = false;
+                    vote_button6.Visible = false;
+                    vote_button7.Visible = false;
+                    vote_button8.Visible = false;
+                    vote_button9.Visible = false;
+                    vote_button10.Visible = false;
+                    vote_button11.Visible = false;
+                    vote_button12.Visible = false;
+                    if (first_walker == client_walker) Next_Move_button.Visible = true;
+                }
+                else if (readData.IndexOf("NEXT_NEW_MOVE", 0, 13) > -1)
+                {
+                    string move = readData.Substring(13, readData.Length - 13);
+                    textBox1.Text = textBox1.Text + readData;
+
+                    next_move(move);
+                }
+                else if (readData.IndexOf("COUNT____VOTE", 0, 13) > -1)
+                {
+                    textBox2.Text = readData;
+                }
             }
         }
         private void getMessage()
@@ -302,16 +905,7 @@ namespace BunkerClient
             {
                 while (true)
                 {
-                    /*serverStreamConn = clientSocket.GetStream();
-                    byte[] inStreamsize = new byte[8192];
-                    serverStreamConn.Read(inStreamsize, 0, 8192);
-                    string returnsize = Encoding.UTF8.GetString(inStreamsize);
-
-                    int size;
-                    bool isNum = int.TryParse(returnsize, out size);
-
-                    if (isNum)
-                    {*/
+                   
 
                         byte[] inStream = new byte[ReceiveBufferSize];
                         serverStream = clientSocket.GetStream();
@@ -322,7 +916,7 @@ namespace BunkerClient
                         readData = readData.Trim('\0');
 
                          msg();
-                    //}
+                   
 
 
                 }
@@ -342,9 +936,7 @@ namespace BunkerClient
             {
                 int Messagesize = Encoding.UTF8.GetByteCount("DISCONN__ROOM вышел из игры");
 
-                /*byte[] outStreamsize = new byte[Messagesize];
-                outStreamsize = Encoding.UTF8.GetBytes(Messagesize.ToString());
-                serverStream.Write(outStreamsize, 0, outStreamsize.Length);*/
+               
 
                 byte[] outStream = new byte[Messagesize];
                 outStream = Encoding.UTF8.GetBytes("DISCONN__ROOM вышел из игры");
@@ -363,7 +955,7 @@ namespace BunkerClient
             try
             {
                 //START____ROOM->ID_ROOM = ID_CLIENT = PERMISSION =
-                string massage = "START____ROOM" + " ID_ROOM=" + CodeRoom.Text + " ID_CLIENT="+id_client + " PERMISSION="+permission;
+                string massage = "START____ROOM " + "{" + CodeRoom.Text + "}{" + id_client + "}{" + permission + "}";
                 int Messagesize = Encoding.UTF8.GetByteCount(massage);
 
                
@@ -402,54 +994,59 @@ namespace BunkerClient
             vote_button10.Visible = false;
             vote_button11.Visible = false;
             vote_button12.Visible = false;
-
+            skip_button.Visible = false;
         }
 
         private void Set_info_players(string read_data)
-        {
-            /*
+        { /*
+           
             ALL_INFO_GAME=players=2
             ID_PLAYER=1(ID_NAME=nmi 13 fox info={30}{Женский}{Терапевт}{Садоводство}{СПИД}{Вода}{акрофобия}{артистичность} move=yes)
             ID_PLAYER=2(ID_NAME=nmi 1 dan info={66}{Мужской}{Стоматолог}{Рыбалка}{Аллергия}{Вода}{арахнофобия}{активность} move=no)
-            Location={Массовое похолодание}{Гидропоника}{Процент живых людей4}*/
+            Location={Массовое похолодание}{Гидропоника}{Процент живых людей4}
 
-            int pos_players = read_data.IndexOf("players",13); 
-            int pos_ID_PLAYER = read_data.IndexOf("ID_PLAYER", 13);
-            int pos_Location = read_data.IndexOf("Location", 13);
-            string players = read_data.Substring(pos_players+8, pos_ID_PLAYER-8- pos_players-1);
-            string Location = read_data.Substring(pos_Location+10,  read_data.Length - 10 - 1- pos_Location);
 
-            online_p.Text =players;
-            location.Text = Location;
-            string [] all_characteristic  = new string[Int32.Parse(players)];
+            ALL_INFO_GAME=players=1 ID_PLAYER=1(ID_NAME={jin}{1}{dan}
+            info={36}{Женский}{Стоматолог}{Садоводство}{Наркомания}{Вода}{арахнофобия}{вежливость}{#103}{#103} move=yes)
+            Location={Вторжение инопланетян}{Гидропоника}{Процент живых людей90}
 
-            for (int i =0; i< Int32.Parse(players);i++)
+            ALL_INFO_GAME {2}
+            ({1}{nzg}{1}{dan}{28}{Мужской}{Психолог}{Охота}{ВИЧ}{Наркотики}{нозофобия}{артистичность}{#105}{#100}{yes})
+            ({2}{nzg}{13}{fox}{42}{Мужской}{Пожарный}{Кулинария}{СПИД}{Алкоголь}{социофобия}{бескорыстие}{#103}{#103}{yes})
+            ({Массовое похолодание}{Гидропоника}{Процент живых людей94})
+
+*/
+            
+      
+
+            int first_pos = readData.IndexOf("{", 0);
+            int next_pos = readData.IndexOf("}", first_pos);
+            string players = read_data.Substring(first_pos + 1, next_pos - first_pos-1);
+            online_p.Text = players;
+            string[] all_characteristic  = new string[Int32.Parse(players)+(int)1];
+
+            int first_pos_characteristic = 0;
+            int next_pos_characteristic_ = 0;
+
+            for (int i = 0; i < Int32.Parse(players)+1; i++)
             {
-
-                int pos_ID_PLAYER_next = read_data.IndexOf("ID_PLAYER", pos_ID_PLAYER+1);
-             
-                if (pos_ID_PLAYER_next > -1)
-                {
-                    all_characteristic [i] = read_data.Substring(pos_ID_PLAYER+10, pos_ID_PLAYER_next - pos_ID_PLAYER -10);
-
-                }
-                else
-                {
-                    all_characteristic [i] = read_data.Substring(pos_ID_PLAYER+10, pos_Location - pos_ID_PLAYER-10);
-                }
-
-                pos_ID_PLAYER = pos_ID_PLAYER_next;
+                first_pos_characteristic = readData.IndexOf("(", next_pos_characteristic_);
+                next_pos_characteristic_ = readData.IndexOf(")", first_pos_characteristic);
+                all_characteristic[i] = readData.Substring(first_pos_characteristic + 1, next_pos_characteristic_ - first_pos_characteristic - 1);
+                first_pos_characteristic = first_pos_characteristic + 1;
+                next_pos_characteristic_ = next_pos_characteristic_ + 1;
             }
+            location.Text = all_characteristic[Int32.Parse(players)];
 
-            for(int i=0; i < Int32.Parse(players); i++)
+            for (int i=0; i < Int32.Parse(players); i++)
             {
-                
-                if (all_characteristic [i].IndexOf("1",0,1)>-1 && all_characteristic [i].IndexOf("1", 1, 2) < 0 && all_characteristic [i].IndexOf("0", 1, 2) < 0 && (all_characteristic [i].IndexOf(id_name)>-1 && all_characteristic [i].IndexOf(id_client) > -1))
-                {
-                    int pos_move = all_characteristic[i].IndexOf("move");
-                    int pos_move_end = all_characteristic[i].IndexOf(")");
-                    string move = all_characteristic[i].Substring(pos_move+5, pos_move_end- pos_move-5);
+                int first_pos_id_move = all_characteristic[i].IndexOf("{", 0);
+                int next_pos_id_move = all_characteristic[i].IndexOf("}", first_pos_id_move+1);
+                string id_move = all_characteristic[i].Substring(first_pos_id_move + 1, next_pos_id_move - first_pos_id_move-1);
 
+                if (id_move.IndexOf("1")>-1 && id_move.IndexOf("10") == -1 && id_move.IndexOf("11") == -1 && id_move.IndexOf("12") == -1 && (all_characteristic [i].IndexOf(id_name)>-1 && all_characteristic [i].IndexOf(id_client) > -1))
+                {
+            
                     PersonComponents1OFF();
                     PersonComponents2OFF();
                     PersonComponents3OFF();
@@ -463,19 +1060,11 @@ namespace BunkerClient
                     PersonComponents11OFF();
                     PersonComponents12OFF();
 
-                    if (move.IndexOf("yes") > -1)
-                    {
-                        PersonComponents1ON();
-                        Next_Move_button.Visible = true;
-
-                    }
-                   
-
-                    string[]  individual_characteristic = new string[10];
+                    string[]  individual_characteristic = new string[15];
                     textBox2.Text = all_characteristic [i]+ "|" + textBox2.Text;
                     int first = 0; 
                     int next = 0;
-                    for (int j = 0; j < 10;j++)
+                    for (int j = 0; j < 15;j++)
                     {                    
                         first = all_characteristic [i].IndexOf("{", next);
                         next = all_characteristic [i].IndexOf("}", first);
@@ -483,24 +1072,80 @@ namespace BunkerClient
                         first = first + 1;
                         next = next + 1;
                     }
-                    AgeText1.Text =  individual_characteristic[0];
-                    SexText1.Text =  individual_characteristic[1];
-                    JobText1.Text =  individual_characteristic[2];
-                    HobbyText1.Text =  individual_characteristic[3];
-                    HealthText1.Text =  individual_characteristic[4];
-                    BaggageText1.Text =  individual_characteristic[5];
-                    PhobiaText1.Text =  individual_characteristic[6];
-                    CharacterText1.Text =  individual_characteristic[7];
-                    card_1_label.Text = individual_characteristic[8];
-                    card_2_label.Text = individual_characteristic[9];
+
+                    if (individual_characteristic[14].IndexOf("yes") > -1)
+                    {
+                        PersonComponents1ON();
+                        Next_Move_button.Visible = true;
+
+                    }
+                    client_walker = Int32.Parse( individual_characteristic[0]);
+
+                    AgeText1.Text =  individual_characteristic[4];
+                    SexText1.Text =  individual_characteristic[5];
+                    JobText1.Text =  individual_characteristic[6];
+                    HobbyText1.Text =  individual_characteristic[7];
+                    HealthText1.Text =  individual_characteristic[8];
+                    BaggageText1.Text =  individual_characteristic[9];
+                    PhobiaText1.Text =  individual_characteristic[10];
+                    CharacterText1.Text =  individual_characteristic[11];
+                    card_1_label.Text = individual_characteristic[12];
+                    card_2_label.Text = individual_characteristic[13];
 
 
                 }
-                if (all_characteristic [i].IndexOf("2", 0, 1) > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
+              
+                if (id_move.IndexOf("2") >-1 && id_move.IndexOf("12") == -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
                 {
-                    int pos_move = all_characteristic[i].IndexOf("move");
-                    int pos_move_end = all_characteristic[i].IndexOf(")");
-                    string move = all_characteristic[i].Substring(pos_move + 5, pos_move_end - pos_move - 5);
+                 
+                    PersonComponents1OFF();
+                    PersonComponents2OFF();
+                    PersonComponents3OFF();
+                    PersonComponents4OFF();
+                    PersonComponents5OFF();
+                    PersonComponents6OFF();
+                    PersonComponents7OFF();
+                    PersonComponents8OFF();
+                    PersonComponents9OFF();
+                    PersonComponents10OFF();
+                    PersonComponents11OFF();
+                    PersonComponents12OFF();
+                 
+                    string[] individual_characteristic = new string[15];
+                    textBox2.Text = all_characteristic[i] + "|" + textBox2.Text;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic[i].IndexOf("{", next);
+                        next = all_characteristic[i].IndexOf("}", first);
+                        individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
+                    }
+
+                    if (individual_characteristic[14].IndexOf("yes") > -1)
+                    {
+                            PersonComponents2ON();
+                            Next_Move_button.Visible = true;
+
+                    }
+                    client_walker = Int32.Parse(individual_characteristic[0]);
+
+                    AgeText2.Text =  individual_characteristic[4];
+                    SexText2.Text =  individual_characteristic[5];
+                    JobText2.Text =  individual_characteristic[6];
+                    HobbyText2.Text =  individual_characteristic[7];
+                    HealthText2.Text =  individual_characteristic[8];
+                    BaggageText2.Text =  individual_characteristic[9];
+                    PhobiaText2.Text =  individual_characteristic[10];
+                    CharacterText2.Text =  individual_characteristic[11];
+                    card_1_label.Text = individual_characteristic[12];
+                    card_2_label.Text = individual_characteristic[13];
+                }
+                if (id_move.IndexOf("3") > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
+                {
+                
 
                     PersonComponents1OFF();
                     PersonComponents2OFF();
@@ -515,18 +1160,13 @@ namespace BunkerClient
                     PersonComponents11OFF();
                     PersonComponents12OFF();
 
-                    if (move.IndexOf("yes") > -1)
-                    {
-                        PersonComponents2ON();
-                        Next_Move_button.Visible = true;
+                   
 
-                    }
-
-                    string[]  individual_characteristic = new string[10];
+                    string[]  individual_characteristic = new string[15];
                     textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
                     int first = 0;
                     int next = 0;
-                    for (int j = 0; j < 10; j++)
+                    for (int j = 0; j < 15; j++)
                     {
                         first = all_characteristic [i].IndexOf("{", next);
                         next = all_characteristic [i].IndexOf("}", first);
@@ -534,72 +1174,30 @@ namespace BunkerClient
                         first = first + 1;
                         next = next + 1;
                     }
-                    AgeText2.Text =  individual_characteristic[0];
-                    SexText2.Text =  individual_characteristic[1];
-                    JobText2.Text =  individual_characteristic[2];
-                    HobbyText2.Text =  individual_characteristic[3];
-                    HealthText2.Text =  individual_characteristic[4];
-                    BaggageText2.Text =  individual_characteristic[5];
-                    PhobiaText2.Text =  individual_characteristic[6];
-                    CharacterText2.Text =  individual_characteristic[7];
-                    card_1_label.Text = individual_characteristic[8];
-                    card_2_label.Text = individual_characteristic[9];
-                }
-                if (all_characteristic [i].IndexOf("3", 0, 2) > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
-                {
-                    int pos_move = all_characteristic[i].IndexOf("move");
-                    int pos_move_end = all_characteristic[i].IndexOf(")");
-                    string move = all_characteristic[i].Substring(pos_move + 5, pos_move_end - pos_move - 5);
 
-                    PersonComponents1OFF();
-                    PersonComponents2OFF();
-                    PersonComponents3OFF();
-                    PersonComponents4OFF();
-                    PersonComponents5OFF();
-                    PersonComponents6OFF();
-                    PersonComponents7OFF();
-                    PersonComponents8OFF();
-                    PersonComponents9OFF();
-                    PersonComponents10OFF();
-                    PersonComponents11OFF();
-                    PersonComponents12OFF();
-
-                    if (move.IndexOf("yes") > -1)
+                    if (individual_characteristic[14].IndexOf("yes") > -1)
                     {
                         PersonComponents3ON();
                         Next_Move_button.Visible = true;
 
                     }
+                    client_walker = Int32.Parse(individual_characteristic[0]);
 
-                    string[]  individual_characteristic = new string[10];
-                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
-                    int first = 0;
-                    int next = 0;
-                    for (int j = 0; j < 10; j++)
-                    {
-                        first = all_characteristic [i].IndexOf("{", next);
-                        next = all_characteristic [i].IndexOf("}", first);
-                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
-                        first = first + 1;
-                        next = next + 1;
-                    }
-                    AgeText3.Text =  individual_characteristic[0];
-                    SexText3.Text =  individual_characteristic[1];
-                    JobText3.Text =  individual_characteristic[2];
-                    HobbyText3.Text =  individual_characteristic[3];
-                    HealthText3.Text =  individual_characteristic[4];
-                    BaggageText3.Text =  individual_characteristic[5];
-                    PhobiaText3.Text =  individual_characteristic[6];
-                    CharacterText3.Text =  individual_characteristic[7];
-                    card_1_label.Text = individual_characteristic[8];
-                    card_2_label.Text = individual_characteristic[9];
+                    AgeText3.Text =  individual_characteristic[4];
+                    SexText3.Text =  individual_characteristic[5];
+                    JobText3.Text =  individual_characteristic[6];
+                    HobbyText3.Text =  individual_characteristic[7];
+                    HealthText3.Text =  individual_characteristic[8];
+                    BaggageText3.Text =  individual_characteristic[9];
+                    PhobiaText3.Text =  individual_characteristic[10];
+                    CharacterText3.Text =  individual_characteristic[11];
+                    card_1_label.Text = individual_characteristic[12];
+                    card_2_label.Text = individual_characteristic[13];
 
                 }
-                if (all_characteristic [i].IndexOf("4", 0, 2) > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
+                if (id_move.IndexOf("4") > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
                 {
-                    int pos_move = all_characteristic[i].IndexOf("move");
-                    int pos_move_end = all_characteristic[i].IndexOf(")");
-                    string move = all_characteristic[i].Substring(pos_move + 5, pos_move_end - pos_move - 5);
+                   
 
                     PersonComponents1OFF();
                     PersonComponents2OFF();
@@ -614,43 +1212,44 @@ namespace BunkerClient
                     PersonComponents11OFF();
                     PersonComponents12OFF();
 
-                    if (move.IndexOf("yes") > -1)
+                   
+
+                    string[]  individual_characteristic = new string[15];
+                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic [i].IndexOf("{", next);
+                        next = all_characteristic [i].IndexOf("}", first);
+                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
+                    }
+                    if (individual_characteristic[14].IndexOf("yes") > -1)
                     {
                         PersonComponents4ON();
                         Next_Move_button.Visible = true;
 
                     }
+                    client_walker = Int32.Parse(individual_characteristic[0]);
 
-                    string[]  individual_characteristic = new string[10];
-                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
-                    int first = 0;
-                    int next = 0;
-                    for (int j = 0; j < 10; j++)
-                    {
-                        first = all_characteristic [i].IndexOf("{", next);
-                        next = all_characteristic [i].IndexOf("}", first);
-                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
-                        first = first + 1;
-                        next = next + 1;
-                    }
-                    AgeText4.Text =  individual_characteristic[0];
-                    SexText4.Text =  individual_characteristic[1];
-                    JobText4.Text =  individual_characteristic[2];
-                    HobbyText4.Text =  individual_characteristic[3];
-                    HealthText4.Text =  individual_characteristic[4];
-                    BaggageText4.Text =  individual_characteristic[5];
-                    PhobiaText4.Text =  individual_characteristic[6];
-                    CharacterText4.Text =  individual_characteristic[7];
-                    card_1_label.Text = individual_characteristic[8];
-                    card_2_label.Text = individual_characteristic[9];
+
+                    AgeText4.Text =  individual_characteristic[4];
+                    SexText4.Text =  individual_characteristic[5];
+                    JobText4.Text =  individual_characteristic[6];
+                    HobbyText4.Text =  individual_characteristic[7];
+                    HealthText4.Text =  individual_characteristic[8];
+                    BaggageText4.Text =  individual_characteristic[9];
+                    PhobiaText4.Text =  individual_characteristic[10];
+                    CharacterText4.Text =  individual_characteristic[12];
+                    card_1_label.Text = individual_characteristic[12];
+                    card_2_label.Text = individual_characteristic[13];
 
                 }
-                if (all_characteristic [i].IndexOf("5", 0, 2) > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
+                if (id_move.IndexOf("5") > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
                 {
-                    int pos_move = all_characteristic[i].IndexOf("move");
-                    int pos_move_end = all_characteristic[i].IndexOf(")");
-                    string move = all_characteristic[i].Substring(pos_move + 5, pos_move_end - pos_move - 5);
-
+                    
                     PersonComponents1OFF();
                     PersonComponents2OFF();
                     PersonComponents3OFF();
@@ -662,45 +1261,45 @@ namespace BunkerClient
                     PersonComponents9OFF();
                     PersonComponents10OFF();
                     PersonComponents11OFF();
-                    PersonComponents12OFF();
+                    PersonComponents12OFF();               
 
-                    if (move.IndexOf("yes") > -1)
+                    string[]  individual_characteristic = new string[15];
+                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic [i].IndexOf("{", next);
+                        next = all_characteristic [i].IndexOf("}", first);
+                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
+                    }
+
+                    if (individual_characteristic[14].IndexOf("yes") > -1)
                     {
                         PersonComponents5ON();
                         Next_Move_button.Visible = true;
 
                     }
+                    client_walker = Int32.Parse(individual_characteristic[0]);
 
-                    string[]  individual_characteristic = new string[10];
-                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
-                    int first = 0;
-                    int next = 0;
-                    for (int j = 0; j < 10; j++)
-                    {
-                        first = all_characteristic [i].IndexOf("{", next);
-                        next = all_characteristic [i].IndexOf("}", first);
-                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
-                        first = first + 1;
-                        next = next + 1;
-                    }
-                    AgeText5.Text =  individual_characteristic[0];
-                    SexText5.Text =  individual_characteristic[1];
-                    JobText5.Text =  individual_characteristic[2];
-                    HobbyText5.Text =  individual_characteristic[3];
-                    HealthText5.Text =  individual_characteristic[4];
-                    BaggageText5.Text =  individual_characteristic[5];
-                    PhobiaText5.Text =  individual_characteristic[6];
-                    CharacterText5.Text =  individual_characteristic[7];
-                    card_1_label.Text = individual_characteristic[8];
-                    card_2_label.Text = individual_characteristic[9];
+
+                    AgeText5.Text =  individual_characteristic[4];
+                    SexText5.Text =  individual_characteristic[5];
+                    JobText5.Text =  individual_characteristic[6];
+                    HobbyText5.Text =  individual_characteristic[7];
+                    HealthText5.Text =  individual_characteristic[8];
+                    BaggageText5.Text =  individual_characteristic[9];
+                    PhobiaText5.Text =  individual_characteristic[10];
+                    CharacterText5.Text =  individual_characteristic[11];
+                    card_1_label.Text = individual_characteristic[12];
+                    card_2_label.Text = individual_characteristic[13];
 
                 }
-                if (all_characteristic [i].IndexOf("6", 0, 2) > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
+                if (id_move.IndexOf("6") > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
                 {
-                    int pos_move = all_characteristic[i].IndexOf("move");
-                    int pos_move_end = all_characteristic[i].IndexOf(")");
-                    string move = all_characteristic[i].Substring(pos_move + 5, pos_move_end - pos_move - 5);
-
+                   
                     PersonComponents1OFF();
                     PersonComponents2OFF();
                     PersonComponents3OFF();
@@ -713,44 +1312,44 @@ namespace BunkerClient
                     PersonComponents10OFF();
                     PersonComponents11OFF();
                     PersonComponents12OFF();
-
-                    if (move.IndexOf("yes") > -1)
+              
+                    string[]  individual_characteristic = new string[15];
+                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic [i].IndexOf("{", next);
+                        next = all_characteristic [i].IndexOf("}", first);
+                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
+                    }
+                    if (individual_characteristic[14].IndexOf("yes") > -1)
                     {
                         PersonComponents6ON();
                         Next_Move_button.Visible = true;
 
                     }
+                    client_walker = Int32.Parse(individual_characteristic[0]);
 
-                    string[]  individual_characteristic = new string[10];
-                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
-                    int first = 0;
-                    int next = 0;
-                    for (int j = 0; j < 10; j++)
-                    {
-                        first = all_characteristic [i].IndexOf("{", next);
-                        next = all_characteristic [i].IndexOf("}", first);
-                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
-                        first = first + 1;
-                        next = next + 1;
-                    }
-                    AgeText6.Text =  individual_characteristic[0];
-                    SexText6.Text =  individual_characteristic[1];
-                    JobText6.Text =  individual_characteristic[2];
-                    HobbyText6.Text =  individual_characteristic[3];
-                    HealthText6.Text =  individual_characteristic[4];
-                    BaggageText6.Text =  individual_characteristic[5];
-                    PhobiaText6.Text =  individual_characteristic[6];
-                    CharacterText6.Text =  individual_characteristic[7];
-                    card_1_label.Text = individual_characteristic[8];
-                    card_2_label.Text = individual_characteristic[9];
+
+                    AgeText6.Text =  individual_characteristic[4];
+                    SexText6.Text =  individual_characteristic[5];
+                    JobText6.Text =  individual_characteristic[6];
+                    HobbyText6.Text =  individual_characteristic[7];
+                    HealthText6.Text =  individual_characteristic[8];
+                    BaggageText6.Text =  individual_characteristic[9];
+                    PhobiaText6.Text =  individual_characteristic[10];
+                    CharacterText6.Text =  individual_characteristic[11];
+                    card_1_label.Text = individual_characteristic[12];
+                    card_2_label.Text = individual_characteristic[13];
 
 
                 }
-                if (all_characteristic [i].IndexOf("7", 0, 2) > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
+                if (id_move.IndexOf("7") > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
                 {
-                    int pos_move = all_characteristic[i].IndexOf("move");
-                    int pos_move_end = all_characteristic[i].IndexOf(")");
-                    string move = all_characteristic[i].Substring(pos_move + 5, pos_move_end - pos_move - 5);
+                    
 
                     PersonComponents1OFF();
                     PersonComponents2OFF();
@@ -765,43 +1364,45 @@ namespace BunkerClient
                     PersonComponents11OFF();
                     PersonComponents12OFF();
 
-                    if (move.IndexOf("yes") > -1)
+                 
+
+                    string[]  individual_characteristic = new string[15];
+                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic [i].IndexOf("{", next);
+                        next = all_characteristic [i].IndexOf("}", first);
+                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
+                    }
+                    if (individual_characteristic[14].IndexOf("yes") > -1)
                     {
                         PersonComponents7ON();
                         Next_Move_button.Visible = true;
 
                     }
+                    client_walker = Int32.Parse(individual_characteristic[0]);
 
-                    string[]  individual_characteristic = new string[10];
-                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
-                    int first = 0;
-                    int next = 0;
-                    for (int j = 0; j < 10; j++)
-                    {
-                        first = all_characteristic [i].IndexOf("{", next);
-                        next = all_characteristic [i].IndexOf("}", first);
-                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
-                        first = first + 1;
-                        next = next + 1;
-                    }
-                    AgeText7.Text =  individual_characteristic[0];
-                    SexText7.Text =  individual_characteristic[1];
-                    JobText7.Text =  individual_characteristic[2];
-                    HobbyText7.Text =  individual_characteristic[3];
-                    HealthText7.Text =  individual_characteristic[4];
-                    BaggageText7.Text =  individual_characteristic[5];
-                    PhobiaText7.Text =  individual_characteristic[6];
-                    CharacterText7.Text =  individual_characteristic[7];
-                    card_1_label.Text = individual_characteristic[8];
-                    card_2_label.Text = individual_characteristic[9];
+
+                    AgeText7.Text =  individual_characteristic[4];
+                    SexText7.Text =  individual_characteristic[5];
+                    JobText7.Text =  individual_characteristic[6];
+                    HobbyText7.Text =  individual_characteristic[7];
+                    HealthText7.Text =  individual_characteristic[8];
+                    BaggageText7.Text =  individual_characteristic[9];
+                    PhobiaText7.Text =  individual_characteristic[10];
+                    CharacterText7.Text =  individual_characteristic[11];
+                    card_1_label.Text = individual_characteristic[12];
+                    card_2_label.Text = individual_characteristic[13];
 
 
                 }
-                if (all_characteristic [i].IndexOf("8", 0, 2) > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
+                if (id_move.IndexOf("8") > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
                 {
-                    int pos_move = all_characteristic[i].IndexOf("move");
-                    int pos_move_end = all_characteristic[i].IndexOf(")");
-                    string move = all_characteristic[i].Substring(pos_move + 5, pos_move_end - pos_move - 5);
+                   
 
                     PersonComponents1OFF();
                     PersonComponents2OFF();
@@ -816,43 +1417,44 @@ namespace BunkerClient
                     PersonComponents11OFF();
                     PersonComponents12OFF();
 
-                    if (move.IndexOf("yes") > -1)
+                   
+
+                    string[]  individual_characteristic = new string[15];
+                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic [i].IndexOf("{", next);
+                        next = all_characteristic [i].IndexOf("}", first);
+                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
+                    }
+                    if (individual_characteristic[14].IndexOf("yes") > -1)
                     {
                         PersonComponents8ON();
                         Next_Move_button.Visible = true;
 
                     }
+                    client_walker = Int32.Parse(individual_characteristic[0]);
 
-                    string[]  individual_characteristic = new string[10];
-                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
-                    int first = 0;
-                    int next = 0;
-                    for (int j = 0; j < 10; j++)
-                    {
-                        first = all_characteristic [i].IndexOf("{", next);
-                        next = all_characteristic [i].IndexOf("}", first);
-                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
-                        first = first + 1;
-                        next = next + 1;
-                    }
-                    AgeText8.Text =  individual_characteristic[0];
-                    SexText8.Text =  individual_characteristic[1];
-                    JobText8.Text =  individual_characteristic[2];
-                    HobbyText8.Text =  individual_characteristic[3];
-                    HealthText8.Text =  individual_characteristic[4];
-                    BaggageText8.Text =  individual_characteristic[5];
-                    PhobiaText8.Text =  individual_characteristic[6];
-                    CharacterText8.Text =  individual_characteristic[7];
-                    card_1_label.Text = individual_characteristic[8];
-                    card_2_label.Text = individual_characteristic[9];
+                    AgeText8.Text =  individual_characteristic[5];
+                    SexText8.Text =  individual_characteristic[6];
+                    JobText8.Text =  individual_characteristic[7];
+                    HobbyText8.Text =  individual_characteristic[8];
+                    HealthText8.Text =  individual_characteristic[9];
+                    BaggageText8.Text =  individual_characteristic[10];
+                    PhobiaText8.Text =  individual_characteristic[11];
+                    CharacterText8.Text =  individual_characteristic[12];
+                    card_1_label.Text = individual_characteristic[13];
+                    card_2_label.Text = individual_characteristic[14];
 
 
                 }
-                if (all_characteristic [i].IndexOf("9", 0, 2) > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
+                if (id_move.IndexOf("9") > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
                 {
-                    int pos_move = all_characteristic[i].IndexOf("move");
-                    int pos_move_end = all_characteristic[i].IndexOf(")");
-                    string move = all_characteristic[i].Substring(pos_move + 5, pos_move_end - pos_move - 5);
+                   
 
                     PersonComponents1OFF();
                     PersonComponents2OFF();
@@ -865,46 +1467,44 @@ namespace BunkerClient
                     PersonComponents9OFF();
                     PersonComponents10OFF();
                     PersonComponents11OFF();
-                    PersonComponents12OFF();
+                    PersonComponents12OFF();                
 
-                    if (move.IndexOf("yes") > -1)
+                    string[]  individual_characteristic = new string[15];
+                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic [i].IndexOf("{", next);
+                        next = all_characteristic [i].IndexOf("}", first);
+                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
+                    }
+                    if (individual_characteristic[14].IndexOf("yes") > -1)
                     {
                         PersonComponents9ON();
                         Next_Move_button.Visible = true;
 
                     }
+                    client_walker = Int32.Parse(individual_characteristic[0]);
 
-                    string[]  individual_characteristic = new string[10];
-                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
-                    int first = 0;
-                    int next = 0;
-                    for (int j = 0; j < 10; j++)
-                    {
-                        first = all_characteristic [i].IndexOf("{", next);
-                        next = all_characteristic [i].IndexOf("}", first);
-                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
-                        first = first + 1;
-                        next = next + 1;
-                    }
-                    AgeText9.Text =  individual_characteristic[0];
-                    SexText9.Text =  individual_characteristic[1];
-                    JobText9.Text =  individual_characteristic[2];
-                    HobbyText9.Text =  individual_characteristic[3];
-                    HealthText9.Text =  individual_characteristic[4];
-                    BaggageText9.Text =  individual_characteristic[5];
-                    PhobiaText9.Text =  individual_characteristic[6];
-                    CharacterText9.Text =  individual_characteristic[7];
-                    card_1_label.Text = individual_characteristic[8];
-                    card_2_label.Text = individual_characteristic[9];
+                    AgeText9.Text =  individual_characteristic[4];
+                    SexText9.Text =  individual_characteristic[5];
+                    JobText9.Text =  individual_characteristic[6];
+                    HobbyText9.Text =  individual_characteristic[7];
+                    HealthText9.Text =  individual_characteristic[8];
+                    BaggageText9.Text =  individual_characteristic[9];
+                    PhobiaText9.Text =  individual_characteristic[10];
+                    CharacterText9.Text =  individual_characteristic[11];
+                    card_1_label.Text = individual_characteristic[12];
+                    card_2_label.Text = individual_characteristic[13];
 
 
                 }
-                if (all_characteristic [i].IndexOf("10", 0, 2) > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
+                if (id_move.IndexOf("10") > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
                 {
-                    int pos_move = all_characteristic[i].IndexOf("move");
-                    int pos_move_end = all_characteristic[i].IndexOf(")");
-                    string move = all_characteristic[i].Substring(pos_move + 5, pos_move_end - pos_move - 5);
-
+                   
                     PersonComponents1OFF();
                     PersonComponents2OFF();
                     PersonComponents3OFF();
@@ -918,43 +1518,44 @@ namespace BunkerClient
                     PersonComponents11OFF();
                     PersonComponents12OFF();
 
-                    if (move.IndexOf("yes") > -1)
+                  
+
+                    string[]  individual_characteristic = new string[15];
+                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic [i].IndexOf("{", next);
+                        next = all_characteristic [i].IndexOf("}", first);
+                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
+                    }
+                    if (individual_characteristic[14].IndexOf("yes") > -1)
                     {
                         PersonComponents10ON();
                         Next_Move_button.Visible = true;
 
                     }
+                    client_walker = Int32.Parse(individual_characteristic[0]);
 
-                    string[]  individual_characteristic = new string[10];
-                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
-                    int first = 0;
-                    int next = 0;
-                    for (int j = 0; j < 10; j++)
-                    {
-                        first = all_characteristic [i].IndexOf("{", next);
-                        next = all_characteristic [i].IndexOf("}", first);
-                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
-                        first = first + 1;
-                        next = next + 1;
-                    }
-                    AgeText10.Text =  individual_characteristic[0];
-                    SexText10.Text =  individual_characteristic[1];
-                    JobText10.Text =  individual_characteristic[2];
-                    HobbyText10.Text =  individual_characteristic[3];
-                    HealthText10.Text =  individual_characteristic[4];
-                    BaggageText10.Text =  individual_characteristic[5];
-                    PhobiaText10.Text =  individual_characteristic[6];
-                    CharacterText10.Text =  individual_characteristic[7];
-                    card_1_label.Text = individual_characteristic[8];
-                    card_2_label.Text = individual_characteristic[9];
+                    AgeText10.Text =  individual_characteristic[4];
+                    SexText10.Text =  individual_characteristic[5];
+                    JobText10.Text =  individual_characteristic[6];
+                    HobbyText10.Text =  individual_characteristic[7];
+                    HealthText10.Text =  individual_characteristic[8];
+                    BaggageText10.Text =  individual_characteristic[9];
+                    PhobiaText10.Text =  individual_characteristic[10];
+                    CharacterText10.Text =  individual_characteristic[11];
+                    card_1_label.Text = individual_characteristic[12];
+                    card_2_label.Text = individual_characteristic[13];
 
 
                 }
-                if (all_characteristic [i].IndexOf("11", 0, 2) > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
+                if (id_move.IndexOf("11") > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
                 {
-                    int pos_move = all_characteristic[i].IndexOf("move");
-                    int pos_move_end = all_characteristic[i].IndexOf(")");
-                    string move = all_characteristic[i].Substring(pos_move + 5, pos_move_end - pos_move - 5);
+                    
 
                     PersonComponents1OFF();
                     PersonComponents2OFF();
@@ -969,43 +1570,44 @@ namespace BunkerClient
                     PersonComponents11OFF();
                     PersonComponents12OFF();
 
-                    if (move.IndexOf("yes") > -1)
+                  
+
+                    string[]  individual_characteristic = new string[15];
+                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic [i].IndexOf("{", next);
+                        next = all_characteristic [i].IndexOf("}", first);
+                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
+                    }
+                    if (individual_characteristic[14].IndexOf("yes") > -1)
                     {
                         PersonComponents11ON();
                         Next_Move_button.Visible = true;
 
                     }
+                    client_walker = Int32.Parse(individual_characteristic[0]);
 
-                    string[]  individual_characteristic = new string[10];
-                    textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
-                    int first = 0;
-                    int next = 0;
-                    for (int j = 0; j < 10; j++)
-                    {
-                        first = all_characteristic [i].IndexOf("{", next);
-                        next = all_characteristic [i].IndexOf("}", first);
-                         individual_characteristic[j] = all_characteristic [i].Substring(first + 1, next - first - 1);
-                        first = first + 1;
-                        next = next + 1;
-                    }
-                    AgeText11.Text =  individual_characteristic[0];
-                    SexText11.Text =  individual_characteristic[1];
-                    JobText11.Text =  individual_characteristic[2];
-                    HobbyText11.Text =  individual_characteristic[3];
-                    HealthText11.Text =  individual_characteristic[4];
-                    BaggageText11.Text =  individual_characteristic[5];
-                    PhobiaText11.Text =  individual_characteristic[6];
-                    CharacterText11.Text =  individual_characteristic[7];
-                    card_1_label.Text = individual_characteristic[8];
-                    card_2_label.Text = individual_characteristic[9];
+                    AgeText11.Text =  individual_characteristic[4];
+                    SexText11.Text =  individual_characteristic[5];
+                    JobText11.Text =  individual_characteristic[6];
+                    HobbyText11.Text =  individual_characteristic[7];
+                    HealthText11.Text =  individual_characteristic[8];
+                    BaggageText11.Text =  individual_characteristic[9];
+                    PhobiaText11.Text =  individual_characteristic[10];
+                    CharacterText11.Text =  individual_characteristic[11];
+                    card_1_label.Text = individual_characteristic[12];
+                    card_2_label.Text = individual_characteristic[13];
 
 
                 }
-                if (all_characteristic [i].IndexOf("12", 0, 2) > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
+                if (id_move.IndexOf("12") > -1 && (all_characteristic [i].IndexOf(id_name) > -1 && all_characteristic [i].IndexOf(id_client) > -1))
                 {
-                    int pos_move = all_characteristic[i].IndexOf("move");
-                    int pos_move_end = all_characteristic[i].IndexOf(")");
-                    string move = all_characteristic[i].Substring(pos_move + 5, pos_move_end - pos_move - 5);
+                    
 
                     PersonComponents1OFF();
                     PersonComponents2OFF();
@@ -1020,18 +1622,13 @@ namespace BunkerClient
                     PersonComponents11OFF();
                     PersonComponents12OFF();
 
-                    if (move.IndexOf("yes") > -1)
-                    {
-                        PersonComponents12ON();
-                        Next_Move_button.Visible = true;
+                  
 
-                    }
-
-                    string[]  individual_characteristic = new string[10];
+                    string[]  individual_characteristic = new string[15];
                     textBox2.Text = all_characteristic [i] + "|" + textBox2.Text;
                     int first = 0;
                     int next = 0;
-                    for (int j = 0; j < 10; j++)
+                    for (int j = 0; j < 15; j++)
                     {
                         first = all_characteristic [i].IndexOf("{", next);
                         next = all_characteristic [i].IndexOf("}", first);
@@ -1039,235 +1636,287 @@ namespace BunkerClient
                         first = first + 1;
                         next = next + 1;
                     }
-                    AgeText12.Text =  individual_characteristic[0];
-                    SexText12.Text =  individual_characteristic[1];
-                    JobText12.Text =  individual_characteristic[2];
-                    HobbyText12.Text =  individual_characteristic[3];
-                    HealthText12.Text =  individual_characteristic[4];
-                    BaggageText12.Text =  individual_characteristic[5];
-                    PhobiaText12.Text =  individual_characteristic[6];
-                    CharacterText12.Text =  individual_characteristic[7];
-                    card_1_label.Text = individual_characteristic[8];
-                    card_2_label.Text = individual_characteristic[9];
+                    if (individual_characteristic[14].IndexOf("yes") > -1)
+                    {
+                        PersonComponents12ON();
+                        Next_Move_button.Visible = true;
+
+                    }
+                    client_walker = Int32.Parse(individual_characteristic[0]);
+
+                    AgeText12.Text =  individual_characteristic[4];
+                    SexText12.Text =  individual_characteristic[5];
+                    JobText12.Text =  individual_characteristic[6];
+                    HobbyText12.Text =  individual_characteristic[7];
+                    HealthText12.Text =  individual_characteristic[8];
+                    BaggageText12.Text =  individual_characteristic[9];
+                    PhobiaText12.Text =  individual_characteristic[10];
+                    CharacterText12.Text =  individual_characteristic[11];
+                    card_1_label.Text = individual_characteristic[12];
+                    card_2_label.Text = individual_characteristic[13];
 
 
                 }
-
+               
             }
 
             for (int i = 0; i < Int32.Parse(players); i++)
             {
+                int first_pos_id_move = all_characteristic[i].IndexOf("{", 0);
+                int next_pos_id_move = all_characteristic[i].IndexOf("}", first_pos_id_move + 1);
+                string id_move = all_characteristic[i].Substring(first_pos_id_move + 1, next_pos_id_move - first_pos_id_move - 1);
 
-                if (all_characteristic [i].IndexOf("1", 0, 1) > -1 && all_characteristic [i].IndexOf("1", 1, 2) < 0 && all_characteristic [i].IndexOf("0", 1, 2) < 0)
+                if (id_move.IndexOf("1") > -1 && id_move.IndexOf("11") == -1 && id_move.IndexOf("10") == -1 && id_move.IndexOf("12") == -1)
                 {
 
-                    if (all_characteristic [i].IndexOf("ID_NAME") >-1)
-                    {
-                        int name_pos = all_characteristic [i].IndexOf("ID_NAME");
-                        int name_pos_end = all_characteristic [i].IndexOf("info");
 
-                        player_identifier1.Text = all_characteristic[i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        string name = all_characteristic [i].Substring(name_pos + 7 +1, name_pos_end - name_pos -7-1);
-                        name = name.Replace(CodeRoom.Text, "");
-                        name = name.Trim(' ');
-                        name = name.Substring(name.IndexOf(" ")+1, name.Length - name.IndexOf(" ") -1);
-                        name1.Text = name;
 
-                    }                 
+                        string[] individual_characteristic = new string[15];
+                       
+                        int first = 0;
+                        int next = 0;
+                        for (int j = 0; j < 15; j++)
+                        {
+                            first = all_characteristic[i].IndexOf("{", next);
+                            next = all_characteristic[i].IndexOf("}", first);
+                            individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                            first = first + 1;
+                            next = next + 1;
+
+                        }
+                         
+                       player_identifier1.Text ="{"+ individual_characteristic[1] +"}{"+ individual_characteristic[2] +"}{"+ individual_characteristic[3]+"}";                    
+                       name1.Text = individual_characteristic[3];
+
+                                    
                 }
 
-                if (all_characteristic [i].IndexOf("2", 0, 1) > -1 )
+                if (id_move.IndexOf("2") > -1 && id_move.IndexOf("12") == -1)
                 {
 
-                    if (all_characteristic [i].IndexOf("ID_NAME") > -1)
-                    {
-                        int name_pos = all_characteristic [i].IndexOf("ID_NAME");
-                        int name_pos_end = all_characteristic [i].IndexOf("info");
 
-                        player_identifier2.Text = all_characteristic[i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        string name = all_characteristic [i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        name = name.Replace(CodeRoom.Text, "");
-                        name = name.Trim(' ');
-                        name = name.Substring(name.IndexOf(" ") + 1, name.Length - name.IndexOf(" ") - 1);
-                        name2.Text = name;
+
+                    string[] individual_characteristic = new string[15];
+
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic[i].IndexOf("{", next);
+                        next = all_characteristic[i].IndexOf("}", first);
+                        individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
 
                     }
+
+                    player_identifier2.Text = "{" + individual_characteristic[1] + "}{" + individual_characteristic[2] + "}{" + individual_characteristic[3] + "}";
+                    name2.Text = individual_characteristic[3];
                 }
-                if (all_characteristic [i].IndexOf("3", 0, 2) > -1)
+                if (id_move.IndexOf("3") > -1)
                 {
 
-                    if (all_characteristic [i].IndexOf("ID_NAME") > -1)
-                    {
-                        int name_pos = all_characteristic [i].IndexOf("ID_NAME");
-                        int name_pos_end = all_characteristic [i].IndexOf("info");
+                    string[] individual_characteristic = new string[15];
 
-                        player_identifier3.Text = all_characteristic[i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        string name = all_characteristic [i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        name = name.Replace(CodeRoom.Text, "");
-                        name = name.Trim(' ');
-                        name = name.Substring(name.IndexOf(" ") + 1, name.Length - name.IndexOf(" ") - 1);
-                        name3.Text = name;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic[i].IndexOf("{", next);
+                        next = all_characteristic[i].IndexOf("}", first);
+                        individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
 
                     }
-                }
 
-                if (all_characteristic [i].IndexOf("4", 0, 2) > -1)
-                {
-
-                    if (all_characteristic [i].IndexOf("ID_NAME") > -1)
-                    {
-                        int name_pos = all_characteristic [i].IndexOf("ID_NAME");
-                        int name_pos_end = all_characteristic [i].IndexOf("info");
-
-                        player_identifier4.Text = all_characteristic[i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        string name = all_characteristic [i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        name = name.Replace(CodeRoom.Text, "");
-                        name = name.Trim(' ');
-                        name = name.Substring(name.IndexOf(" ") + 1, name.Length - name.IndexOf(" ") - 1);
-                        name4.Text = name;
-
-                    }
+                    player_identifier3.Text = "{" + individual_characteristic[1] + "}{" + individual_characteristic[2] + "}{" + individual_characteristic[3] + "}";
+                    name3.Text = individual_characteristic[3];
                 }
 
-                if (all_characteristic [i].IndexOf("5", 0, 2) > -1)
+                if (id_move.IndexOf("4") > -1)
                 {
 
-                    if (all_characteristic [i].IndexOf("ID_NAME") > -1)
-                    {
-                        int name_pos = all_characteristic [i].IndexOf("ID_NAME");
-                        int name_pos_end = all_characteristic [i].IndexOf("info");
+                    string[] individual_characteristic = new string[15];
 
-                        player_identifier5.Text = all_characteristic[i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        string name = all_characteristic [i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        name = name.Replace(CodeRoom.Text, "");
-                        name = name.Trim(' ');
-                        name = name.Substring(name.IndexOf(" ") + 1, name.Length - name.IndexOf(" ") - 1);
-                        name5.Text = name;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic[i].IndexOf("{", next);
+                        next = all_characteristic[i].IndexOf("}", first);
+                        individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
 
                     }
+
+                    player_identifier4.Text = "{" + individual_characteristic[1] + "}{" + individual_characteristic[2] + "}{" + individual_characteristic[3] + "}";
+                    name4.Text = individual_characteristic[3];
                 }
 
-                if (all_characteristic [i].IndexOf("6", 0, 2) > -1)
+                if (id_move.IndexOf("5") > -1)
                 {
 
-                    if (all_characteristic [i].IndexOf("ID_NAME") > -1)
-                    {
-                        int name_pos = all_characteristic [i].IndexOf("ID_NAME");
-                        int name_pos_end = all_characteristic [i].IndexOf("info");
+                    string[] individual_characteristic = new string[15];
 
-                        player_identifier6.Text = all_characteristic[i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        string name = all_characteristic [i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        name = name.Replace(CodeRoom.Text, "");
-                        name = name.Trim(' ');
-                        name = name.Substring(name.IndexOf(" ") + 1, name.Length - name.IndexOf(" ") - 1);
-                        name6.Text = name;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic[i].IndexOf("{", next);
+                        next = all_characteristic[i].IndexOf("}", first);
+                        individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
 
                     }
+
+                    player_identifier5.Text = "{" + individual_characteristic[1] + "}{" + individual_characteristic[2] + "}{" + individual_characteristic[3] + "}";
+                    name5.Text = individual_characteristic[3];
                 }
 
-                if (all_characteristic [i].IndexOf("7", 0, 2) > -1)
+                if (id_move.IndexOf("6") > -1)
                 {
 
-                    if (all_characteristic [i].IndexOf("ID_NAME") > -1)
-                    {
-                        int name_pos = all_characteristic [i].IndexOf("ID_NAME");
-                        int name_pos_end = all_characteristic [i].IndexOf("info");
+                    string[] individual_characteristic = new string[15];
 
-                        player_identifier7.Text = all_characteristic[i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        string name = all_characteristic [i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        name = name.Replace(CodeRoom.Text, "");
-                        name = name.Trim(' ');
-                        name = name.Substring(name.IndexOf(" ") + 1, name.Length - name.IndexOf(" ") - 1);
-                        name7.Text = name;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic[i].IndexOf("{", next);
+                        next = all_characteristic[i].IndexOf("}", first);
+                        individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
 
                     }
+
+                    player_identifier6.Text = "{" + individual_characteristic[1] + "}{" + individual_characteristic[2] + "}{" + individual_characteristic[3] + "}";
+                    name6.Text = individual_characteristic[3];
                 }
 
-                if (all_characteristic [i].IndexOf("8", 0, 2) > -1)
+                if (id_move.IndexOf("7") > -1)
                 {
 
-                    if (all_characteristic [i].IndexOf("ID_NAME") > -1)
-                    {
-                        int name_pos = all_characteristic [i].IndexOf("ID_NAME");
-                        int name_pos_end = all_characteristic [i].IndexOf("info");
+                    string[] individual_characteristic = new string[15];
 
-                        player_identifier8.Text = all_characteristic[i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        string name = all_characteristic [i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        name = name.Replace(CodeRoom.Text, "");
-                        name = name.Trim(' ');
-                        name = name.Substring(name.IndexOf(" ") + 1, name.Length - name.IndexOf(" ") - 1);
-                        name8.Text = name;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic[i].IndexOf("{", next);
+                        next = all_characteristic[i].IndexOf("}", first);
+                        individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
 
                     }
+
+                    player_identifier7.Text = "{" + individual_characteristic[1] + "}{" + individual_characteristic[2] + "}{" + individual_characteristic[3] + "}";
+                    name7.Text = individual_characteristic[3];
                 }
 
-                if (all_characteristic [i].IndexOf("9", 0, 2) > -1)
+                if (id_move.IndexOf("8") > -1)
                 {
 
-                    if (all_characteristic [i].IndexOf("ID_NAME") > -1)
-                    {
-                        int name_pos = all_characteristic [i].IndexOf("ID_NAME");
-                        int name_pos_end = all_characteristic [i].IndexOf("info");
+                    string[] individual_characteristic = new string[15];
 
-                        player_identifier9.Text = all_characteristic[i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        string name = all_characteristic [i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        name = name.Replace(CodeRoom.Text, "");
-                        name = name.Trim(' ');
-                        name = name.Substring(name.IndexOf(" ") + 1, name.Length - name.IndexOf(" ") - 1);
-                        name9.Text = name;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic[i].IndexOf("{", next);
+                        next = all_characteristic[i].IndexOf("}", first);
+                        individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
 
                     }
+
+                    player_identifier8.Text = "{" + individual_characteristic[1] + "}{" + individual_characteristic[2] + "}{" + individual_characteristic[3] + "}";
+                    name8.Text = individual_characteristic[3];
                 }
-                if (all_characteristic [i].IndexOf("10", 0, 2) > -1)
+
+                if (id_move.IndexOf("9") > -1)
                 {
 
-                    if (all_characteristic [i].IndexOf("ID_NAME") > -1)
-                    {
-                        int name_pos = all_characteristic [i].IndexOf("ID_NAME");
-                        int name_pos_end = all_characteristic [i].IndexOf("info");
+                    string[] individual_characteristic = new string[15];
 
-                        player_identifier10.Text = all_characteristic[i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        string name = all_characteristic [i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        name = name.Replace(CodeRoom.Text, "");
-                        name = name.Trim(' ');
-                        name = name.Substring(name.IndexOf(" ") + 1, name.Length - name.IndexOf(" ") - 1);
-                        name10.Text = name;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic[i].IndexOf("{", next);
+                        next = all_characteristic[i].IndexOf("}", first);
+                        individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
 
                     }
+
+                    player_identifier9.Text = "{" + individual_characteristic[1] + "}{" + individual_characteristic[2] + "}{" + individual_characteristic[3] + "}";
+                    name9.Text = individual_characteristic[3];
                 }
-                if (all_characteristic [i].IndexOf("11", 0, 2) > -1)
+                if (id_move.IndexOf("10") > -1)
                 {
 
-                    if (all_characteristic [i].IndexOf("ID_NAME") > -1)
-                    {
-                        int name_pos = all_characteristic [i].IndexOf("ID_NAME");
-                        int name_pos_end = all_characteristic [i].IndexOf("info");
+                    string[] individual_characteristic = new string[15];
 
-                        player_identifier11.Text = all_characteristic[i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        string name = all_characteristic [i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        name = name.Replace(CodeRoom.Text, "");
-                        name = name.Trim(' ');
-                        name = name.Substring(name.IndexOf(" ") + 1, name.Length - name.IndexOf(" ") - 1);
-                        name11.Text = name;
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic[i].IndexOf("{", next);
+                        next = all_characteristic[i].IndexOf("}", first);
+                        individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
 
                     }
+
+                    player_identifier10.Text = "{" + individual_characteristic[1] + "}{" + individual_characteristic[2] + "}{" + individual_characteristic[3] + "}";
+                    name10.Text = individual_characteristic[3];
                 }
-                if (all_characteristic [i].IndexOf("12", 0, 2) > -1)
+                if (id_move.IndexOf("11") > -1)
                 {
+                    string[] individual_characteristic = new string[15];
 
-                    if (all_characteristic [i].IndexOf("ID_NAME") > -1)
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
                     {
-                        int name_pos = all_characteristic [i].IndexOf("ID_NAME");
-                        int name_pos_end = all_characteristic [i].IndexOf("info");
-
-                        player_identifier12.Text = all_characteristic[i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        string name = all_characteristic [i].Substring(name_pos + 7 + 1, name_pos_end - name_pos - 7 - 1);
-                        name = name.Replace(CodeRoom.Text, "");
-                        name = name.Trim(' ');
-                        name = name.Substring(name.IndexOf(" ") + 1, name.Length - name.IndexOf(" ") - 1);
-                        name12.Text = name;
+                        first = all_characteristic[i].IndexOf("{", next);
+                        next = all_characteristic[i].IndexOf("}", first);
+                        individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
 
                     }
+
+                    player_identifier11.Text = "{" + individual_characteristic[1] + "}{" + individual_characteristic[2] + "}{" + individual_characteristic[3] + "}";
+                    name11.Text = individual_characteristic[3];
+                }
+                if (id_move.IndexOf("12") > -1)
+                {
+
+                    string[] individual_characteristic = new string[15];
+
+                    int first = 0;
+                    int next = 0;
+                    for (int j = 0; j < 15; j++)
+                    {
+                        first = all_characteristic[i].IndexOf("{", next);
+                        next = all_characteristic[i].IndexOf("}", first);
+                        individual_characteristic[j] = all_characteristic[i].Substring(first + 1, next - first - 1);
+                        first = first + 1;
+                        next = next + 1;
+
+                    }
+
+                    player_identifier12.Text = "{" + individual_characteristic[1] + "}{" + individual_characteristic[2] + "}{" + individual_characteristic[3] + "}";
+                    name12.Text = individual_characteristic[3];
                 }
 
             }
@@ -1279,15 +1928,25 @@ namespace BunkerClient
         {
             //OPEN_CHARACTE ID_ROOM=wmb ID_CLIENT=1 dan CHARATER=Age=58
 
-            int id_room_pos = characteristic_buff.IndexOf("ID_ROOM",0);
-            int id_client_pos = characteristic_buff.IndexOf("ID_CLIENT", 0);
-            int characteristic_pos = characteristic_buff.IndexOf("CHARATER", 0);
+            string[] characteristic_data_array = new string[4];
+     
+            int first = 0;
+            int next = 0;
+            for (int j = 0; j < 4; j++)
+            {
+                first = characteristic_buff.IndexOf("{", next);
+                next = characteristic_buff.IndexOf("}", first);
+                characteristic_data_array[j] = characteristic_buff.Substring(first + 1, next - first - 1);
+                first = first + 1;
+                next = next + 1;
+            }
 
-            string id_room = characteristic_buff.Substring(id_room_pos+8, id_client_pos - 8- id_room_pos-1);
-            string id_client = characteristic_buff.Substring(id_client_pos+10, characteristic_pos-10 - id_client_pos-1);
-            string characteristic = characteristic_buff.Substring(characteristic_pos+9, characteristic_buff.Length - 9 -characteristic_pos );
 
-            string player_name = id_room + " " + id_client;
+
+
+            string characteristic = characteristic_data_array[3];
+
+            string player_name = "{" + characteristic_data_array[0] + "}{" + characteristic_data_array[1] + "}{" + characteristic_data_array[2] + "}";
             //Age Sex Baggage Job Hobby Health Phobia Character
             #region open_characteristic
             if (player_identifier1.Text.IndexOf(player_name) > -1)
@@ -1765,18 +2424,25 @@ namespace BunkerClient
         {
             //NEXT_____MOVE->ID_ROOM= ID_CLIENT= ID_NAME=
 
-            int id_room_pos = data.IndexOf("ID_ROOM");
-            int id_client_pos = data.IndexOf("ID_CLIENT");
-            int id_name_pos = data.IndexOf("ID_NAME");
+            
 
-            string id_room_move = data.Substring(id_room_pos + 8, id_client_pos - id_room_pos - 8-1);
-            string id_client_move = data.Substring(id_client_pos + 10, id_name_pos - id_client_pos - 10-1);
-            string id_name_move = data.Substring(id_name_pos + 8, data.Length - id_name_pos - 8-1);
+       
+            int first = 0;
+            int next = 0;
+            string[] Get_Info = new string[3];
 
-            string all_name = id_room_move + " " + id_client_move + " " + id_name_move;
-            string all_name_save = id_client +  id_name;
+            for (int i = 0; i < 3; i++)
+            {
+                first = data.IndexOf("{", next);
+                next = data.IndexOf("}", first);
+                Get_Info[i] = data.Substring(first + 1, next - first - 1);
+                first = first + 1;
+                next = next + 1;
+            }
+            string all_name = "{"+Get_Info[0] + "}{" + Get_Info[1] + "}{" + Get_Info[2]+"}";
+            string all_name_save ="{" + CodeRoom.Text + "}{" + id_client + "}{" + id_name + "}";
 
-            if (id_client.IndexOf(id_client_move) > -1 && id_name.IndexOf(id_name_move) > -1)
+            if (id_client.IndexOf(Get_Info[1]) > -1 && id_name.IndexOf(Get_Info[2]) > -1)
             {
                 //istBox1.BackColor = Color.Green; 
                 Next_Move_button.Visible = true;
@@ -1786,17 +2452,17 @@ namespace BunkerClient
             {
                 listBox1.BackColor = Color.Green;
 
-                listBox2.BackColor = Color.LightGray;
-                listBox9.BackColor = Color.LightGray;
-                listBox8.BackColor = Color.LightGray;
-                listBox7.BackColor = Color.LightGray;
-                listBox6.BackColor = Color.LightGray;
-                listBox5.BackColor = Color.LightGray;
-                listBox4.BackColor = Color.LightGray;
-                listBox3.BackColor = Color.LightGray;
-                listBox10.BackColor = Color.LightGray;
-                listBox11.BackColor = Color.LightGray;
-                listBox12.BackColor = Color.LightGray;
+                if (listBox2.BackColor != Color.Red) listBox2.BackColor = Color.LightGray;
+                if (listBox9.BackColor != Color.Red) listBox9.BackColor = Color.LightGray;
+                if (listBox8.BackColor != Color.Red) listBox8.BackColor = Color.LightGray;
+                if (listBox7.BackColor != Color.Red) listBox7.BackColor = Color.LightGray;
+                if (listBox6.BackColor != Color.Red) listBox6.BackColor = Color.LightGray;
+                if (listBox5.BackColor != Color.Red) listBox5.BackColor = Color.LightGray;
+                if (listBox4.BackColor != Color.Red) listBox4.BackColor = Color.LightGray;
+                if (listBox3.BackColor != Color.Red) listBox3.BackColor = Color.LightGray;
+                if (listBox10.BackColor != Color.Red) listBox10.BackColor = Color.LightGray;
+                if (listBox11.BackColor != Color.Red) listBox11.BackColor = Color.LightGray;
+                if (listBox12.BackColor != Color.Red) listBox12.BackColor = Color.LightGray;
 
                
                 
@@ -1806,55 +2472,55 @@ namespace BunkerClient
             {
                 listBox2.BackColor = Color.Green;
 
-                listBox1.BackColor = Color.LightGray;
-                listBox9.BackColor = Color.LightGray;
-                listBox8.BackColor = Color.LightGray;
-                listBox7.BackColor = Color.LightGray;
-                listBox6.BackColor = Color.LightGray;
-                listBox5.BackColor = Color.LightGray;
-                listBox4.BackColor = Color.LightGray;
-                listBox3.BackColor = Color.LightGray;
-                listBox10.BackColor = Color.LightGray;
-                listBox11.BackColor = Color.LightGray;
-                listBox12.BackColor = Color.LightGray;
+                if (listBox1.BackColor != Color.Red) listBox1.BackColor = Color.LightGray;
+                if (listBox9.BackColor != Color.Red) listBox9.BackColor = Color.LightGray;
+                if (listBox8.BackColor != Color.Red) listBox8.BackColor = Color.LightGray;
+                if (listBox7.BackColor != Color.Red) listBox7.BackColor = Color.LightGray;
+                if (listBox6.BackColor != Color.Red) listBox6.BackColor = Color.LightGray;
+                if (listBox5.BackColor != Color.Red) listBox5.BackColor = Color.LightGray;
+                if (listBox4.BackColor != Color.Red) listBox4.BackColor = Color.LightGray;
+                if (listBox3.BackColor != Color.Red) listBox3.BackColor = Color.LightGray;
+                if (listBox10.BackColor != Color.Red) listBox10.BackColor = Color.LightGray;
+                if (listBox11.BackColor != Color.Red) listBox11.BackColor = Color.LightGray;
+                if (listBox12.BackColor != Color.Red) listBox12.BackColor = Color.LightGray;
 
                
                
             }
             else if (player_identifier3.Text.IndexOf(all_name) > -1)
             {
-                listBox9.BackColor = Color.Green;
+                listBox3.BackColor = Color.Green;
 
-                listBox1.BackColor = Color.LightGray;
-                listBox2.BackColor = Color.LightGray;
-                listBox8.BackColor = Color.LightGray;
-                listBox7.BackColor = Color.LightGray;
-                listBox6.BackColor = Color.LightGray;
-                listBox5.BackColor = Color.LightGray;
-                listBox4.BackColor = Color.LightGray;
-                listBox3.BackColor = Color.LightGray;
-                listBox10.BackColor = Color.LightGray;
-                listBox11.BackColor = Color.LightGray;
-                listBox12.BackColor = Color.LightGray;
+                if (listBox1.BackColor != Color.Red) listBox1.BackColor = Color.LightGray;
+                if (listBox2.BackColor != Color.Red) listBox2.BackColor = Color.LightGray;
+                if (listBox8.BackColor != Color.Red) listBox8.BackColor = Color.LightGray;
+                if (listBox7.BackColor != Color.Red) listBox7.BackColor = Color.LightGray;
+                if (listBox6.BackColor != Color.Red) listBox6.BackColor = Color.LightGray;
+                if (listBox5.BackColor != Color.Red) listBox5.BackColor = Color.LightGray;
+                if (listBox4.BackColor != Color.Red) listBox4.BackColor = Color.LightGray;
+                if (listBox9.BackColor != Color.Red) listBox9.BackColor = Color.LightGray;
+                if (listBox10.BackColor != Color.Red) listBox10.BackColor = Color.LightGray;
+                if (listBox11.BackColor != Color.Red) listBox11.BackColor = Color.LightGray;
+                if (listBox12.BackColor != Color.Red) listBox12.BackColor = Color.LightGray;
 
                
                 
             }        
             else if (player_identifier4.Text.IndexOf(all_name) > -1)
             {
-                listBox8.BackColor = Color.Green;
+                listBox4.BackColor = Color.Green;
 
-                listBox1.BackColor = Color.LightGray;
-                listBox2.BackColor = Color.LightGray;
-                listBox9.BackColor = Color.LightGray;
-                listBox7.BackColor = Color.LightGray;
-                listBox6.BackColor = Color.LightGray;
-                listBox5.BackColor = Color.LightGray;
-                listBox4.BackColor = Color.LightGray;
-                listBox3.BackColor = Color.LightGray;
-                listBox10.BackColor = Color.LightGray;
-                listBox11.BackColor = Color.LightGray;
-                listBox12.BackColor = Color.LightGray;
+                if (listBox1.BackColor != Color.Red) listBox1.BackColor = Color.LightGray;
+                if (listBox2.BackColor != Color.Red) listBox2.BackColor = Color.LightGray;
+                if (listBox9.BackColor != Color.Red) listBox9.BackColor = Color.LightGray;
+                if (listBox7.BackColor != Color.Red) listBox7.BackColor = Color.LightGray;
+                if (listBox6.BackColor != Color.Red) listBox6.BackColor = Color.LightGray;
+                if (listBox5.BackColor != Color.Red) listBox5.BackColor = Color.LightGray;
+                if (listBox8.BackColor != Color.Red) listBox8.BackColor = Color.LightGray;
+                if (listBox3.BackColor != Color.Red) listBox3.BackColor = Color.LightGray;
+                if (listBox10.BackColor != Color.Red) listBox10.BackColor = Color.LightGray;
+                if (listBox11.BackColor != Color.Red) listBox11.BackColor = Color.LightGray;
+                if (listBox12.BackColor != Color.Red) listBox12.BackColor = Color.LightGray;
 
                
              
@@ -1862,19 +2528,19 @@ namespace BunkerClient
             }
             else if (player_identifier5.Text.IndexOf(all_name) > -1)
             {
-                listBox7.BackColor = Color.Green;
+                listBox5.BackColor = Color.Green;
 
-                listBox1.BackColor = Color.LightGray;
-                listBox2.BackColor = Color.LightGray;
-                listBox9.BackColor = Color.LightGray;
-                listBox8.BackColor = Color.LightGray;
-                listBox6.BackColor = Color.LightGray;
-                listBox5.BackColor = Color.LightGray;
-                listBox4.BackColor = Color.LightGray;
-                listBox3.BackColor = Color.LightGray;
-                listBox10.BackColor = Color.LightGray;
-                listBox11.BackColor = Color.LightGray;
-                listBox12.BackColor = Color.LightGray;
+                if (listBox1.BackColor != Color.Red) listBox1.BackColor = Color.LightGray;
+                if (listBox2.BackColor != Color.Red) listBox2.BackColor = Color.LightGray;
+                if (listBox9.BackColor != Color.Red) listBox9.BackColor = Color.LightGray;
+                if (listBox8.BackColor != Color.Red) listBox8.BackColor = Color.LightGray;
+                if (listBox6.BackColor != Color.Red) listBox6.BackColor = Color.LightGray;
+                if (listBox7.BackColor != Color.Red) listBox7.BackColor = Color.LightGray;
+                if (listBox4.BackColor != Color.Red) listBox4.BackColor = Color.LightGray;
+                if (listBox3.BackColor != Color.Red) listBox3.BackColor = Color.LightGray;
+                if (listBox10.BackColor != Color.Red) listBox10.BackColor = Color.LightGray;
+                if (listBox11.BackColor != Color.Red) listBox11.BackColor = Color.LightGray;
+                if (listBox12.BackColor != Color.Red) listBox12.BackColor = Color.LightGray;
 
                
         
@@ -1884,76 +2550,76 @@ namespace BunkerClient
             {
                 listBox6.BackColor = Color.Green;
 
-                listBox1.BackColor = Color.LightGray;
-                listBox2.BackColor = Color.LightGray;
-                listBox9.BackColor = Color.LightGray;
-                listBox8.BackColor = Color.LightGray;
-                listBox7.BackColor = Color.LightGray;
-                listBox5.BackColor = Color.LightGray;
-                listBox4.BackColor = Color.LightGray;
-                listBox3.BackColor = Color.LightGray;
-                listBox10.BackColor = Color.LightGray;
-                listBox11.BackColor = Color.LightGray;
-                listBox12.BackColor = Color.LightGray;
+                if (listBox1.BackColor != Color.Red) listBox1.BackColor = Color.LightGray;
+                if (listBox2.BackColor != Color.Red) listBox2.BackColor = Color.LightGray;
+                if (listBox9.BackColor != Color.Red) listBox9.BackColor = Color.LightGray;
+                if (listBox8.BackColor != Color.Red) listBox8.BackColor = Color.LightGray;
+                if (listBox7.BackColor != Color.Red) listBox7.BackColor = Color.LightGray;
+                if (listBox5.BackColor != Color.Red) listBox5.BackColor = Color.LightGray;
+                if (listBox4.BackColor != Color.Red) listBox4.BackColor = Color.LightGray;
+                if (listBox3.BackColor != Color.Red) listBox3.BackColor = Color.LightGray;
+                if (listBox10.BackColor != Color.Red) listBox10.BackColor = Color.LightGray;
+                if (listBox11.BackColor != Color.Red) listBox11.BackColor = Color.LightGray;
+                if (listBox12.BackColor != Color.Red) listBox12.BackColor = Color.LightGray;
 
                 
              
             }
             else if (player_identifier7.Text.IndexOf(all_name) > -1)
             {
-                listBox5.BackColor = Color.Green;
+                listBox7.BackColor = Color.Green;
 
-                listBox1.BackColor = Color.LightGray;
-                listBox2.BackColor = Color.LightGray;
-                listBox9.BackColor = Color.LightGray;
-                listBox8.BackColor = Color.LightGray;
-                listBox7.BackColor = Color.LightGray;
-                listBox6.BackColor = Color.LightGray;
-                listBox4.BackColor = Color.LightGray;
-                listBox3.BackColor = Color.LightGray;
-                listBox10.BackColor = Color.LightGray;
-                listBox11.BackColor = Color.LightGray;
-                listBox12.BackColor = Color.LightGray;
+                if (listBox1.BackColor != Color.Red) listBox1.BackColor = Color.LightGray;
+                if (listBox2.BackColor != Color.Red) listBox2.BackColor = Color.LightGray;
+                if (listBox9.BackColor != Color.Red) listBox9.BackColor = Color.LightGray;
+                if (listBox8.BackColor != Color.Red) listBox8.BackColor = Color.LightGray;
+                if (listBox5.BackColor != Color.Red) listBox5.BackColor = Color.LightGray;
+                if (listBox6.BackColor != Color.Red) listBox6.BackColor = Color.LightGray;
+                if (listBox4.BackColor != Color.Red) listBox4.BackColor = Color.LightGray;
+                if (listBox3.BackColor != Color.Red) listBox3.BackColor = Color.LightGray;
+                if (listBox10.BackColor != Color.Red) listBox10.BackColor = Color.LightGray;
+                if (listBox11.BackColor != Color.Red) listBox11.BackColor = Color.LightGray;
+                if (listBox12.BackColor != Color.Red) listBox12.BackColor = Color.LightGray;
 
                
                
             }
             else if (player_identifier8.Text.IndexOf(all_name) > -1)
             {
-                listBox4.BackColor = Color.Green;
+                listBox8.BackColor = Color.Green;
 
 
-                listBox1.BackColor = Color.LightGray;
-                listBox2.BackColor = Color.LightGray;
-                listBox9.BackColor = Color.LightGray;
-                listBox8.BackColor = Color.LightGray;
-                listBox7.BackColor = Color.LightGray;
-                listBox6.BackColor = Color.LightGray;
-                listBox5.BackColor = Color.LightGray;
-                listBox3.BackColor = Color.LightGray;
-                listBox10.BackColor = Color.LightGray;
-                listBox11.BackColor = Color.LightGray;
-                listBox12.BackColor = Color.LightGray;
+                if (listBox1.BackColor != Color.Red) listBox1.BackColor = Color.LightGray;
+                if (listBox2.BackColor != Color.Red) listBox2.BackColor = Color.LightGray;
+                if (listBox9.BackColor != Color.Red) listBox9.BackColor = Color.LightGray;
+                if (listBox4.BackColor != Color.Red) listBox4.BackColor = Color.LightGray;
+                if (listBox7.BackColor != Color.Red) listBox7.BackColor = Color.LightGray;
+                if (listBox6.BackColor != Color.Red) listBox6.BackColor = Color.LightGray;
+                if (listBox5.BackColor != Color.Red) listBox5.BackColor = Color.LightGray;
+                if (listBox3.BackColor != Color.Red) listBox3.BackColor = Color.LightGray;
+                if (listBox10.BackColor != Color.Red) listBox10.BackColor = Color.LightGray;
+                if (listBox11.BackColor != Color.Red) listBox11.BackColor = Color.LightGray;
+                if (listBox12.BackColor != Color.Red) listBox12.BackColor = Color.LightGray;
 
                 
               
             }
             else if (player_identifier9.Text.IndexOf(all_name) > -1)
             {
-                listBox3.BackColor = Color.Green;
+                listBox9.BackColor = Color.Green;
 
 
-                listBox1.BackColor = Color.LightGray;
-                listBox2.BackColor = Color.LightGray;
-                listBox9.BackColor = Color.LightGray;
-                listBox8.BackColor = Color.LightGray;
-                listBox7.BackColor = Color.LightGray;
-                listBox6.BackColor = Color.LightGray;
-                listBox5.BackColor = Color.LightGray;
-                listBox4.BackColor = Color.LightGray;
-                listBox10.BackColor = Color.LightGray;
-                listBox11.BackColor = Color.LightGray;
-                listBox12.BackColor = Color.LightGray;
+                if (listBox1.BackColor != Color.Red) listBox1.BackColor = Color.LightGray;
+                if (listBox2.BackColor != Color.Red) listBox2.BackColor = Color.LightGray;
+                if (listBox3.BackColor != Color.Red) listBox3.BackColor = Color.LightGray;
+                if (listBox8.BackColor != Color.Red) listBox8.BackColor = Color.LightGray;
+                if (listBox7.BackColor != Color.Red) listBox7.BackColor = Color.LightGray;
+                if (listBox6.BackColor != Color.Red) listBox6.BackColor = Color.LightGray;
+                if (listBox5.BackColor != Color.Red) listBox5.BackColor = Color.LightGray;
+                if (listBox4.BackColor != Color.Red) listBox4.BackColor = Color.LightGray;
+                if (listBox10.BackColor != Color.Red) listBox10.BackColor = Color.LightGray;
+                if (listBox11.BackColor != Color.Red) listBox11.BackColor = Color.LightGray;
+                if (listBox12.BackColor != Color.Red) listBox12.BackColor = Color.LightGray;
 
                
                 
@@ -1962,17 +2628,17 @@ namespace BunkerClient
             {
                 listBox10.BackColor = Color.Green;
 
-                listBox1.BackColor = Color.LightGray;
-                listBox2.BackColor = Color.LightGray;
-                listBox9.BackColor = Color.LightGray;
-                listBox8.BackColor = Color.LightGray;
-                listBox7.BackColor = Color.LightGray;
-                listBox6.BackColor = Color.LightGray;
-                listBox5.BackColor = Color.LightGray;
-                listBox4.BackColor = Color.LightGray;
-                listBox3.BackColor = Color.LightGray;
-                listBox11.BackColor = Color.LightGray;
-                listBox12.BackColor = Color.LightGray;
+                if (listBox1.BackColor != Color.Red) listBox1.BackColor = Color.LightGray;
+                if (listBox2.BackColor != Color.Red) listBox2.BackColor = Color.LightGray;
+                if (listBox9.BackColor != Color.Red) listBox9.BackColor = Color.LightGray;
+                if (listBox8.BackColor != Color.Red) listBox8.BackColor = Color.LightGray;
+                if (listBox7.BackColor != Color.Red) listBox7.BackColor = Color.LightGray;
+                if (listBox6.BackColor != Color.Red) listBox6.BackColor = Color.LightGray;
+                if (listBox5.BackColor != Color.Red) listBox5.BackColor = Color.LightGray;
+                if (listBox4.BackColor != Color.Red) listBox4.BackColor = Color.LightGray;
+                if (listBox3.BackColor != Color.Red) listBox3.BackColor = Color.LightGray;
+                if (listBox11.BackColor != Color.Red) listBox11.BackColor = Color.LightGray;
+                if (listBox12.BackColor != Color.Red) listBox12.BackColor = Color.LightGray;
 
                 
                
@@ -1981,17 +2647,17 @@ namespace BunkerClient
             {
                 listBox11.BackColor = Color.Green;
 
-                listBox1.BackColor = Color.LightGray;
-                listBox2.BackColor = Color.LightGray;
-                listBox9.BackColor = Color.LightGray;
-                listBox8.BackColor = Color.LightGray;
-                listBox7.BackColor = Color.LightGray;
-                listBox6.BackColor = Color.LightGray;
-                listBox5.BackColor = Color.LightGray;
-                listBox4.BackColor = Color.LightGray;
-                listBox3.BackColor = Color.LightGray;
-                listBox10.BackColor = Color.LightGray;
-                listBox12.BackColor = Color.LightGray;
+                if (listBox1.BackColor != Color.Red) listBox1.BackColor = Color.LightGray;
+                if (listBox2.BackColor != Color.Red) listBox2.BackColor = Color.LightGray;
+                if (listBox9.BackColor != Color.Red) listBox9.BackColor = Color.LightGray;
+                if (listBox8.BackColor != Color.Red) listBox8.BackColor = Color.LightGray;
+                if (listBox7.BackColor != Color.Red) listBox7.BackColor = Color.LightGray;
+                if (listBox6.BackColor != Color.Red) listBox6.BackColor = Color.LightGray;
+                if (listBox5.BackColor != Color.Red) listBox5.BackColor = Color.LightGray;
+                if (listBox4.BackColor != Color.Red) listBox4.BackColor = Color.LightGray;
+                if (listBox3.BackColor != Color.Red) listBox3.BackColor = Color.LightGray;
+                if (listBox10.BackColor != Color.Red) listBox10.BackColor = Color.LightGray;
+                if (listBox12.BackColor != Color.Red) listBox12.BackColor = Color.LightGray;
 
                 
                 
@@ -2000,17 +2666,17 @@ namespace BunkerClient
             {
                 listBox12.BackColor = Color.Green;
 
-                listBox1.BackColor = Color.LightGray;
-                listBox2.BackColor = Color.LightGray;
-                listBox9.BackColor = Color.LightGray;
-                listBox8.BackColor = Color.LightGray;
-                listBox7.BackColor = Color.LightGray;
-                listBox6.BackColor = Color.LightGray;
-                listBox5.BackColor = Color.LightGray;
-                listBox4.BackColor = Color.LightGray;
-                listBox3.BackColor = Color.LightGray;
-                listBox10.BackColor = Color.LightGray;
-                listBox11.BackColor = Color.LightGray;
+                if (listBox1.BackColor != Color.Red) listBox1.BackColor = Color.LightGray;
+                if (listBox2.BackColor != Color.Red) listBox2.BackColor = Color.LightGray;
+                if (listBox9.BackColor != Color.Red) listBox9.BackColor = Color.LightGray;
+                if (listBox8.BackColor != Color.Red) listBox8.BackColor = Color.LightGray;
+                if (listBox7.BackColor != Color.Red) listBox7.BackColor = Color.LightGray;
+                if (listBox6.BackColor != Color.Red) listBox6.BackColor = Color.LightGray;
+                if (listBox5.BackColor != Color.Red) listBox5.BackColor = Color.LightGray;
+                if (listBox4.BackColor != Color.Red) listBox4.BackColor = Color.LightGray;
+                if (listBox3.BackColor != Color.Red) listBox3.BackColor = Color.LightGray;
+                if (listBox10.BackColor != Color.Red) listBox10.BackColor = Color.LightGray;
+                if (listBox11.BackColor != Color.Red) listBox11.BackColor = Color.LightGray;
 
                 
             }
@@ -2084,7 +2750,7 @@ namespace BunkerClient
         {
             int Messagesize = Encoding.UTF8.GetByteCount(SendData);
 
-            string Message = "OPEN_CHARACTE" + " ID_ROOM=" + CodeRoom.Text + " ID_CLIENT=" + id_client + id_name + " CHARATER=" + SendData;
+            string Message = "OPEN_CHARACTE" + " {" + CodeRoom.Text + "}{" + id_client+"}{"+ id_name + "}{" + SendData + "}";
             byte[] outStream = new byte[Messagesize];
 
             outStream = Encoding.UTF8.GetBytes(Message);
@@ -2104,14 +2770,7 @@ namespace BunkerClient
             Phobia1.Visible = false;
             Character1.Visible = false;
 
-            /* AgeText1
-             SexText1
-             JobText1
-             HobbyText1
-             HealthText1
-             BaggageText1
-             PhobiaText1
-             CharacterText1*/
+           
         }
         public void PersonComponents2OFF()
         {
@@ -2248,14 +2907,7 @@ namespace BunkerClient
             Phobia1.Visible = true;
             Character1.Visible = true;
 
-            /* AgeText1
-             SexText1
-             JobText1
-             HobbyText1
-             HealthText1
-             BaggageText1
-             PhobiaText1
-             CharacterText1*/
+           
         }
         public void PersonComponents2ON()
         {
@@ -2913,11 +3565,11 @@ namespace BunkerClient
         {
 
             Next_Move_button.Visible = false;
-            string Message = "NEXT_____MOVE" + " ID_ROOM=" + CodeRoom.Text + " ID_CLIENT=" + id_client;
+            string Message = "NEXT_____MOVE " + "{" + CodeRoom.Text + "}{" + id_client+"}";
             int Messagesize = Encoding.UTF8.GetByteCount(Message);
             byte[] outStream = new byte[Messagesize];
             outStream = Encoding.UTF8.GetBytes(Message);
-            serverStream.Write(outStream, 0, outStream.Length);
+           serverStream.Write(outStream, 0, outStream.Length);
 
 
         }
@@ -2986,34 +3638,68 @@ namespace BunkerClient
         #endregion
         private void Send_vote(string name)
         {
-            vote_button1.Visible = false;
-            vote_button2.Visible = false;
-            vote_button3.Visible = false;
-            vote_button4.Visible = false;
-            vote_button5.Visible = false;
-            vote_button6.Visible = false;
-            vote_button7.Visible = false;
-            vote_button8.Visible = false;
-            vote_button9.Visible = false;
-            vote_button10.Visible = false;
-            vote_button11.Visible = false;
-            vote_button12.Visible = false;
+            /* vote_button1.Visible = false;
+             vote_button2.Visible = false;
+             vote_button3.Visible = false;
+             vote_button4.Visible = false;
+             vote_button5.Visible = false;
+             vote_button6.Visible = false;
+             vote_button7.Visible = false;
+             vote_button8.Visible = false;
+             vote_button9.Visible = false;
+             vote_button10.Visible = false;
+             vote_button11.Visible = false;
+             vote_button12.Visible = false;*/
             //VOTING___KICK->ID_ROOM = VOTE =
-            string Message = "VOTING___KICK " + "ID_ROOM=" + CodeRoom.Text +  " VOTE=" + name;
+            //  
+            //   if (vote_click!=2) {
+            skip_button.Visible = true;
+            vote_click++;
+            string Message = "VOTING___KICK " + name +"{"+ "no" + "}";
+                int Messagesize = Encoding.UTF8.GetByteCount(Message);
+                byte[] outStream = new byte[Messagesize];
+                outStream = Encoding.UTF8.GetBytes(Message);
+                serverStream.Write(outStream, 0, outStream.Length);
+            //  }
+               if (vote_click==2) {
+                   vote_button1.Visible = false;
+                   vote_button2.Visible = false;
+                   vote_button3.Visible = false;
+                   vote_button4.Visible = false;
+                   vote_button5.Visible = false;
+                   vote_button6.Visible = false;
+                   vote_button7.Visible = false;
+                   vote_button8.Visible = false;
+                   vote_button9.Visible = false;
+                   vote_button10.Visible = false;
+                   vote_button11.Visible = false;
+                   vote_button12.Visible = false; 
+               }
+        }
 
+        private void skip_button_Click(object sender, EventArgs e)
+        {
+            string Message = "VOTING___KICK " + "{" + CodeRoom.Text + "}{" + id_client + "}{" + id_name + "}{" + "skip" + "}";
             int Messagesize = Encoding.UTF8.GetByteCount(Message);
-
             byte[] outStream = new byte[Messagesize];
             outStream = Encoding.UTF8.GetBytes(Message);
             serverStream.Write(outStream, 0, outStream.Length);
 
+                skip_button.Visible = false;
+                vote_button1.Visible = false;
+                vote_button2.Visible = false;
+                vote_button3.Visible = false;
+                vote_button4.Visible = false;
+                vote_button5.Visible = false;
+                vote_button6.Visible = false;
+                vote_button7.Visible = false;
+                vote_button8.Visible = false;
+                vote_button9.Visible = false;
+                vote_button10.Visible = false;
+                vote_button11.Visible = false;
+                vote_button12.Visible = false;
+           
         }
-       
-
-
-        
-
-
     }
 
 

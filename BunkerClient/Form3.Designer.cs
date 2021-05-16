@@ -224,9 +224,9 @@
             // 
             this.ip_text.Location = new System.Drawing.Point(935, 48);
             this.ip_text.Name = "ip_text";
-            this.ip_text.Size = new System.Drawing.Size(79, 20);
+            this.ip_text.Size = new System.Drawing.Size(101, 20);
             this.ip_text.TabIndex = 16;
-            this.ip_text.Text = "188.233.49.10";
+            this.ip_text.Text = "188.233.83.115";
             // 
             // code_text
             // 
