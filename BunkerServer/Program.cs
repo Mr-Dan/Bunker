@@ -15,8 +15,8 @@ namespace BunkerServer
      * 
      *  1234567890123 
      *  LOGIN__CLIENT -> LOGIN = PASSWORD=
-     *  REGIST_CLIENT -> LOGIN = PASSWORD=
-     *  LOGIN_DISCONN -> LOGIN = PASSWORD=
+     *  REGIST_CLIENT -> LOGIN = PASSWORD= NAME=
+     *  LOGIN_DISCONN -> 
      *  
      *  CONNECT__ROOM -> ID_ROOM=   ID_CLIENT=    ID_NAME=
      *  DISCONN__ROOM -> ID_ROOM=   ID_CLIENT=     ID_NAME=
@@ -51,6 +51,18 @@ namespace BunkerServer
      *  NEXT_____MOVE -> ID_ROOM= ID_CLIENT= ID_NAME=
      *  
      *  VOTING___KICK -> ID_ROOM= KICK=
+     *  
+     *  COUNT____VOTE -> ID_ROOM= ID_NAME= VOTE=
+     *  
+     *  VOTING_N_KICK
+     *  
+     *  END__THE_GAME
+     *  
+     *  ONE_MORE_KICK
+     * 
+     *  START__VOTING
+     *  
+     *  NEXT_NEW_MOVE
      */
 
     public class Program
@@ -111,16 +123,7 @@ namespace BunkerServer
                         dataFromClient = null;
 
                         networkStream = clientSocket.GetStream();
-                       /* networkStream.Read(bytessize, 0, 8192);
-                        dataFromClientsize = Encoding.UTF8.GetString(bytessize);
-
-
-                        int sizebyte;
-
-                        bool isNum = int.TryParse(dataFromClientsize, out sizebyte);
-
-                        if (isNum)
-                        {*/
+                      
                             byte[] bytesFrom = new byte[ReceiveBufferSize];
                             networkStream.Read(bytesFrom, 0, ReceiveBufferSize);
                             dataFromClient = Encoding.UTF8.GetString(bytesFrom);
@@ -136,27 +139,29 @@ namespace BunkerServer
                             {
                                 //CONNECT__ROOM->ID_ROOM = ID_CLIENT = ID_NAME = STATUS=
                                 SqlDataReader readSql;
+                            int first = 0;
+                            int next = 0;
+                            string[] Get_Info = new string[4];
 
+                            for (int i = 0; i < 4; i++)
+                            {
+                                first = dataFromClient.IndexOf("{", next);
+                                next = dataFromClient.IndexOf("}", first);
+                                Get_Info[i] = dataFromClient.Substring(first + 1, next - first - 1);
+                                first = first + 1;
+                                next = next + 1;
+                            }
 
-                                int id_room_pos = dataFromClient.IndexOf("ID_ROOM", 13);
-                                int id_client_pos = dataFromClient.IndexOf("ID_CLIENT", 13);
-                                int id_name_pos = dataFromClient.IndexOf("ID_NAME", 13);
-                                int status_game_pos = dataFromClient.IndexOf("STATUS",13);
+             
 
+                                Console.WriteLine(Get_Info[3]);
 
-                                string id_room = dataFromClient.Substring(id_room_pos+8, id_client_pos-1-8- id_room_pos);
-                                string id_client = dataFromClient.Substring(id_client_pos + 10, id_name_pos - 1 - 10 - id_client_pos);
-                                string id_name = dataFromClient.Substring(id_name_pos + 8, status_game_pos - 8 - id_name_pos);
-                                string status_game = dataFromClient.Substring(status_game_pos + 7, sizefromclient - 7 - status_game_pos);
-
-                                Console.WriteLine(status_game);
-
-                                if (status_game == "new_room_id") 
+                                if (Get_Info[3] == "new_room_id") 
                                 {
 
                                     SqlCommand command = new SqlCommand("SELECT * FROM games WHERE room_id =@id_room ", sqlcon);
 
-                                    command.Parameters.AddWithValue("@id_room", id_room);
+                                    command.Parameters.AddWithValue("@id_room", Get_Info[0]);
 
 
                                     readSql = command.ExecuteReader();
@@ -166,9 +171,9 @@ namespace BunkerServer
                                         readSql.Close();
                                         SqlCommand insert = new SqlCommand("INSERT INTO games (room_id,person_id,name,status,permission) VALUES(@room_id,@person_id,@name,@status,@permission) ", sqlcon);
 
-                                        insert.Parameters.AddWithValue("room_id", id_room);
-                                        insert.Parameters.AddWithValue("person_id", id_client);
-                                        insert.Parameters.AddWithValue("name", id_name);
+                                        insert.Parameters.AddWithValue("room_id", Get_Info[0]);
+                                        insert.Parameters.AddWithValue("person_id", Get_Info[1]);
+                                        insert.Parameters.AddWithValue("name", Get_Info[2]);
                                         insert.Parameters.AddWithValue("status", "waiting");
                                         insert.Parameters.AddWithValue("permission", "admin");
                                         insert.ExecuteNonQuery();
@@ -183,11 +188,11 @@ namespace BunkerServer
 
 
                                 }
-                                if (status_game == "connect_room_id") 
+                                if (Get_Info[3] == "connect_room_id") 
                                 {
                                     SqlCommand command = new SqlCommand("SELECT * FROM games WHERE room_id =@id_room AND  status =@status_game", sqlcon);
 
-                                    command.Parameters.AddWithValue("@id_room", id_room);
+                                    command.Parameters.AddWithValue("@id_room", Get_Info[0]);
                                     command.Parameters.AddWithValue("@status_game", "waiting");
 
 
@@ -198,9 +203,9 @@ namespace BunkerServer
                                         readSql.Close();
                                         SqlCommand insert = new SqlCommand("INSERT INTO games (room_id,person_id,name,status,permission) VALUES(@room_id,@person_id,@name,@status,@permission) ", sqlcon);
 
-                                        insert.Parameters.AddWithValue("room_id", id_room);
-                                        insert.Parameters.AddWithValue("person_id", id_client);
-                                        insert.Parameters.AddWithValue("name", id_name);
+                                        insert.Parameters.AddWithValue("room_id", Get_Info[0]);
+                                        insert.Parameters.AddWithValue("person_id", Get_Info[1]);
+                                        insert.Parameters.AddWithValue("name", Get_Info[2]);
                                         insert.Parameters.AddWithValue("status", "waiting");
                                         insert.Parameters.AddWithValue("permission", "player");
                                         insert.ExecuteNonQuery();
@@ -211,8 +216,7 @@ namespace BunkerServer
                                     int size = Encoding.UTF8.GetByteCount("LOGIN_DISCONN");
                                     Byte[] Bytes_DISCONN = new byte[size];
 
-                                    /* Bytes_DISCONN = Encoding.UTF8.GetBytes(size.ToString());
-                                     networkStream.Write(Bytes_DISCONN, 0, Bytes_DISCONN.Length);*/
+                                  
 
                                     Bytes_DISCONN = Encoding.UTF8.GetBytes("LOGIN_DISCONN");
                                     networkStream.Write(Bytes_DISCONN, 0, Bytes_DISCONN.Length);
@@ -231,7 +235,7 @@ namespace BunkerServer
 
                                 if (NameCheck == true)
                                 {
-                                    string room_player = id_room + " " + id_client + " " +id_name;
+                                    string room_player = "{" + Get_Info[0] + "}{" + Get_Info[1] + "}{" + Get_Info[2] + "}";
 
                                     clientsList.Add(room_player, clientSocket);
                                    // SendConnectRoom("CONNECT__ROOM " + room_player + " Joined ", room_player);
@@ -244,7 +248,7 @@ namespace BunkerServer
 
                                    
                                     clientsList = client.clientsList;
-                                    Player_Online_Room(id_room);
+                                    Player_Online_Room(Get_Info[0]);
                                 }
 
                             }
@@ -254,19 +258,24 @@ namespace BunkerServer
 
 
                                 SqlDataReader readSql;
+                            //LOGIN__CLIENT->LOGIN = PASSWORD =
+                            int  first = 0;
+                            int next =0;
+                            string[] Get_Info = new string[2];
 
-                                int login_pos = dataFromClient.IndexOf("LOGIN", 13);
-                                int pass_pos = dataFromClient.IndexOf("PASSWORD");
-                                string login = null;
-                                string password = null;
-
-                                login = dataFromClient.Substring(login_pos + 6, pass_pos - login_pos - 1 - 6);
-                                password = dataFromClient.Substring(pass_pos + 9, sizefromclient - 9 - pass_pos);
-
+                            for (int i = 0; i < 2; i++)
+                            {
+                                first = dataFromClient.IndexOf("{", next);
+                                next = dataFromClient.IndexOf("}", first);
+                                Get_Info[i] = dataFromClient.Substring(first + 1, next - first - 1);
+                                first = first + 1;
+                                next = next + 1;
+                            }
+                             
                                 SqlCommand command = new SqlCommand("SELECT * FROM person WHERE login =@login AND  password =@password", sqlcon);
 
-                                command.Parameters.AddWithValue("@login", login);
-                                command.Parameters.AddWithValue("@password", password);
+                                command.Parameters.AddWithValue("@login", Get_Info[0]);
+                                command.Parameters.AddWithValue("@password", Get_Info[1]);
 
 
                                 readSql = command.ExecuteReader();
@@ -274,19 +283,19 @@ namespace BunkerServer
                                 if (readSql.Read() == true)
                                 {
 
-                                    string dataClient = (int)readSql["Id"] + "";
-                                    string dataClientinfo = "LOGIN_CONNECT" + " " + "ID_CLIENT=" + (int)readSql["Id"] + " " + "ID_NAME=" + (string)readSql["name"];
+                                    string dataClient = "{"+(int)readSql["Id"] + "}";
+                                    string dataClientinfo = "LOGIN_CONNECT " + "{" + (int)readSql["Id"] + "}" + "{" + (string)readSql["name"] + "}";
 
                                     foreach (string s in keysAutorisation)
                                     {
                                                                             
-                                        if (s.IndexOf(" ") > -1)
+                                        if (s.Length >0)
                                         {
-                                            string y = s.Substring(0, s.IndexOf(" "));
+                                            string y = s.Substring(1, s.IndexOf("}")-1);
                                             string x = (int)readSql["Id"] + "";
 
-
-                                            if (y == x)
+                                        Console.WriteLine(y);
+                                        if (y == x)
                                             {
                                             networkStream.Close();
                                             clientSocket.Close();
@@ -332,21 +341,25 @@ namespace BunkerServer
                             else if (dataFromClient.IndexOf("REGIST_CLIENT", 0, 13) > -1)
                             {
                                 SqlDataReader readSql;
+                            //REGIST_CLIENT->LOGIN = PASSWORD = NAME =
+                            int first = 0;
+                            int next = 0;
+                            string[] Get_Info = new string[3];
 
-                                int login_pos = dataFromClient.IndexOf("LOGIN", 13);
-                                int pass_pos = dataFromClient.IndexOf("PASSWORD");
-                                int name_pos = dataFromClient.IndexOf("NAME");
+                            for (int i = 0; i < 3; i++)
+                            {
+                                first = dataFromClient.IndexOf("{", next);
+                                next = dataFromClient.IndexOf("}", first);
+                                Get_Info[i] = dataFromClient.Substring(first + 1, next - first - 1);
+                                first = first + 1;
+                                next = next + 1;
+                            }
 
-                                string login = null;
-                                string password = null;
-                                string name = null;
 
-                                login = dataFromClient.Substring(login_pos + 6, pass_pos - login_pos - 1 - 6);
-                                password = dataFromClient.Substring(pass_pos + 9, name_pos - 9 - pass_pos);
-                                name = dataFromClient.Substring(name_pos + 5, sizefromclient - 5 - name_pos);
+                       
 
                                 SqlCommand command = new SqlCommand($"SELECT * FROM person WHERE login =@login ", sqlcon);
-                                command.Parameters.AddWithValue("@login", login);
+                                command.Parameters.AddWithValue("@login", Get_Info[0]);
                                 readSql = command.ExecuteReader();
 
                                 if (readSql.Read() != true)
@@ -357,26 +370,28 @@ namespace BunkerServer
                                     SqlDataReader readSqlreg;
 
                                     SqlCommand commandreg = new SqlCommand("INSERT INTO person (login,password,name) VALUES  (@login,@password,@name)", sqlcon);
-                                    commandreg.Parameters.AddWithValue("@login",login);
-                                    commandreg.Parameters.AddWithValue("@password", password);
-                                    commandreg.Parameters.AddWithValue("@name", name);
+                                    commandreg.Parameters.AddWithValue("@login", Get_Info[0]);
+                                    commandreg.Parameters.AddWithValue("@password", Get_Info[1]);
+                                    commandreg.Parameters.AddWithValue("@name", Get_Info[2]);
 
                                     commandreg.ExecuteNonQuery();
 
                                     SqlCommand commandget = new SqlCommand("SELECT * FROM person WHERE login =@login AND  password =@password", sqlcon);
-                                    commandget.Parameters.AddWithValue("@login", login);
-                                    commandget.Parameters.AddWithValue("@password", password);
+                                    commandget.Parameters.AddWithValue("@login", Get_Info[0]);
+                                    commandget.Parameters.AddWithValue("@password", Get_Info[1]);
                                     readSqlreg = commandget.ExecuteReader();
 
                                     if (readSqlreg.Read() == true)
                                     {
-                                        string dataClient = (int)readSqlreg["Id"] + "";
-                                        string dataClientinfo = "LOGIN_CONNECT" + " " + "ID_CLIENT=" + (int)readSqlreg["Id"] + " " + "ID_NAME=" + (string)readSqlreg["name"];
+                                        string dataClient ="{"+ (int)readSqlreg["Id"] + "}";
+                                        string dataClientinfo = "LOGIN_CONNECT " + " " + "{" + (int)readSqlreg["Id"] + "}{" + (string)readSqlreg["name"]+"}";
 
-                                        foreach (string s in keysAutorisation)
+                                    foreach (string s in keysAutorisation)
+                                    {
+
+                                        if (s.Length > 0)
                                         {
-
-                                            string y = s.Substring(0, s.IndexOf(" "));
+                                            string y = s.Substring(1, s.IndexOf("}") - 1);
                                             string x = (int)readSqlreg["Id"] + "";
 
                                             if (y == x)
@@ -387,7 +402,7 @@ namespace BunkerServer
                                                 NameCheck = false;
                                             }
                                         }
-
+                                    }
                                         if (NameCheck == true)
                                         {
                                             clientsListAutorisation.Add(dataClient, clientSocket);
@@ -502,27 +517,26 @@ namespace BunkerServer
             }       
         }
 
-        public static void SendConnectRoom(string msg, string uName)
+        public static void Send_Vote(string msg, string room)
         {
-                int size = Encoding.UTF8.GetByteCount(msg);
-
+            int size = Encoding.UTF8.GetByteCount(msg);
+            Console.WriteLine(msg);
             foreach (DictionaryEntry Item in clientsList)
             {
 
                 Object obj = new Object();
                 obj = Item.Key;
                 string s = obj.ToString();
-                string sName = uName.Substring(0, uName.IndexOf(" "));
+                string sName = room.Substring(0, room.Length);
 
-                if (s.IndexOf(sName) > -1 && s != uName)
+                if (s.IndexOf(sName, 1) > -1)
                 {
+
                     TcpClient broadcastSocket;
                     broadcastSocket = (TcpClient)Item.Value;
                     NetworkStream broadcastStream = broadcastSocket.GetStream();
 
-                   /* byte[] broadcastBytessize = new byte[size];
-                    broadcastBytessize = Encoding.UTF8.GetBytes(size.ToString());
-                    broadcastStream.Write(broadcastBytessize, 0, broadcastBytessize.Length);*/
+                 
 
                     byte[] broadcastBytes = new byte[size];
                     broadcastBytes = Encoding.UTF8.GetBytes(msg);
@@ -563,7 +577,20 @@ namespace BunkerServer
 
                     update.Parameters.AddWithValue("@play", "play");
                     update.Parameters.AddWithValue("@room", room);
-                    update.ExecuteReader();
+                    update.ExecuteNonQuery();
+
+                    SqlCommand empty_voted = new SqlCommand("UPDATE games SET voted_for=@emptyvoted WHERE room_id =@room  ", sql_con_game);
+
+                    empty_voted.Parameters.AddWithValue("@emptyvoted", "empty_voted");
+                    empty_voted.Parameters.AddWithValue("@room", room);
+                    empty_voted.ExecuteNonQuery();
+
+                    SqlCommand round_set = new SqlCommand("UPDATE games SET round=@round_set WHERE room_id=@room  ", sql_con_game);
+
+                    round_set.Parameters.AddWithValue("@round_set", 0);
+                    round_set.Parameters.AddWithValue("@room", room);
+                    round_set.ExecuteNonQuery();
+
                     PlayerInfo(room);
                 }
                 else
@@ -610,6 +637,7 @@ namespace BunkerServer
        
         public static void Player_Online_Room(string room)
         {
+            Console.WriteLine(room);
             string online_names= null;
             foreach (DictionaryEntry Item in clientsList)
             {
@@ -617,7 +645,7 @@ namespace BunkerServer
                 obj = Item.Key;
                 string s = obj.ToString();
 
-                if (s.IndexOf(room, 0, room.Length) > -1) online_names = online_names +" {" + s + "} ";
+                if (s.IndexOf(room, 1) > -1) online_names = online_names +"(" + s + ") ";
               
             }
 
@@ -629,9 +657,12 @@ namespace BunkerServer
 
                 Object obj = new Object();
                 obj = Item.Key;
-                string s = obj.ToString();              
+                string s = obj.ToString();
 
-                if (s.IndexOf(room, 0, room.Length) > -1)
+                Console.WriteLine(s);
+                Console.WriteLine(online_names);
+
+                if (s.IndexOf(room, 1) > -1)
                 {
                     Console.WriteLine(s);
                     Console.WriteLine(online_names);
@@ -640,9 +671,7 @@ namespace BunkerServer
                     broadcastSocket = (TcpClient)Item.Value;
                     NetworkStream broadcastStream = broadcastSocket.GetStream();
 
-                   /* byte[] broadcastBytessize = new byte[size];
-                    broadcastBytessize = Encoding.UTF8.GetBytes(size.ToString());
-                    broadcastStream.Write(broadcastBytessize, 0, broadcastBytessize.Length);*/
+                 
 
                     byte[] broadcastBytes = new byte[size];
                     broadcastBytes = Encoding.UTF8.GetBytes(online_names);
@@ -664,15 +693,13 @@ namespace BunkerServer
                 string s = obj.ToString();
                 string sName = room.Substring(0, room.Length);
 
-                if (s.IndexOf(sName) > -1 )
+                if (s.IndexOf(sName,1) > -1 )
                 { Console.WriteLine(msg);
                     TcpClient broadcastSocket;
                     broadcastSocket = (TcpClient)Item.Value;
                     NetworkStream broadcastStream = broadcastSocket.GetStream();
 
-                    /* byte[] broadcastBytessize = new byte[size];
-                     broadcastBytessize = Encoding.UTF8.GetBytes(size.ToString());
-                     broadcastStream.Write(broadcastBytessize, 0, broadcastBytessize.Length);*/
+                    
 
                     byte[] broadcastBytes = new byte[size];
                     broadcastBytes = Encoding.UTF8.GetBytes(msg);
@@ -695,16 +722,14 @@ namespace BunkerServer
                 string s = obj.ToString();
                 string sName = room.Substring(0, room.Length);
 
-                if (s.IndexOf(sName) > -1)
+                if (s.IndexOf(sName,1) > -1)
                 {
                     
                     TcpClient broadcastSocket;
                     broadcastSocket = (TcpClient)Item.Value;
                     NetworkStream broadcastStream = broadcastSocket.GetStream();
 
-                    /* byte[] broadcastBytessize = new byte[size];
-                     broadcastBytessize = Encoding.UTF8.GetBytes(size.ToString());
-                     broadcastStream.Write(broadcastBytessize, 0, broadcastBytessize.Length);*/
+                    
 
                     byte[] broadcastBytes = new byte[size];
                     broadcastBytes = Encoding.UTF8.GetBytes(msg);
@@ -722,7 +747,7 @@ namespace BunkerServer
             int players = 0;
             string allinfoFull = null;
             string NameInfo = null;
-
+           
             foreach (DictionaryEntry Item in clientsList)
             {
 
@@ -730,21 +755,37 @@ namespace BunkerServer
                 obj = Item.Key;
                 string s = obj.ToString();
 
-                if (s.IndexOf(room, 0, room.Length) > -1)
+                if (s.IndexOf(room, 1) > -1)
                 {
                     players++;
                     allinfo[i] = iPerson.AllInfo();
 
                     if (players == 1)
                     {
-                        NameInfo = " ID_PLAYER=" + players + "(ID_NAME=" + s + "info=" + allinfo[i] + " move=" + "yes" + ")";
+                        /*
+            ALL_INFO_GAME=players=1 ID_PLAYER=1(ID_NAME={jin}{1}{dan}
+            info={36}{Женский}{Стоматолог}{Садоводство}{Наркомания}{Вода}{арахнофобия}{вежливость}{#103}{#103} move=yes)
+            Location={Вторжение инопланетян}{Гидропоника}{Процент живых людей90}
+                         
+                         */
 
-                        int id_player_pos = s.IndexOf(" ");
-                        int id_player_pos_next = s.IndexOf(" ", id_player_pos + 1);
 
-                        string id_player = s.Substring(id_player_pos + 1, id_player_pos_next - id_player_pos - 1);
+                        NameInfo = "(" + "{" + players + "}" + s + allinfo[i] + "{yes}" + ")";
 
-                        Console.WriteLine("id_player " + id_player);
+                       
+                        int first = 0;
+                        int next = 0;
+                        string[] Get_Info = new string[3];
+
+                        for (int j = 0; j < 3; j++)
+                        {
+                            first = s.IndexOf("{", next);
+                            next = s.IndexOf("}", first);
+                            Get_Info[j] = s.Substring(first + 1, next - first - 1);
+                            first = first + 1;
+                            next = next + 1;
+                        }
+
                         SqlConnection sql_move = null;
 
                         string str_con = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\программ\\Bunker\\BunkerServer\\Bunker.mdf;Integrated Security=True;";
@@ -759,7 +800,7 @@ namespace BunkerServer
                             update.Parameters.AddWithValue("@move_player", "yes");
                             update.Parameters.AddWithValue("@room", room);
                             update.Parameters.AddWithValue("@number", players);
-                            update.Parameters.AddWithValue("@id_player", id_player);
+                            update.Parameters.AddWithValue("@id_player", Get_Info[1]);
                             update.Parameters.AddWithValue("@p_status", "play");
 
 
@@ -772,14 +813,21 @@ namespace BunkerServer
                     }
                     else
                     {
-                        NameInfo = " ID_PLAYER=" + players + "(ID_NAME=" + s + "info=" + allinfo[i] + " move=" + "no" + ")";
+                        NameInfo = "(" + "{" + players + "}" + s + allinfo[i] + "{no}" + ")";
 
-                        int id_player_pos = s.IndexOf(" ");
-                        int id_player_pos_next = s.IndexOf(" ", id_player_pos+1);
-                       
 
-                        string id_player = s.Substring(id_player_pos+1, id_player_pos_next - id_player_pos-1);
+                        int first = 0;
+                        int next = 0;
+                        string[] Get_Info = new string[3];
 
+                        for (int j = 0; j < 3; j++)
+                        {
+                            first = s.IndexOf("{", next);
+                            next = s.IndexOf("}", first);
+                            Get_Info[j] = s.Substring(first + 1, next - first - 1);
+                            first = first + 1;
+                            next = next + 1;
+                        }
                         SqlConnection sql_move = null;
 
                         string str_con = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\программ\\Bunker\\BunkerServer\\Bunker.mdf;Integrated Security=True;";
@@ -794,7 +842,7 @@ namespace BunkerServer
                             update.Parameters.AddWithValue("@move_player", "no");
                             update.Parameters.AddWithValue("@room", room);
                             update.Parameters.AddWithValue("@number", players);
-                            update.Parameters.AddWithValue("@id_player", id_player);
+                            update.Parameters.AddWithValue("@id_player", Get_Info[1]);
                             update.Parameters.AddWithValue("@p_status", "play");
 
                             update.ExecuteReader();
@@ -808,7 +856,7 @@ namespace BunkerServer
                     
                 }
             }
-           allinfoFull = "ALL_INFO_GAME=" +"players="+ players + allinfoFull + "Location=" + LocationMaps;
+           allinfoFull = "ALL_INFO_GAME " +"{"+ players + "}" + allinfoFull + "(" + LocationMaps + ")";
             Send_player_info(allinfoFull, room);
             allinfoFull = null;
         } 
@@ -837,8 +885,9 @@ namespace BunkerServer
         }
 
 
-        public static void Next_move(string room)
+        public static void Next_move(string room, bool flag)
         {
+            Console.WriteLine("Next_move");
             bool error_check = true;
             SqlConnection sql_con_game = null;
             string str_con = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\программ\\Bunker\\BunkerServer\\Bunker.mdf;Integrated Security=True;";
@@ -952,7 +1001,10 @@ namespace BunkerServer
                             readSql = get_new_move_player.ExecuteReader();
                             if (readSql.Read() == true)
                             {
-                                string dataClientinfo = "NEXT_____MOVE" + " ID_ROOM=" + room + " ID_CLIENT=" + (string)readSql["person_id"] + " ID_NAME=" + (string)readSql["name"];
+                                string dataClientinfo;
+                                
+                                if (flag == false)  dataClientinfo = "NEXT_____MOVE " + "{" + room + "}{" + (string)readSql["person_id"] + "}{" + (string)readSql["name"]+"}";
+                                else dataClientinfo = "NEXT_NEW_MOVE " + "{" + room + "}{" + (string)readSql["person_id"] + "}{" + (string)readSql["name"] + "}";
                                 readSql.Close();
                                 Send_Next_Move(dataClientinfo, room);
                             }
@@ -995,7 +1047,7 @@ namespace BunkerServer
                 string s = obj.ToString();
                 string sName = room.Substring(0, room.Length);
 
-                if (s.IndexOf(sName) > -1)
+                if (s.IndexOf(sName,1) > -1)
                 {
 
                     TcpClient broadcastSocket;
@@ -1014,129 +1066,915 @@ namespace BunkerServer
             }
 
         }
-        
-        public static void Voting_kick(string msg, string room)
+
+
+        public static void Send_who_kick(string msg, string room)
         {
-            int room_pos = msg.IndexOf(room);
-            int name_pos = msg.IndexOf(" ",room_pos+1);
-            string id = msg.Substring(room_pos +1, name_pos- room_pos-1);
 
-            SqlConnection vote_sql = null;
-            string str_con = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\программ\\Bunker\\BunkerServer\\Bunker.mdf;Integrated Security=True;";
-            vote_sql= new SqlConnection(str_con);
-            vote_sql.Open();
-            if(vote_sql.State == ConnectionState.Open)
+            int size = Encoding.UTF8.GetByteCount(msg);
+            Console.WriteLine(msg);
+            foreach (DictionaryEntry Item in clientsList)
             {
-                Console.WriteLine("Bunker BD5 Started ");
 
-                SqlDataReader readSql;
+                Object obj = new Object();
+                obj = Item.Key;
+                string s = obj.ToString();
+                string sName = room.Substring(0, room.Length);
 
-
-
-                SqlCommand select_p = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
-                select_p.Parameters.AddWithValue("@room", room);
-                select_p.Parameters.AddWithValue("@person_id", id);
-
-                readSql = select_p.ExecuteReader();
-                if (readSql.Read() == true)
+                if (s.IndexOf(sName,1) > -1)
                 {
-                    string player_status = (string)readSql["player_status"];
-                    int vote_kick = (int)readSql["vote_kick"];
-                    int voted = (int)readSql["voted"];
-                    readSql.Close();
-                    if (player_status.IndexOf("play") >1)
+
+                    TcpClient broadcastSocket;
+                    broadcastSocket = (TcpClient)Item.Value;
+                    NetworkStream broadcastStream = broadcastSocket.GetStream();
+
+                    /* byte[] broadcastBytessize = new byte[size];
+                     broadcastBytessize = Encoding.UTF8.GetBytes(size.ToString());
+                     broadcastStream.Write(broadcastBytessize, 0, broadcastBytessize.Length);*/
+
+                    byte[] broadcastBytes = new byte[size];
+                    broadcastBytes = Encoding.UTF8.GetBytes(msg);
+                    broadcastStream.Write(broadcastBytes, 0, broadcastBytes.Length);
+
+                }
+            }
+
+        }
+        public static void End_the_game(string msg, string room)
+        {
+
+            int size = Encoding.UTF8.GetByteCount(msg);
+            Console.WriteLine(msg);
+            foreach (DictionaryEntry Item in clientsList)
+            {
+
+                Object obj = new Object();
+                obj = Item.Key;
+                string s = obj.ToString();
+                string sName = room.Substring(0, room.Length);
+
+                if (s.IndexOf(sName, 1) > -1)
+                {
+
+                    TcpClient broadcastSocket;
+                    broadcastSocket = (TcpClient)Item.Value;
+                    NetworkStream broadcastStream = broadcastSocket.GetStream();
+
+                    /* byte[] broadcastBytessize = new byte[size];
+                     broadcastBytessize = Encoding.UTF8.GetBytes(size.ToString());
+                     broadcastStream.Write(broadcastBytessize, 0, broadcastBytessize.Length);*/
+
+                    byte[] broadcastBytes = new byte[size];
+                    broadcastBytes = Encoding.UTF8.GetBytes(msg);
+                    broadcastStream.Write(broadcastBytes, 0, broadcastBytes.Length);
+
+                }
+            }
+
+        }
+        public static void Voting_kick(string msg, string room, string name, string status)
+        {
+
+            int first = 0;
+            int next = 0;
+            string[] Get_Info = new string[2];
+
+            for (int i = 0; i < 2; i++)
+            {
+                first = name.IndexOf("{", next);
+                next = name.IndexOf("}", first);
+                Get_Info[i] = name.Substring(first + 1, next - first - 1);
+                first = first + 1;
+                next = next + 1;
+            }
+            string id = msg;
+
+            if (status.IndexOf("skip") > -1)
+            {
+                SqlConnection vote_sql = null;
+                string str_con = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\программ\\Bunker\\BunkerServer\\Bunker.mdf;Integrated Security=True;";
+                vote_sql = new SqlConnection(str_con);
+                vote_sql.Open();
+                if (vote_sql.State == ConnectionState.Open)
+                {
+                    SqlDataReader readSql;
+                    SqlCommand select_action = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
+                    select_action.Parameters.AddWithValue("@room", room);
+                    select_action.Parameters.AddWithValue("@id", Get_Info[1]);
+
+                    readSql = select_action.ExecuteReader();
+                    if (readSql.Read() == true)
                     {
-                        vote_kick++;
-                        voted++;
-                        SqlCommand write_vote = new SqlCommand("UPDATE games SET vote_kick=@vote_k,voted=@vote WHERE person_id=@id AND room_id=@room", vote_sql);
-                        write_vote.Parameters.AddWithValue("@vote_k", vote_kick);
-                        write_vote.Parameters.AddWithValue("@vote", voted);
-                        write_vote.Parameters.AddWithValue("@room", room);
-                        write_vote.Parameters.AddWithValue("@person_id", id);
-                        write_vote.ExecuteNonQuery();
+                        int action = (int)readSql["action"];
+                        action++;
+                        readSql.Close();
 
-
-                        SqlCommand count_player_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@status", vote_sql);
-                        count_player_sql.Parameters.AddWithValue("@id_room", room);
-                        count_player_sql.Parameters.AddWithValue("@status", "play");
-
-                        Int32 count_player = (Int32)count_player_sql.ExecuteScalar();
-
-                        SqlCommand check = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
-                        check.Parameters.AddWithValue("@room", room);
-                        check.Parameters.AddWithValue("@person_id", id);
-
-                        readSql = check.ExecuteReader();
-                        if(readSql.Read() == true)
-                        {
-                            int vote_kick_new = (int)readSql["vote_kick"];
-                            int voted_new = (int)readSql["voted"];
-                            readSql.Close();
-
-                            if(voted_new == count_player)
-                            {
-
-                                SqlCommand max_vote = new SqlCommand("SELECT MAX(vote_kick) FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
-                                max_vote.Parameters.AddWithValue("@id",id);
-                                max_vote.Parameters.AddWithValue("@room_id", room);
-                                int max_vote_count = (int)max_vote.ExecuteScalar();
-
-
-                                SqlCommand get_player_for_kick = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room AND vote_kick=@vote_k", vote_sql);
-                                get_player_for_kick.Parameters.AddWithValue("@id", id);
-                                get_player_for_kick.Parameters.AddWithValue("@room_id", room);
-                                get_player_for_kick.Parameters.AddWithValue("@vote_k", max_vote_count);
-
-                                readSql = get_player_for_kick.ExecuteReader();
-                                if(readSql.Read()== true)
-                                {
-                                    string room_id = (string)readSql["room_id"];
-                                    string player_id = (string)readSql["person_id"];
-                                    string player_name = (string)readSql["name"];
-                                    //VOTING___KICK->ID_ROOM = KICK =
-                                    readSql.Close();
-
-                                    string full_name = room_id + " " + player_id + " " + player_name;
-
-                                    string send_result_ = "VOTING___KICK " + "ID_ROOM=" + room_id + "KICK=" + full_name;
-
-
-
-                                }
-                                else
-                                {
-                                    readSql.Close();
-                                }
-
-
-                            }
-
-
-                        }
-                        else
-                        {
-                            readSql.Close();
-                        }
-
-                        
-
+                        SqlCommand action_sql = new SqlCommand("UPDATE games SET action=@action_p WHERE room_id=@room and person_id=@id", vote_sql);
+                        action_sql.Parameters.AddWithValue("@action_p", action);
+                        action_sql.Parameters.AddWithValue("@room", room);
+                        action_sql.Parameters.AddWithValue("@id", Get_Info[1]);
+                        action_sql.ExecuteNonQuery();
                     }
                     else
                     {
                         readSql.Close();
                     }
 
-                }
+                    SqlCommand count_player_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@status", vote_sql);
+                    count_player_sql.Parameters.AddWithValue("@id_room", room);
+                    count_player_sql.Parameters.AddWithValue("@status", "play");
+                    Int32 count_player = (Int32)count_player_sql.ExecuteScalar();
 
+                    SqlCommand count_action_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@status AND action=@action_p", vote_sql);
+                    count_action_sql.Parameters.AddWithValue("@id_room", room);
+                    count_action_sql.Parameters.AddWithValue("@status", "play");
+                    count_action_sql.Parameters.AddWithValue("@action_p", 2);
+                    Int32 count_action = (Int32)count_action_sql.ExecuteScalar();
+
+                    SqlCommand check = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
+                    check.Parameters.AddWithValue("@room", room);
+                    check.Parameters.AddWithValue("@id", id);
+                    readSql = check.ExecuteReader();
+
+                    if (readSql.Read() == true)
+                    {
+                        string room_id = (string)readSql["room_id"];
+                        string player_id = (string)readSql["person_id"];
+                        string player_name = (string)readSql["name"];
+                        int vote_kick_new = (int)readSql["vote_kick"];
+                        string full_name = "{" + room_id + "}{" + player_id + "}{" + player_name + "}";
+                        string new_msg = "COUNT____VOTE " + full_name + "{" + vote_kick_new + "}";
+                        Send_Vote(new_msg, room);
+
+                        int voted_new = (int)readSql["voted"];
+                        readSql.Close();
+
+                        if (count_action == count_player)
+                        {
+
+                            SqlCommand max_vote = new SqlCommand("SELECT MAX(vote_kick) FROM games WHERE room_id=@room", vote_sql);
+
+                            max_vote.Parameters.AddWithValue("@room", room);
+                            int max_vote_count = (int)max_vote.ExecuteScalar();
+
+                            SqlCommand vote_kick_count_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND vote_kick=@vote_kick_count", vote_sql);
+                            vote_kick_count_sql.Parameters.AddWithValue("@id_room", room);
+                            vote_kick_count_sql.Parameters.AddWithValue("@vote_kick_count", max_vote_count);
+
+                            Int32 vote_kick_count = (Int32)vote_kick_count_sql.ExecuteScalar();
+
+
+                            SqlCommand get_player_for_kick = new SqlCommand("SELECT * FROM games WHERE room_id=@room AND vote_kick=@vote_k", vote_sql);
+                            get_player_for_kick.Parameters.AddWithValue("@room", room);
+                            get_player_for_kick.Parameters.AddWithValue("@vote_k", max_vote_count);
+
+                            readSql = get_player_for_kick.ExecuteReader();
+                            if (readSql.Read() == true)
+                            {
+                                room_id = (string)readSql["room_id"];
+                                player_id = (string)readSql["person_id"];
+                                player_name = (string)readSql["name"];
+                                //VOTING___KICK->ID_ROOM = KICK =
+                                readSql.Close();
+                                SqlCommand update_info = new SqlCommand("UPDATE games SET vote_kick=@vote_k,voted=@vote WHERE room_id=@room", vote_sql);
+                                update_info.Parameters.AddWithValue("@vote_k", (int)0);
+                                update_info.Parameters.AddWithValue("@vote", (int)0);
+                                update_info.Parameters.AddWithValue("@room", room_id);
+                                update_info.ExecuteNonQuery();
+
+                                SqlCommand update_action_sql = new SqlCommand("UPDATE games SET action=@action_p WHERE room_id=@room", vote_sql);
+                                update_action_sql.Parameters.AddWithValue("@action_p", (int)0);
+                                update_action_sql.Parameters.AddWithValue("@room", room_id);
+                                update_action_sql.ExecuteNonQuery();
+
+
+
+
+                                SqlCommand update_voted_for = new SqlCommand("UPDATE games SET voted_for=@voted WHERE room_id=@room", vote_sql);
+                                update_voted_for.Parameters.AddWithValue("@voted", "empty_voted");
+                                update_voted_for.Parameters.AddWithValue("@room", room);
+                                update_voted_for.ExecuteNonQuery();
+
+
+                                if (vote_kick_count == 1)
+                                {
+                                    int round = 0;
+                                    SqlCommand select_round = new SqlCommand("SELECT * FROM games WHERE room_id=@room ", vote_sql);
+                                    select_round.Parameters.AddWithValue("@room", room);
+                                    readSql = select_round.ExecuteReader();
+                                    if (readSql.Read() == true)
+                                    {
+                                        round = (int)readSql["round"];
+                                        readSql.Close();
+                                        round++;
+                                    }
+                                    else
+                                    {
+                                        readSql.Close();
+                                    }
+
+                                    SqlCommand round_set = new SqlCommand("UPDATE games SET round=@round_set WHERE room_id=@room  ", vote_sql);
+                                    round_set.Parameters.AddWithValue("@round_set", round);
+                                    round_set.Parameters.AddWithValue("@room", room);
+                                    round_set.ExecuteNonQuery();
+
+                                    SqlCommand update_info_player = new SqlCommand("UPDATE games SET player_status=@status WHERE person_id=@id AND room_id=@room", vote_sql);
+                                    update_info_player.Parameters.AddWithValue("@status", "kick");
+                                    update_info_player.Parameters.AddWithValue("@room", room_id);
+                                    update_info_player.Parameters.AddWithValue("@id", player_id);
+                                    update_info_player.ExecuteNonQuery();
+
+                                    full_name = "{" + room_id + "}{" + player_id + "}{" + player_name + "}";
+
+                                    SqlCommand playing_players_count_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@p_status", vote_sql);
+                                    playing_players_count_sql.Parameters.AddWithValue("@id_room", room);
+                                    playing_players_count_sql.Parameters.AddWithValue("@p_status", "play");
+                                    Int32 playing_players_count = (Int32)playing_players_count_sql.ExecuteScalar();
+
+                                    SqlCommand players_count_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room", vote_sql);
+                                    players_count_sql.Parameters.AddWithValue("@id_room", room);
+                                    Int32 players_count = (Int32)players_count_sql.ExecuteScalar();
+
+                                    SqlCommand players_count_kick_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@p_status", vote_sql);
+                                    players_count_kick_sql.Parameters.AddWithValue("@id_room", room);
+                                    players_count_kick_sql.Parameters.AddWithValue("@p_status", "kick");
+                                    Int32 players_count_kick = (Int32)players_count_kick_sql.ExecuteScalar();
+
+
+
+                                    if (playing_players_count == Math.Ceiling(players_count / 2.0))
+                                    {
+                                        SqlCommand update_status = new SqlCommand("UPDATE games SET status=@status_game WHERE room_id=@room", vote_sql);
+                                        update_status.Parameters.AddWithValue("@status_game", "end");
+                                        update_status.Parameters.AddWithValue("@room", room_id);
+                                        update_status.ExecuteNonQuery();
+
+                                        SqlCommand update_player_status = new SqlCommand("UPDATE games SET player_status=@status WHERE player_status=@status_play AND room_id=@room", vote_sql);
+                                        update_player_status.Parameters.AddWithValue("@status", "win");
+                                        update_player_status.Parameters.AddWithValue("@room", room_id);
+                                        update_player_status.Parameters.AddWithValue("@status_play", "play");
+                                        update_player_status.ExecuteNonQuery();
+
+                                        string send_end_game_ = "END__THE_GAME " + full_name;
+                                        End_the_game(send_end_game_, room_id);
+                                    }
+                                    else
+                                    {
+                                        string send_result_ = "VOTING___KICK " + full_name;
+
+                                        Send_who_kick(send_result_, room_id);
+                                        Thread.Sleep(300);
+
+                                        if (players_count_kick != round)
+                                        {
+                                            string one_more_kick = "ONE_MORE_KICK ";
+
+                                            Send_who_kick(one_more_kick, room_id);
+
+                                        }
+                                        else
+                                        {
+                                            SqlCommand check_move = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
+                                            check_move.Parameters.AddWithValue("@room", room);
+                                            check_move.Parameters.AddWithValue("@id", player_id);
+                                            readSql = check_move.ExecuteReader();
+
+                                            if (readSql.Read() == true)
+                                            {
+                                                string move = (string)readSql["move"];
+
+                                                if (move.IndexOf("yes") > -1) Next_move(room, true);
+                                                readSql.Close();
+                                            }
+                                            else
+                                            {
+                                                readSql.Close();
+                                            }
+
+                                        }
+
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    int round = 0;
+                                    SqlCommand select_round = new SqlCommand("SELECT * FROM games WHERE room_id=@room ", vote_sql);
+                                    select_round.Parameters.AddWithValue("@room", room);
+                                    readSql = select_round.ExecuteReader();
+                                    if (readSql.Read() == true)
+                                    {
+                                        round = (int)readSql["round"];
+                                        readSql.Close();
+                                        round++;
+                                    }
+                                    else
+                                    {
+                                        readSql.Close();
+                                    }
+
+                                    SqlCommand round_set = new SqlCommand("UPDATE games SET round=@round_set WHERE room_id=@room  ", vote_sql);
+                                    round_set.Parameters.AddWithValue("@round_set", round);
+                                    round_set.Parameters.AddWithValue("@room", room);
+                                    round_set.ExecuteNonQuery();
+
+                                    string send_result_ = "VOTING_N_KICK ";
+                                    Send_who_kick(send_result_, room_id);
+                                }
+
+                            }
+                            else
+                            {
+                                readSql.Close();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        readSql.Close();
+                    }
+
+                    vote_sql.Close();
+                }
+                else 
+                {
+                    vote_sql.Close();
+                }
             }
             else
             {
-            vote_sql.Close();
+                
 
+                Console.WriteLine("id " + id);
+
+
+                SqlConnection vote_sql = null;
+                string str_con = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\программ\\Bunker\\BunkerServer\\Bunker.mdf;Integrated Security=True;";
+                vote_sql = new SqlConnection(str_con);
+                vote_sql.Open();
+                if (vote_sql.State == ConnectionState.Open)
+                {
+                    Console.WriteLine("Bunker BD5 Started ");
+
+                    SqlDataReader readSql;
+
+
+
+                    SqlCommand select_p = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
+                    select_p.Parameters.AddWithValue("@room", room);
+                    select_p.Parameters.AddWithValue("@id", id);
+
+                    readSql = select_p.ExecuteReader();
+                    if (readSql.Read() == true)
+                    {
+                        string player_status = (string)readSql["player_status"];
+                        int vote_kick = (int)readSql["vote_kick"];
+                        int voted = (int)readSql["voted"];
+                        readSql.Close();
+
+                        SqlCommand select_voted_for = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
+                        select_voted_for.Parameters.AddWithValue("@room", room);
+                        select_voted_for.Parameters.AddWithValue("@id", Get_Info[1]);
+                        readSql = select_voted_for.ExecuteReader();
+
+                        if (readSql.Read() == true)
+                        {
+
+                            string voted_for_last = (string)readSql["voted_for"];
+                            readSql.Close();
+
+                            if (player_status == "play")
+                            {
+                                bool check_vote = false;
+
+                                SqlCommand select_action = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
+                                select_action.Parameters.AddWithValue("@room", room);
+                                select_action.Parameters.AddWithValue("@id", Get_Info[1]);
+
+                                readSql = select_action.ExecuteReader();
+                                if (readSql.Read() == true)
+                                {
+                                    int action = (int)readSql["action"];
+                                    action++;
+                                    readSql.Close();
+
+                                    SqlCommand action_sql = new SqlCommand("UPDATE games SET action=@action_p WHERE room_id=@room and person_id=@id", vote_sql);
+                                    action_sql.Parameters.AddWithValue("@action_p", action);
+                                    action_sql.Parameters.AddWithValue("@room", room);
+                                    action_sql.Parameters.AddWithValue("@id", Get_Info[1]);
+                                    action_sql.ExecuteNonQuery();
+                                }
+                                else
+                                {
+                                    readSql.Close();
+                                }
+
+                                if (voted_for_last != id && voted_for_last != "empty_voted")
+                                {
+                                   
+                                    check_vote = true;
+
+                                    SqlCommand select_voted = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
+                                    select_voted.Parameters.AddWithValue("@room", room);
+                                    select_voted.Parameters.AddWithValue("@id", voted_for_last);
+                                    readSql = select_voted.ExecuteReader();
+
+                                    if (readSql.Read() == true)
+                                    {
+                                        int vote_kick_last = (int)readSql["vote_kick"];
+
+                                        vote_kick_last--;
+
+                                        readSql.Close();
+
+                                        SqlCommand update_vote = new SqlCommand("UPDATE games SET vote_kick=@vote_k WHERE person_id=@id AND room_id=@room", vote_sql);
+                                        update_vote.Parameters.AddWithValue("@vote_k", vote_kick_last);
+                                        update_vote.Parameters.AddWithValue("@room", room);
+                                        update_vote.Parameters.AddWithValue("@id", voted_for_last);
+                                        update_vote.ExecuteNonQuery();
+
+                                    }
+                                    else
+                                    {
+                                        readSql.Close();
+                                    }
+                                }
+                              
+                                if (voted_for_last != id)
+                                {
+                                   
+                                    vote_kick++;
+                                    if (check_vote == false) voted++;
+                                    SqlCommand write_vote = new SqlCommand("UPDATE games SET vote_kick=@vote_k,voted=@vote WHERE person_id=@id AND room_id=@room", vote_sql);
+                                    write_vote.Parameters.AddWithValue("@vote_k", vote_kick);
+                                    write_vote.Parameters.AddWithValue("@vote", voted);
+                                    write_vote.Parameters.AddWithValue("@room", room);
+                                    write_vote.Parameters.AddWithValue("@id", id);
+                                    write_vote.ExecuteNonQuery();
+
+                                    SqlCommand write_voted = new SqlCommand("UPDATE games SET voted=@vote WHERE room_id=@room", vote_sql);
+                                    write_voted.Parameters.AddWithValue("@vote", voted);
+                                    write_voted.Parameters.AddWithValue("@room", room);
+                                    write_voted.ExecuteNonQuery();
+
+                                    SqlCommand voted_for = new SqlCommand("UPDATE games SET voted_for=@voted WHERE room_id=@room and person_id=@id", vote_sql);
+                                    voted_for.Parameters.AddWithValue("@voted", id);
+                                    voted_for.Parameters.AddWithValue("@room", room);
+                                    voted_for.Parameters.AddWithValue("@id", Get_Info[1]);
+
+                                    voted_for.ExecuteNonQuery();
+
+
+                                    SqlCommand count_player_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@status", vote_sql);
+                                    count_player_sql.Parameters.AddWithValue("@id_room", room);
+                                    count_player_sql.Parameters.AddWithValue("@status", "play");
+                                    Int32 count_player = (Int32)count_player_sql.ExecuteScalar();
+
+                                    SqlCommand count_action_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@status AND action=@action_p", vote_sql);
+                                    count_action_sql.Parameters.AddWithValue("@id_room", room);
+                                    count_action_sql.Parameters.AddWithValue("@status", "play");
+                                    count_action_sql.Parameters.AddWithValue("@action_p", 2);
+                                    Int32 count_action = (Int32)count_action_sql.ExecuteScalar();
+
+
+                                    SqlCommand check = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
+                                    check.Parameters.AddWithValue("@room", room);
+                                    check.Parameters.AddWithValue("@id", id);
+                                    readSql = check.ExecuteReader();
+
+                                    if (readSql.Read() == true)
+                                    {
+                                        string room_id = (string)readSql["room_id"];
+                                        string player_id = (string)readSql["person_id"];
+                                        string player_name = (string)readSql["name"];
+                                        int vote_kick_new = (int)readSql["vote_kick"];
+                                        string full_name = "{" + room_id + "}{" + player_id + "}{" + player_name + "}";
+                                        string new_msg = "COUNT____VOTE " + full_name + "{" + vote_kick_new + "}";
+                                        Send_Vote(new_msg, room);
+
+                                        int voted_new = (int)readSql["voted"];
+                                        readSql.Close();
+
+                                        if (count_action == count_player)
+                                        {
+
+                                            SqlCommand max_vote = new SqlCommand("SELECT MAX(vote_kick) FROM games WHERE room_id=@room", vote_sql);
+
+                                            max_vote.Parameters.AddWithValue("@room", room);
+                                            int max_vote_count = (int)max_vote.ExecuteScalar();
+
+                                            SqlCommand vote_kick_count_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND vote_kick=@vote_kick_count", vote_sql);
+                                            vote_kick_count_sql.Parameters.AddWithValue("@id_room", room);
+                                            vote_kick_count_sql.Parameters.AddWithValue("@vote_kick_count", max_vote_count);
+
+                                            Int32 vote_kick_count = (Int32)vote_kick_count_sql.ExecuteScalar();
+
+
+                                            SqlCommand get_player_for_kick = new SqlCommand("SELECT * FROM games WHERE room_id=@room AND vote_kick=@vote_k", vote_sql);
+                                            get_player_for_kick.Parameters.AddWithValue("@room", room);
+                                            get_player_for_kick.Parameters.AddWithValue("@vote_k", max_vote_count);
+
+                                            readSql = get_player_for_kick.ExecuteReader();
+                                            if (readSql.Read() == true)
+                                            {
+                                                room_id = (string)readSql["room_id"];
+                                                player_id = (string)readSql["person_id"];
+                                                player_name = (string)readSql["name"];
+                                                //VOTING___KICK->ID_ROOM = KICK =
+                                                readSql.Close();
+                                                SqlCommand update_info = new SqlCommand("UPDATE games SET vote_kick=@vote_k,voted=@vote WHERE room_id=@room", vote_sql);
+                                                update_info.Parameters.AddWithValue("@vote_k", (int)0);
+                                                update_info.Parameters.AddWithValue("@vote", (int)0);
+                                                update_info.Parameters.AddWithValue("@room", room_id);
+                                                update_info.ExecuteNonQuery();
+
+                                                SqlCommand update_action_sql = new SqlCommand("UPDATE games SET action=@action_p WHERE room_id=@room", vote_sql);
+                                                update_action_sql.Parameters.AddWithValue("@action_p", (int)0);
+                                                update_action_sql.Parameters.AddWithValue("@room", room_id);
+                                                update_action_sql.ExecuteNonQuery();
+
+                                                SqlCommand update_voted_for = new SqlCommand("UPDATE games SET voted_for=@voted WHERE room_id=@room", vote_sql);
+                                                update_voted_for.Parameters.AddWithValue("@voted", "empty_voted");
+                                                update_voted_for.Parameters.AddWithValue("@room", room);
+                                                update_voted_for.ExecuteNonQuery();
+
+
+                                                if (vote_kick_count == 1)
+                                                {
+                                                    int round = 0;
+                                                    SqlCommand select_round = new SqlCommand("SELECT * FROM games WHERE room_id=@room ", vote_sql);
+                                                    select_round.Parameters.AddWithValue("@room", room);
+                                                    readSql = select_round.ExecuteReader();
+                                                    if (readSql.Read() == true)
+                                                    {
+                                                        round = (int)readSql["round"];
+                                                        readSql.Close();
+                                                        round++;
+                                                    }
+                                                    else
+                                                    {
+                                                        readSql.Close();
+                                                    }
+
+                                                    SqlCommand round_set = new SqlCommand("UPDATE games SET round=@round_set WHERE room_id=@room  ", vote_sql);
+                                                    round_set.Parameters.AddWithValue("@round_set", round);
+                                                    round_set.Parameters.AddWithValue("@room", room);
+                                                    round_set.ExecuteNonQuery();
+
+                                                    SqlCommand update_info_player = new SqlCommand("UPDATE games SET player_status=@status WHERE person_id=@id AND room_id=@room", vote_sql);
+                                                    update_info_player.Parameters.AddWithValue("@status", "kick");
+                                                    update_info_player.Parameters.AddWithValue("@room", room_id);
+                                                    update_info_player.Parameters.AddWithValue("@id", player_id);
+                                                    update_info_player.ExecuteNonQuery();
+
+                                                    full_name = "{" + room_id + "}{" + player_id + "}{" + player_name + "}";
+
+                                                    SqlCommand playing_players_count_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@p_status", vote_sql);
+                                                    playing_players_count_sql.Parameters.AddWithValue("@id_room", room);
+                                                    playing_players_count_sql.Parameters.AddWithValue("@p_status", "play");
+                                                    Int32 playing_players_count = (Int32)playing_players_count_sql.ExecuteScalar();
+
+                                                    SqlCommand players_count_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room", vote_sql);
+                                                    players_count_sql.Parameters.AddWithValue("@id_room", room);
+                                                    Int32 players_count = (Int32)players_count_sql.ExecuteScalar();
+
+                                                    SqlCommand players_count_kick_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@p_status", vote_sql);
+                                                    players_count_kick_sql.Parameters.AddWithValue("@id_room", room);
+                                                    players_count_kick_sql.Parameters.AddWithValue("@p_status", "kick");
+                                                    Int32 players_count_kick = (Int32)players_count_kick_sql.ExecuteScalar();
+
+
+
+                                                    if (playing_players_count == Math.Ceiling(players_count / 2.0))
+                                                    {
+                                                        SqlCommand update_status = new SqlCommand("UPDATE games SET status=@status_game WHERE room_id=@room", vote_sql);
+                                                        update_status.Parameters.AddWithValue("@status_game", "end");
+                                                        update_status.Parameters.AddWithValue("@room", room_id);
+                                                        update_status.ExecuteNonQuery();
+
+                                                        SqlCommand update_player_status = new SqlCommand("UPDATE games SET player_status=@status WHERE player_status=@status_play AND room_id=@room", vote_sql);
+                                                        update_player_status.Parameters.AddWithValue("@status", "win");
+                                                        update_player_status.Parameters.AddWithValue("@room", room_id);
+                                                        update_player_status.Parameters.AddWithValue("@status_play", "play");
+                                                        update_player_status.ExecuteNonQuery();
+
+                                                        string send_end_game_ = "END__THE_GAME " + full_name;
+                                                        End_the_game(send_end_game_, room_id);
+                                                    }
+                                                    else
+                                                    {
+                                                        string send_result_ = "VOTING___KICK " + full_name;
+
+                                                        Send_who_kick(send_result_, room_id);
+                                                        Thread.Sleep(300);
+
+                                                        if (players_count_kick != round)
+                                                        {
+                                                            string one_more_kick = "ONE_MORE_KICK ";
+
+                                                            Send_who_kick(one_more_kick, room_id);
+
+                                                        }
+                                                        else
+                                                        {
+                                                            SqlCommand check_move = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
+                                                            check_move.Parameters.AddWithValue("@room", room);
+                                                            check_move.Parameters.AddWithValue("@id", player_id);
+                                                            readSql = check_move.ExecuteReader();
+
+                                                            if (readSql.Read() == true)
+                                                            {
+                                                                string move = (string)readSql["move"];
+
+                                                                if (move.IndexOf("yes") > -1) Next_move(room, true);
+                                                                readSql.Close();
+                                                            }
+                                                            else
+                                                            {
+                                                                readSql.Close();
+                                                            }
+
+                                                        }
+
+                                                    }
+
+
+                                                }
+                                                else
+                                                {
+                                                    int round = 0;
+                                                    SqlCommand select_round = new SqlCommand("SELECT * FROM games WHERE room_id=@room ", vote_sql);
+                                                    select_round.Parameters.AddWithValue("@room", room);
+                                                    readSql = select_round.ExecuteReader();
+                                                    if (readSql.Read() == true)
+                                                    {
+                                                        round = (int)readSql["round"];
+                                                        readSql.Close();
+                                                        round++;
+                                                    }
+                                                    else
+                                                    {
+                                                        readSql.Close();
+                                                    }
+
+                                                    SqlCommand round_set = new SqlCommand("UPDATE games SET round=@round_set WHERE room_id=@room  ", vote_sql);
+                                                    round_set.Parameters.AddWithValue("@round_set", round);
+                                                    round_set.Parameters.AddWithValue("@room", room);
+                                                    round_set.ExecuteNonQuery();
+
+                                                    string send_result_ = "VOTING_N_KICK ";
+                                                    Send_who_kick(send_result_, room_id);
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                readSql.Close();
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        readSql.Close();
+                                    }
+                                }
+                                else
+                                {
+                                    SqlCommand count_player_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@status", vote_sql);
+                                    count_player_sql.Parameters.AddWithValue("@id_room", room);
+                                    count_player_sql.Parameters.AddWithValue("@status", "play");
+                                    Int32 count_player = (Int32)count_player_sql.ExecuteScalar();
+
+                                    SqlCommand count_action_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@status AND action=@action_p", vote_sql);
+                                    count_action_sql.Parameters.AddWithValue("@id_room", room);
+                                    count_action_sql.Parameters.AddWithValue("@status", "play");
+                                    count_action_sql.Parameters.AddWithValue("@action_p", 2);
+                                    Int32 count_action = (Int32)count_action_sql.ExecuteScalar();
+
+
+                                    SqlCommand check = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
+                                    check.Parameters.AddWithValue("@room", room);
+                                    check.Parameters.AddWithValue("@id", id);
+                                    readSql = check.ExecuteReader();
+
+                                    if (readSql.Read() == true)
+                                    {
+                                        string room_id = (string)readSql["room_id"];
+                                        string player_id = (string)readSql["person_id"];
+                                        string player_name = (string)readSql["name"];
+                                        int vote_kick_new = (int)readSql["vote_kick"];
+                                        string full_name = "{" + room_id + "}{" + player_id + "}{" + player_name + "}";
+                                        string new_msg = "COUNT____VOTE " + full_name + "{" + vote_kick_new + "}";
+                                        Send_Vote(new_msg, room);
+
+                                        int voted_new = (int)readSql["voted"];
+                                        readSql.Close();
+
+                                        if (count_action == count_player)
+                                        {
+
+                                            SqlCommand max_vote = new SqlCommand("SELECT MAX(vote_kick) FROM games WHERE room_id=@room", vote_sql);
+
+                                            max_vote.Parameters.AddWithValue("@room", room);
+                                            int max_vote_count = (int)max_vote.ExecuteScalar();
+
+                                            SqlCommand vote_kick_count_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND vote_kick=@vote_kick_count", vote_sql);
+                                            vote_kick_count_sql.Parameters.AddWithValue("@id_room", room);
+                                            vote_kick_count_sql.Parameters.AddWithValue("@vote_kick_count", max_vote_count);
+
+                                            Int32 vote_kick_count = (Int32)vote_kick_count_sql.ExecuteScalar();
+
+
+                                            SqlCommand get_player_for_kick = new SqlCommand("SELECT * FROM games WHERE room_id=@room AND vote_kick=@vote_k", vote_sql);
+                                            get_player_for_kick.Parameters.AddWithValue("@room", room);
+                                            get_player_for_kick.Parameters.AddWithValue("@vote_k", max_vote_count);
+
+                                            readSql = get_player_for_kick.ExecuteReader();
+                                            if (readSql.Read() == true)
+                                            {
+                                                room_id = (string)readSql["room_id"];
+                                                player_id = (string)readSql["person_id"];
+                                                player_name = (string)readSql["name"];
+                                                //VOTING___KICK->ID_ROOM = KICK =
+                                                readSql.Close();
+                                                SqlCommand update_info = new SqlCommand("UPDATE games SET vote_kick=@vote_k,voted=@vote WHERE room_id=@room", vote_sql);
+                                                update_info.Parameters.AddWithValue("@vote_k", (int)0);
+                                                update_info.Parameters.AddWithValue("@vote", (int)0);
+                                                update_info.Parameters.AddWithValue("@room", room_id);
+                                                update_info.ExecuteNonQuery();
+
+                                                SqlCommand update_action_sql = new SqlCommand("UPDATE games SET action=@action_p WHERE room_id=@room", vote_sql);
+                                                update_action_sql.Parameters.AddWithValue("@action_p", (int)0);
+                                                update_action_sql.Parameters.AddWithValue("@room", room_id);
+                                                update_action_sql.ExecuteNonQuery();
+
+                                                SqlCommand update_voted_for = new SqlCommand("UPDATE games SET voted_for=@voted WHERE room_id=@room", vote_sql);
+                                                update_voted_for.Parameters.AddWithValue("@voted", "empty_voted");
+                                                update_voted_for.Parameters.AddWithValue("@room", room);
+                                                update_voted_for.ExecuteNonQuery();
+
+
+                                                if (vote_kick_count == 1)
+                                                {
+                                                    int round = 0;
+                                                    SqlCommand select_round = new SqlCommand("SELECT * FROM games WHERE room_id=@room ", vote_sql);
+                                                    select_round.Parameters.AddWithValue("@room", room);
+                                                    readSql = select_round.ExecuteReader();
+                                                    if (readSql.Read() == true)
+                                                    {
+                                                        round = (int)readSql["round"];
+                                                        readSql.Close();
+                                                        round++;
+                                                    }
+                                                    else
+                                                    {
+                                                        readSql.Close();
+                                                    }
+
+                                                    SqlCommand round_set = new SqlCommand("UPDATE games SET round=@round_set WHERE room_id=@room  ", vote_sql);
+                                                    round_set.Parameters.AddWithValue("@round_set", round);
+                                                    round_set.Parameters.AddWithValue("@room", room);
+                                                    round_set.ExecuteNonQuery();
+
+                                                    SqlCommand update_info_player = new SqlCommand("UPDATE games SET player_status=@status WHERE person_id=@id AND room_id=@room", vote_sql);
+                                                    update_info_player.Parameters.AddWithValue("@status", "kick");
+                                                    update_info_player.Parameters.AddWithValue("@room", room_id);
+                                                    update_info_player.Parameters.AddWithValue("@id", player_id);
+                                                    update_info_player.ExecuteNonQuery();
+
+                                                    full_name = "{" + room_id + "}{" + player_id + "}{" + player_name + "}";
+
+                                                    SqlCommand playing_players_count_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@p_status", vote_sql);
+                                                    playing_players_count_sql.Parameters.AddWithValue("@id_room", room);
+                                                    playing_players_count_sql.Parameters.AddWithValue("@p_status", "play");
+                                                    Int32 playing_players_count = (Int32)playing_players_count_sql.ExecuteScalar();
+
+                                                    SqlCommand players_count_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room", vote_sql);
+                                                    players_count_sql.Parameters.AddWithValue("@id_room", room);
+                                                    Int32 players_count = (Int32)players_count_sql.ExecuteScalar();
+
+                                                    SqlCommand players_count_kick_sql = new SqlCommand("SELECT COUNT(*) FROM games WHERE room_id=@id_room AND player_status=@p_status", vote_sql);
+                                                    players_count_kick_sql.Parameters.AddWithValue("@id_room", room);
+                                                    players_count_kick_sql.Parameters.AddWithValue("@p_status", "kick");
+                                                    Int32 players_count_kick = (Int32)players_count_kick_sql.ExecuteScalar();
+
+
+
+                                                    if (playing_players_count == Math.Ceiling(players_count / 2.0))
+                                                    {
+                                                        SqlCommand update_status = new SqlCommand("UPDATE games SET status=@status_game WHERE room_id=@room", vote_sql);
+                                                        update_status.Parameters.AddWithValue("@status_game", "end");
+                                                        update_status.Parameters.AddWithValue("@room", room_id);
+                                                        update_status.ExecuteNonQuery();
+
+                                                        SqlCommand update_player_status = new SqlCommand("UPDATE games SET player_status=@status WHERE player_status=@status_play AND room_id=@room", vote_sql);
+                                                        update_player_status.Parameters.AddWithValue("@status", "win");
+                                                        update_player_status.Parameters.AddWithValue("@room", room_id);
+                                                        update_player_status.Parameters.AddWithValue("@status_play", "play");
+                                                        update_player_status.ExecuteNonQuery();
+
+                                                        string send_end_game_ = "END__THE_GAME " + full_name;
+                                                        End_the_game(send_end_game_, room_id);
+                                                    }
+                                                    else
+                                                    {
+                                                        string send_result_ = "VOTING___KICK " + full_name;
+
+                                                        Send_who_kick(send_result_, room_id);
+                                                        Thread.Sleep(300);
+
+                                                        if (players_count_kick != round)
+                                                        {
+                                                            string one_more_kick = "ONE_MORE_KICK ";
+
+                                                            Send_who_kick(one_more_kick, room_id);
+
+                                                        }
+                                                        else
+                                                        {
+                                                            SqlCommand check_move = new SqlCommand("SELECT * FROM games WHERE person_id=@id AND room_id=@room", vote_sql);
+                                                            check_move.Parameters.AddWithValue("@room", room);
+                                                            check_move.Parameters.AddWithValue("@id", player_id);
+                                                            readSql = check_move.ExecuteReader();
+
+                                                            if (readSql.Read() == true)
+                                                            {
+                                                                string move = (string)readSql["move"];
+
+                                                                if (move.IndexOf("yes") > -1) Next_move(room, true);
+                                                                readSql.Close();
+                                                            }
+                                                            else
+                                                            {
+                                                                readSql.Close();
+                                                            }
+
+                                                        }
+
+                                                    }
+
+
+                                                }
+                                                else
+                                                {
+                                                    int round = 0;
+                                                    SqlCommand select_round = new SqlCommand("SELECT * FROM games WHERE room_id=@room ", vote_sql);
+                                                    select_round.Parameters.AddWithValue("@room", room);
+                                                    readSql = select_round.ExecuteReader();
+                                                    if (readSql.Read() == true)
+                                                    {
+                                                        round = (int)readSql["round"];
+                                                        readSql.Close();
+                                                        round++;
+                                                    }
+                                                    else
+                                                    {
+                                                        readSql.Close();
+                                                    }
+
+                                                    SqlCommand round_set = new SqlCommand("UPDATE games SET round=@round_set WHERE room_id=@room  ", vote_sql);
+                                                    round_set.Parameters.AddWithValue("@round_set", round);
+                                                    round_set.Parameters.AddWithValue("@room", room);
+                                                    round_set.ExecuteNonQuery();
+
+                                                    string send_result_ = "VOTING_N_KICK ";
+                                                    Send_who_kick(send_result_, room_id);
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                readSql.Close();
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        readSql.Close();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                readSql.Close();
+                            }
+                        }
+                        else
+                        {
+                            readSql.Close();
+                        }
+                    }
+                }
+                else
+                {
+                    vote_sql.Close();
+
+                }
+
+                vote_sql.Close();
             }
-
         }
-
     }
 
 
@@ -1180,15 +2018,7 @@ namespace BunkerServer
                 {
                     dataFromClient = null;
 
-                  /*  networkStream = clientSocket.GetStream();
-                    networkStream.Read(bytessize, 0, 8192);
-                    dataFromClientsize = Encoding.UTF8.GetString(bytessize);
-
-                    int sizebyte;
-                    bool isNum = int.TryParse(dataFromClientsize, out sizebyte);
-
-                    if (isNum)
-                    {*/
+              
                         byte[] bytesFrom = new byte[ReceiveBufferSize];
 
                         networkStream = clientSocket.GetStream();
@@ -1197,43 +2027,76 @@ namespace BunkerServer
                         dataFromClient = dataFromClient.Trim('\0');
                         int size = dataFromClient.Length;
 
-                   
-
-
-                    //NEXT_____MOVE->ID_ROOM = ID_CLIENT =
-                    if (dataFromClient.IndexOf("NEXT_____MOVE", 0, 13) > -1)
+                    if (dataFromClient.Length ==0)
                     {
-                        int id_room_pos = dataFromClient.IndexOf("ID_ROOM", 13);
-                        int id_client_pos = dataFromClient.IndexOf("ID_CLIENT", 13);
-                        string id_room = dataFromClient.Substring(id_room_pos + 8, id_client_pos - 1 - 8 - id_room_pos);
-                        string id_client = dataFromClient.Substring(id_client_pos + 10, dataFromClient.Length - 1 - 10 - id_client_pos);
 
-                        Program.Next_move(id_room);
+                        Console.WriteLine("epmty" + dataFromClient);
+                        networkStream.Close();
+                        clientSocket.Close();
+                        dataFromClient = " ";
+                        break;
+                    }
+                    
+                    //NEXT_____MOVE->ID_ROOM = ID_CLIENT =
+                    else if (dataFromClient.IndexOf("NEXT_____MOVE", 0, 13) > -1)
+                    {
+                        
+
+                        int first = 0;
+                        int next = 0;
+                        string[] Get_Info = new string[2];
+
+                        for (int i = 0; i < 2; i++)
+                        {
+                            first = dataFromClient.IndexOf("{", next);
+                            next = dataFromClient.IndexOf("}", first);
+                            Get_Info[i] = dataFromClient.Substring(first + 1, next - first - 1);
+                            first = first + 1;
+                            next = next + 1;
+                        }
+
+                        Program.Next_move(Get_Info[0],false);
 
                     }
                     //OPEN_CHARACTE->ID_ROOM= ID_CLIENT= CHARATER=
                     else if(dataFromClient.IndexOf("OPEN_CHARACTE",0,13) > -1)
                     {
-                       int id_room_pos = dataFromClient.IndexOf("ID_ROOM", 13);
-                       int id_client_pos = dataFromClient.IndexOf("ID_CLIENT", 13);
-                       string id_room = dataFromClient.Substring(id_room_pos + 8, id_client_pos - 1 - 8 - id_room_pos);  
-                        
-                       Program.Send_open_characteristic(dataFromClient, id_room);
+                      
+
+                        int first = 0;
+                        int next = 0;
+                        string[] Get_Info = new string[2];
+
+                        for (int i = 0; i < 2; i++)
+                        {
+                            first = dataFromClient.IndexOf("{", next);
+                            next = dataFromClient.IndexOf("}", first);
+                            Get_Info[i] = dataFromClient.Substring(first + 1, next - first - 1);
+                            first = first + 1;
+                            next = next + 1;
+                        }
+
+                        Program.Send_open_characteristic(dataFromClient,Get_Info[0] );
 
                     }
                     //START____ROOM->ID_ROOM = ID_CLIENT = PERMISSION =
                     else if (dataFromClient.IndexOf("START____ROOM",0,13) > -1)
-                    {
-                        int id_room_pos = dataFromClient.IndexOf("ID_ROOM", 13);
-                        int id_client_pos = dataFromClient.IndexOf("ID_CLIENT", 13);
-                        int permission_pos = dataFromClient.IndexOf("PERMISSION", 13);
+                    {                     
 
+                        int first = 0;
+                        int next = 0;
+                        string[] Get_Info = new string[3];
 
-                        string id_room = dataFromClient.Substring(id_room_pos + 8, id_client_pos - 1 - 8 - id_room_pos);
-                        string id_client = dataFromClient.Substring(id_client_pos + 10, permission_pos - 1 - 10 - id_client_pos);
-                        string permission = dataFromClient.Substring(permission_pos + 11, size - 11 - permission_pos);
+                        for (int i = 0; i < 3; i++)
+                        {
+                            first = dataFromClient.IndexOf("{", next);
+                            next = dataFromClient.IndexOf("}", first);
+                            Get_Info[i] = dataFromClient.Substring(first + 1, next - first - 1);
+                            first = first + 1;
+                            next = next + 1;
+                        }
 
-                        Program.start_game(id_room, permission);
+                        Program.start_game( Get_Info[0], Get_Info[2]);
                         Console.WriteLine(clNo + " : " + dataFromClient);
 
                     }
@@ -1241,12 +2104,13 @@ namespace BunkerServer
                         // DISCONN__ROOM - Удаление и отключение клиента из игры
                     else if (dataFromClient.IndexOf("DISCONN__ROOM",0,13) > -1)
                         {
+
                             dataFromClient = dataFromClient.Substring(13, size - 13);
                             Console.WriteLine("От клиента - " + clNo + " : " + dataFromClient);
                             networkStream.Close();
                             Program.clientsList.Remove(clNo);
                             this.clientSocket.Close();
-                            string room = clNo.Substring(0, clNo.IndexOf(" ",0));
+                            string room = clNo.Substring(1, clNo.IndexOf("}"));
                             Program.Player_Online_Room(room);
                          
                             break;
@@ -1261,21 +2125,30 @@ namespace BunkerServer
                             this.clientSocket.Close();
                             break;
                     }
-                    //VOTING___KICK->ID_ROOM =  VOTE =
+                    ///VOTING___KICK->ID_ROOM = VOTE =
                     else if (dataFromClient.IndexOf("VOTING___KICK", 0, 13) > -1)
                     {
-                        dataFromClient = dataFromClient.Substring(13, size - 13);
+                   
 
-                        int id_room_pos = dataFromClient.IndexOf("ID_ROOM", 13);
-                        int pos_vote = dataFromClient.IndexOf("VOTE");
-                        string id_room = dataFromClient.Substring(id_room_pos + 8, pos_vote - 1 - 8 - id_room_pos);
-                        string vote = dataFromClient.Substring(pos_vote+5, dataFromClient.Length - pos_vote-5);
+                        int first = 0;
+                        int next = 0;
+                        string[] Get_Info = new string[4];
 
-                        Program.Voting_kick(vote, id_room);
+                        for (int i = 0; i < 4; i++)
+                        {
+                            first = dataFromClient.IndexOf("{", next);
+                            next = dataFromClient.IndexOf("}", first);
+                            Get_Info[i] = dataFromClient.Substring(first + 1, next - first - 1);
+                            first = first + 1;
+                            next = next + 1;
+                        }
+
+
+                        Program.Voting_kick(Get_Info[1],  Get_Info[0], clNo, Get_Info[3]);
                     }
                     Array.Clear(bytesFrom, 0, bytesFrom.Length);
                 }
-                //}
+                
             }
              catch (Exception ex)
             {
