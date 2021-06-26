@@ -2,8 +2,6 @@ D:\программ\Bunker\BunkerClient\bin\Release\BunkerClient.exe.config
 D:\программ\Bunker\BunkerClient\bin\Release\BunkerClient.exe
 D:\программ\Bunker\BunkerClient\bin\Release\BunkerClient.pdb
 D:\программ\Bunker\BunkerClient\obj\Release\BunkerClient.csprojAssemblyReference.cache
-D:\программ\Bunker\BunkerClient\obj\Release\BunkerClient.Form1.resources
-D:\программ\Bunker\BunkerClient\obj\Release\BunkerClient.Form2.resources
 D:\программ\Bunker\BunkerClient\obj\Release\BunkerClient.Properties.Resources.resources
 D:\программ\Bunker\BunkerClient\obj\Release\BunkerClient.csproj.GenerateResource.cache
 D:\программ\Bunker\BunkerClient\obj\Release\BunkerClient.csproj.CoreCompileInputs.cache
@@ -13,4 +11,5 @@ D:\программ\Bunker\BunkerClient\bin\Release\BunkerClient.exe.manifest
 D:\программ\Bunker\BunkerClient\bin\Release\BunkerClient.application
 D:\программ\Bunker\BunkerClient\obj\Release\BunkerClient.exe.manifest
 D:\программ\Bunker\BunkerClient\obj\Release\BunkerClient.application
-D:\программ\Bunker\BunkerClient\obj\Release\BunkerClient.Form3.resources
+D:\программ\Bunker\BunkerClient\obj\Release\BunkerClient.Game_menu.resources
+D:\программ\Bunker\BunkerClient\obj\Release\BunkerClient.Main_menu.resources

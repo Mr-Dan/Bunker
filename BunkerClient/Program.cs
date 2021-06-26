@@ -16,7 +16,7 @@ namespace BunkerClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form3());
+            Application.Run(new Main_menu());
 
         }
     }

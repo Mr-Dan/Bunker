@@ -63,6 +63,16 @@ namespace BunkerClient.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _2737698 {
+            get {
+                object obj = ResourceManager.GetObject("2737698", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap BunkerMenuEmpty {
             get {
                 object obj = ResourceManager.GetObject("BunkerMenuEmpty", resourceCulture);
